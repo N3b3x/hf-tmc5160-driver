@@ -1,0 +1,5 @@
+<map id="test_uart_node_address_configuration" name="test_uart_node_address_configuration">
+<area shape="rect" id="Node000001" title="Test UART node address configuration via NODECONF register." alt="" coords="5,5,183,45"/>
+<area shape="rect" id="Node000002" href="$uart__multi__node__comprehensive__test_8cpp.html#a68672c7d56331e3b3fb341fd1b61896d" title="Create UART interface and driver instances." alt="" coords="231,13,379,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,23,217,23,217,28,183,28"/>
+</map>

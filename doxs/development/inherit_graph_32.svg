@@ -11,9 +11,9 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structTestUnitSettings.html" target="_top" xlink:title="Test unit settings &#45; synchronized with test machine via ESP&#45;NOW.">
+<g id="a_Node000000"><a xlink:href="structTestTaskContext.html" target="_top" xlink:title="Context passed to test task trampoline.">
 <polygon fill="white" stroke="#666666" points="96,-19 0,-19 0,0 96,0 96,-19"/>
-<text text-anchor="middle" x="48" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">TestUnitSettings</text>
+<text text-anchor="middle" x="48" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">TestTaskContext</text>
 </a>
 </g>
 </g>

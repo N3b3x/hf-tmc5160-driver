@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structtmc51x0_1_1TMC51x0_1_1MotorControl.html" target="_top" xlink:title="Motor control subsystem.">
+<g id="a_Node000000"><a xlink:href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="177,-30 0,-30 0,0 177,0 177,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::TMC51x0&lt; CommType</text>
-<text text-anchor="middle" x="88.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00"> &gt;::MotorControl</text>
+<text text-anchor="middle" x="88.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00"> &gt;::Homing::HomeConfig</text>
 </a>
 </g>
 </g>

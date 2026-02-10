@@ -57,5 +57,6 @@ var searchData=
   ['coolstepconfig_54',['CoolStepConfig',['../structtmc51x0_1_1CoolStepConfig.html#aa5707df38a35d547e6e1e0ab8bc83dff',1,'tmc51x0::CoolStepConfig::CoolStepConfig()=default'],['../structtmc51x0_1_1CoolStepConfig.html#a4a96ad4b185150bd05ced37dbd5f559f',1,'tmc51x0::CoolStepConfig::CoolStepConfig(uint16_t lower_sg, uint16_t upper_sg, float min_vel, float max_vel, Unit vel_unit=Unit::RevPerSec)']]],
   ['crc16ccitt_55',['Crc16Ccitt',['../espnow__protocol_8hpp.html#afa7c999b99fb5716dc9d60af3a151d11',1,'espnow_protocol.hpp']]],
   ['create_5fdaisy_5fchain_5fdrivers_56',['create_daisy_chain_drivers',['../spi__daisy__chain__comprehensive__test_8cpp.html#ae1c358956ec587c7bd3a5105761b86a0',1,'spi_daisy_chain_comprehensive_test.cpp']]],
-  ['create_5ftest_5fdriver_57',['create_test_driver',['../internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9',1,'internal_ramp_comprehensive_test.cpp']]]
+  ['create_5ftest_5fdriver_57',['create_test_driver',['../internal__ramp__comprehensive__test_8cpp.html#a60927fcbf4958948b94cbd922284b8a9',1,'internal_ramp_comprehensive_test.cpp']]],
+  ['create_5fuart_5fdrivers_58',['create_uart_drivers',['../uart__multi__node__comprehensive__test_8cpp.html#a68672c7d56331e3b3fb341fd1b61896d',1,'uart_multi_node_comprehensive_test.cpp']]]
 ];

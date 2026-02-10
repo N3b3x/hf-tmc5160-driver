@@ -15,10 +15,14 @@ var hierarchy =
       [ "tmc51x0::SpiCommInterface< Esp32SPI >", "classtmc51x0_1_1SpiCommInterface.html", [
         [ "Esp32SPI", "classEsp32SPI.html", null ]
       ] ],
+      [ "tmc51x0::UartCommInterface< Esp32UART >", "classtmc51x0_1_1UartCommInterface.html", [
+        [ "Esp32UART", "classEsp32UART.html", null ]
+      ] ],
       [ "tmc51x0::SpiCommInterface< Derived >", "classtmc51x0_1_1SpiCommInterface.html", null ],
       [ "tmc51x0::UartCommInterface< Derived >", "classtmc51x0_1_1UartCommInterface.html", null ]
     ] ],
     [ "tmc51x0::CommInterface< Esp32SPI >", "classtmc51x0_1_1CommInterface.html", null ],
+    [ "tmc51x0::CommInterface< Esp32UART >", "classtmc51x0_1_1CommInterface.html", null ],
     [ "tmc51x0::TMC51x0< CommType >::Communication", "structtmc51x0_1_1TMC51x0_1_1Communication.html", null ],
     [ "ConfigAckPayload", "structConfigAckPayload.html", null ],
     [ "tmc51x0::ConfigBuilder", "classtmc51x0_1_1ConfigBuilder.html", null ],
@@ -41,6 +45,7 @@ var hierarchy =
     [ "ErrorPayload", "structErrorPayload.html", null ],
     [ "Esp32SpiPinConfig", "structEsp32SpiPinConfig.html", null ],
     [ "Esp32TmcMutex", "classEsp32TmcMutex.html", null ],
+    [ "Esp32UartPinConfig", "structEsp32UartPinConfig.html", null ],
     [ "EspNowHeader", "structEspNowHeader.html", null ],
     [ "EspNowPacket", "structEspNowPacket.html", null ],
     [ "tmc51x0::TMC51x0< CommType >::Events", "structtmc51x0_1_1TMC51x0_1_1Events.html", null ],
@@ -151,6 +156,7 @@ var hierarchy =
     [ "tmc51x0::TMC51x0< CommType >::UartConfig", "structtmc51x0_1_1TMC51x0_1_1UartConfig.html", null ],
     [ "tmc51x0::UartConfig", "structtmc51x0_1_1UartConfig.html", null ],
     [ "tmc51x0::UartFrame", "structtmc51x0_1_1UartFrame.html", null ],
+    [ "UartTestHandle", "structUartTestHandle.html", null ],
     [ "UISettings", "structUISettings.html", null ],
     [ "tmc51x0::VelocityValue", "structtmc51x0_1_1VelocityValue.html", null ],
     [ "tmc51x0::TMC51x0< CommType >::WriteOnlyRegisters", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html", null ]

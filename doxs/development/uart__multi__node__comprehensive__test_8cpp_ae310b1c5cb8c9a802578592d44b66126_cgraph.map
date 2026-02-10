@@ -1,0 +1,5 @@
+<map id="test_uart_motor_control" name="test_uart_motor_control">
+<area shape="rect" id="Node000001" title="Test motor control operations over UART." alt="" coords="5,5,184,31"/>
+<area shape="rect" id="Node000002" href="$uart__multi__node__comprehensive__test_8cpp.html#a68672c7d56331e3b3fb341fd1b61896d" title="Create UART interface and driver instances." alt="" coords="232,5,380,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="184,15,218,15,218,21,184,21"/>
+</map>

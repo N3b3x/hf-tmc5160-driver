@@ -1,0 +1,5 @@
+<map id="Esp32UartPinConfig" name="Esp32UartPinConfig">
+<area shape="rect" id="Node000001" title="ESP32 UART pin configuration structure." alt="" coords="35,93,185,119"/>
+<area shape="rect" id="Node000002" href="$structtmc51x0_1_1TMC51x0PinConfig.html" title="TMC51x0 GPIO pin configuration structure." alt="" coords="5,5,215,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,45,113,93,107,93,107,45"/>
+</map>

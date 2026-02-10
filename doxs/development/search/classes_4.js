@@ -8,8 +8,10 @@ var searchData=
   ['esp32spi_5',['Esp32SPI',['../classEsp32SPI.html',1,'']]],
   ['esp32spipinconfig_6',['Esp32SpiPinConfig',['../structEsp32SpiPinConfig.html',1,'']]],
   ['esp32tmcmutex_7',['Esp32TmcMutex',['../classEsp32TmcMutex.html',1,'']]],
-  ['espnowheader_8',['EspNowHeader',['../structEspNowHeader.html',1,'']]],
-  ['espnowpacket_9',['EspNowPacket',['../structEspNowPacket.html',1,'']]],
-  ['events_10',['Events',['../structtmc51x0_1_1TMC51x0_1_1Events.html',1,'tmc51x0::TMC51x0']]],
-  ['externalclockconfig_11',['ExternalClockConfig',['../structtmc51x0_1_1ExternalClockConfig.html',1,'tmc51x0']]]
+  ['esp32uart_8',['Esp32UART',['../classEsp32UART.html',1,'']]],
+  ['esp32uartpinconfig_9',['Esp32UartPinConfig',['../structEsp32UartPinConfig.html',1,'']]],
+  ['espnowheader_10',['EspNowHeader',['../structEspNowHeader.html',1,'']]],
+  ['espnowpacket_11',['EspNowPacket',['../structEspNowPacket.html',1,'']]],
+  ['events_12',['Events',['../structtmc51x0_1_1TMC51x0_1_1Events.html',1,'tmc51x0::TMC51x0']]],
+  ['externalclockconfig_13',['ExternalClockConfig',['../structtmc51x0_1_1ExternalClockConfig.html',1,'tmc51x0']]]
 ];

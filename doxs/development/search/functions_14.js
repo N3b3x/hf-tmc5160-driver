@@ -3,9 +3,10 @@ var searchData=
   ['_7ecomminterface_0',['~CommInterface',['../classtmc51x0_1_1CommInterface.html#a48e4d298eb020a62cdd923a6fefae137',1,'tmc51x0::CommInterface']]],
   ['_7eesp32spi_1',['~Esp32SPI',['../classEsp32SPI.html#aa03430f3ec8cf9bcae8ca0d04b191b1b',1,'Esp32SPI']]],
   ['_7eesp32tmcmutex_2',['~Esp32TmcMutex',['../classEsp32TmcMutex.html#a0ba4fee306e44aa47f19657a229a20a7',1,'Esp32TmcMutex']]],
-  ['_7efatiguetestmotion_3',['~FatigueTestMotion',['../classFatigueTest_1_1FatigueTestMotion.html#a37f5a91409194f509e05c3ca94c4d65b',1,'FatigueTest::FatigueTestMotion']]],
-  ['_7espicomminterface_4',['~SpiCommInterface',['../classtmc51x0_1_1SpiCommInterface.html#a83eab9b74a723680030eb86d98965bed',1,'tmc51x0::SpiCommInterface']]],
-  ['_7etmc51x0_5',['~TMC51x0',['../classtmc51x0_1_1TMC51x0.html#a6098762930c8b3b638a5e7db5e4290c7',1,'tmc51x0::TMC51x0']]],
-  ['_7etmcmutexguard_6',['~TmcMutexGuard',['../classTmcMutexGuard.html#ab7846844360a06130bb8138d2c8c63c0',1,'TmcMutexGuard']]],
-  ['_7euartcomminterface_7',['~UartCommInterface',['../classtmc51x0_1_1UartCommInterface.html#a11d2ecc970b4b89067f72d03af53ee04',1,'tmc51x0::UartCommInterface']]]
+  ['_7eesp32uart_3',['~Esp32UART',['../classEsp32UART.html#aa1f8580477872415abbb355ad9e0e5cc',1,'Esp32UART']]],
+  ['_7efatiguetestmotion_4',['~FatigueTestMotion',['../classFatigueTest_1_1FatigueTestMotion.html#a37f5a91409194f509e05c3ca94c4d65b',1,'FatigueTest::FatigueTestMotion']]],
+  ['_7espicomminterface_5',['~SpiCommInterface',['../classtmc51x0_1_1SpiCommInterface.html#a83eab9b74a723680030eb86d98965bed',1,'tmc51x0::SpiCommInterface']]],
+  ['_7etmc51x0_6',['~TMC51x0',['../classtmc51x0_1_1TMC51x0.html#a6098762930c8b3b638a5e7db5e4290c7',1,'tmc51x0::TMC51x0']]],
+  ['_7etmcmutexguard_7',['~TmcMutexGuard',['../classTmcMutexGuard.html#ab7846844360a06130bb8138d2c8c63c0',1,'TmcMutexGuard']]],
+  ['_7euartcomminterface_8',['~UartCommInterface',['../classtmc51x0_1_1UartCommInterface.html#a11d2ecc970b4b89067f72d03af53ee04',1,'tmc51x0::UartCommInterface']]]
 ];
