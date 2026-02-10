@@ -482,3 +482,7 @@ This comprehensive test suite covers:
 - ✅ Feature compatibility validation
 
 The test suite provides thorough validation of all TMC51x0 driver (TMC5130 & TMC5160) features in a single integrated test, making it ideal for production validation and comprehensive system testing.
+
+---
+
+**Navigation:** [← Previous: Fatigue Testing](fatigue_test.md) | [Index](index.md) | [Next: SPI Daisy Chain Test →](spi_daisy_chain_comprehensive_test.md)

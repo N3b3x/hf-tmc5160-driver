@@ -590,3 +590,6 @@ I (1255) FatigueTest: ║                    System Ready - Use UART Commands to
 I (1256) FatigueTest: ╚══════════════════════════════════════════════════════════════════════════════╝
 ```
 
+---
+
+**Navigation:** [← Previous: Internal Ramp Sinusoidal](internal_ramp_sinusoidal.md) | [Index](index.md) | [Next: Internal Ramp Comprehensive Test →](internal_ramp_comprehensive_test.md)

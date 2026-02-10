@@ -1,5 +1,5 @@
-warning: ignoring unsupported tag 'PAGE_OUTLINE_PANEL' at line 1719, file /tmp/doxyfile.bAAul4
-warning: Tag 'DOT_TRANSPARENT' at line 2742 of file '/tmp/doxyfile.bAAul4' has become obsolete.
+warning: ignoring unsupported tag 'PAGE_OUTLINE_PANEL' at line 1719, file /tmp/doxyfile.oTDY2n
+warning: Tag 'DOT_TRANSPARENT' at line 2742 of file '/tmp/doxyfile.oTDY2n' has become obsolete.
          To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
 Doxygen version used: 1.10.0 (ebc57c6dd303a980bd19dd74b8b61c8f3f5180ca)
 Searching for include files...
@@ -1036,38 +1036,7 @@ finalizing index lists...
 writing tag file...
 Running plantuml with JAVA...
 Running dot...
-Generating dot graphs using 5 parallel threads...
-Running dot for graph 1/10
-Running dot for graph 2/10
-Running dot for graph 3/10
-Running dot for graph 4/10
-Running dot for graph 5/10
-Running dot for graph 6/10
-Running dot for graph 7/10
-Running dot for graph 8/10
-Running dot for graph 9/10
-Running dot for graph 10/10
-Patching output file 1/21
-Patching output file 2/21
-Patching output file 3/21
-Patching output file 4/21
-Patching output file 5/21
-Patching output file 6/21
-Patching output file 7/21
-Patching output file 8/21
-Patching output file 9/21
-Patching output file 10/21
-Patching output file 11/21
-Patching output file 12/21
-Patching output file 13/21
-Patching output file 14/21
-Patching output file 15/21
-Patching output file 16/21
-Patching output file 17/21
-Patching output file 18/21
-Patching output file 19/21
-Patching output file 20/21
-Patching output file 21/21
+Patching output file 1/1
 type lookup cache used 10481/65536 hits=64859 misses=10814
 symbol lookup cache used 10664/65536 hits=80662 misses=10664
 finished...
