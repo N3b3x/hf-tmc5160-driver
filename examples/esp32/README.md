@@ -18,25 +18,49 @@ These examples are configured by default for a specific **Trinamic TMC5160 Dev/E
 
 ## 📂 Available Examples
 
-| Example | Description |
-|---------|-------------|
-| `internal_ramp_sinusoidal` | **Main Demo:** Smooth back-and-forth motion using internal ramp generator. |
-| `core_comprehensive_test` | Basic register read/write and SPI communication verification. |
-| `motor_control_comprehensive_test` | Tests current settings, chopper modes, and basic motion. |
-| `ramp_control_comprehensive_test` | Validates velocity and positioning modes. |
-| `diagnostics_comprehensive_test` | Reads status registers (GSTAT, DRV_STATUS) and checks flags. |
-| `protection_comprehensive_test` | Tests short circuit and overtemperature protection thresholds. |
+| App | Description |
+|-----|-------------|
+| `internal_ramp_sinusoidal` | Back-and-forth motion using internal ramp positioning mode. |
+| `internal_ramp_comprehensive_test` | Main test suite: core, motor, ramp, diagnostics, protection. |
+| `fatigue_test_espnow_unit` | Point-to-point fatigue motion, ESP-NOW + UART, bounds finding. |
+| `stallguard_tuning` | Automatic StallGuard2 (SGT) tuning for sensorless homing. |
+| `bounds_finding_test` | Standalone bounds finding and homing test. |
+| `spi_daisy_chain_comprehensive_test` | Multi-motor SPI daisy chain tests (2+ drivers required). |
+| `uart_multi_node_comprehensive_test` | Multi-node UART tests (2+ drivers, placeholder impl). |
+| `abn_encoder_reader` | ABN incremental encoder position reader. |
+| `i2c_scan` | I2C bus scanner for OLED UI board. |
+
+Run `./scripts/build_app.sh list` to see all apps and build types.
 
 ## 🚀 Getting Started
 
+![What you need for the ESP32 build process](../assets/images/what-you-need.png)
+
 1.  **Setup Hardware:** Connect your ESP32 and TMC5160 according to the [Hardware Setup Guide](docs/dev_board_setup.md).
-2.  **Configure:** Check `main/esp32_tmc5160_test_config.hpp` if you need to change pin assignments.
-3.  **Build & Flash:**
+2.  **Install ESP-IDF and project tools environment:**
     ```bash
-    idf.py set-target esp32s3  # Or esp32, esp32c3, etc.
-    idf.py build
-    idf.py -p /dev/ttyUSB0 flash monitor
+    cd examples/esp32/scripts
+    ./manage_idf.sh install                     # Install required ESP-IDF versions from app_config.yml
+    source <(./manage_idf.sh export release/v5.5)
     ```
+3.  **Explore available apps and build types:**
+    ```bash
+    cd ..                                       # Back to examples/esp32 project root
+    ./scripts/build_app.sh list                 # Show apps, build types, and IDF versions
+    ```
+4.  **Build an app (example: fatigue_test_espnow_unit):**
+    ```bash
+    ./scripts/build_app.sh fatigue_test_espnow_unit Debug     # or Release
+    ```
+5.  **Flash and monitor using flash_app.sh:**
+    ```bash
+    ./scripts/flash_app.sh --port /dev/ttyACM0 flash_monitor fatigue_test_espnow_unit Debug
+    # or, for a release build:
+    ./scripts/flash_app.sh --port /dev/ttyACM0 flash_monitor fatigue_test_espnow_unit Release
+    ```
+6.  **More information about the build/flash system:**
+    - See `scripts/README.md` for an overview of the ESP-IDF project tools.
+    - Full documentation: [HardFOC ESP-IDF Project Tools Docs](https://n3b3x.github.io/hf-espidf-project-tools/)
 
 ## ⚠️ Critical Warnings
 

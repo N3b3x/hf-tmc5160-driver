@@ -1,14 +1,14 @@
 /**
  * @file internal_ramp_sinusoidal.cpp
- * @brief Sinusoidal motion pattern example for TMC51x0 stepper motor driver
+ * @brief Back-and-forth motion example for TMC51x0 stepper motor driver
  *
- * This example demonstrates sinusoidal motion control using the TMC51x0's
- * internal ramp generator. The motor velocity varies in a sinusoidal pattern
- * using velocity mode control.
+ * This example demonstrates simple back-and-forth motion using the TMC51x0's
+ * internal ramp generator in positioning mode. The motor moves between two
+ * positions repeatedly (configurable travel distance in degrees).
  *
- * MOTOR SELECTION:
- * Motor selection is done via a static constexpr variable at the top of this file.
- * See esp32_tmc51x0_bus_config.hpp for detailed motor specifications and selection guide.
+ * TEST RIG SELECTION:
+ * Use SELECTED_TEST_RIG at the top of this file (TEST_RIG_FATIGUE or TEST_RIG_CORE_DRIVER).
+ * See esp32_tmc51x0_test_config.hpp for motor, board, and platform specifications.
  *
  * Hardware Requirements:
  * - ESP32 development board

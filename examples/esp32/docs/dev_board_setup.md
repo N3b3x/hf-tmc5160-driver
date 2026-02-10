@@ -73,7 +73,7 @@ With the **0.05 $\Omega$** sense resistors, the full-scale current capability is
 *   **Default Config**: `IRUN=8` (~1.0A RMS), `IHOLD=4` (~0.5A RMS).
 
 ### Mode
-*   **StealthChop**: **Disabled** (SpreadCycle forced) by default to prevent startup calibration surges during testing.
+*   **StealthChop**: Disabled (SpreadCycle forced) by default in many test suites to prevent startup calibration surges. The fatigue test unit (`fatigue_test_espnow_unit`) enables StealthChop after bounds finding for smooth motion.
 
 ---
 

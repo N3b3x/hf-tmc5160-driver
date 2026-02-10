@@ -90,13 +90,15 @@ CS   ──────── CSN ──────────── CSN ─�
 
 ## Pin Configuration
 
-Default pin configuration (from `esp32_tmc51x0_test_config.hpp`, shared by all chips):
+The test uses `GetDefaultPinConfig()` from `esp32_tmc51x0_test_config.hpp` (shared by all chips in the chain):
 
 - **SPI**: MOSI=6, MISO=2, SCLK=5, CS=18 (shared)
 - **Control**: EN=11 (can be shared or separate per chip)
 - **Clock**: CLK=10 (tied to GND for internal clock)
 - **Diagnostics**: DIAG0=23, DIAG1=15
-- **SPI Clock**: 500 kHz (from config)
+- **SPI Clock**: From config (500 kHz typical)
+
+**Note**: The source file comment lists alternative pins (MOSI=23, MISO=19, etc.) for a different hardware setup; the actual build uses the default test config pins.
 
 ## Test Configuration
 
@@ -187,29 +189,24 @@ static constexpr uint8_t TEST_CHAIN_LENGTH = 2; // Number of devices
 
 ### Creating Daisy Chain Drivers
 
-```cpp
-// Create shared SPI interface
-Esp32SPI spi(SPI_HOST, pin_config, clock_speed);
-
-// Set chain length
-spi.SetDaisyChainLength(2); // 2 devices in chain
-
-// Create driver instances for each position
-auto driver0 = std::make_unique<TMC51x0<Esp32SPI>>(spi, clock_speed, 0); // Position 0
-auto driver1 = std::make_unique<TMC51x0<Esp32SPI>>(spi, clock_speed, 1); // Position 1
-```
-
-### Using TMC51x0DaisyChain Helper
-
-The library provides `TMC51x0DaisyChain` helper class:
+The test uses a `TestDriverHandle` with shared SPI and a vector of driver instances:
 
 ```cpp
-TMC51x0DaisyChain<Esp32SPI> chain(spi, clock_speed, chain_length);
+struct TestDriverHandle {
+  std::unique_ptr<Esp32SPI> spi;
+  std::vector<std::unique_ptr<tmc51x0::TMC51x0<Esp32SPI>>> drivers;
+};
 
-// Access drivers by position
-chain.GetDriver(0)->rampControl.SetTargetPosition(1000);
-chain.GetDriver(1)->rampControl.SetTargetPosition(2000);
+// Create via create_daisy_chain_drivers()
+auto handle = create_daisy_chain_drivers();
+// Uses GetDefaultPinConfig() and SELECTED_TEST_RIG (TEST_RIG_CORE_DRIVER)
+
+// Access drivers by index
+handle->drivers[0]->rampControl.SetTargetPosition(1000);
+handle->drivers[1]->rampControl.SetTargetPosition(2000);
 ```
+
+Chain length is set via `TEST_CHAIN_LENGTH` (default: 2).
 
 ## Expected Behavior
 

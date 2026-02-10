@@ -112,10 +112,12 @@ Tests can be enabled/disabled:
 
 ```cpp
 static constexpr bool ENABLE_NODE_ADDRESSING_TESTS = true;
-static constexpr bool ENABLE_NODECONF_ADDRESS_TESTS = true;
+static constexpr bool ENABLE_NODE_ADDRESS_TESTS = true;
 static constexpr bool ENABLE_SEND_DELAY_TESTS = true;
 static constexpr bool ENABLE_MULTI_NODE_COORDINATION_TESTS = true;
 ```
+
+**Note**: The UART multi-node test currently uses placeholder implementations. The test functions log warnings that UART interface implementation is required and return true. Actual UART communication and multi-node logic would need to be added (e.g., following a UART daisy chain example pattern).
 
 ### Node Count Configuration
 
@@ -199,35 +201,15 @@ For initial configuration, use sequential programming:
 
 ## Code Structure
 
-### Creating UART Multi-Node Interface
+The test file defines four test functions (`test_uart_node_addressing`, `test_uart_node_address_configuration`, `test_send_delay_configuration`, `test_multi_node_coordination`) that are currently placeholders. Each logs a warning that UART interface implementation is required and returns true.
 
-```cpp
-// Create UART interface
-Esp32UART uart(UART_NUM_1, tx_pin, rx_pin, baud_rate);
+A complete UART multi-node implementation would need:
+- An `Esp32UART` (or equivalent) communication interface
+- NAI/NAO pin control for sequential programming
+- Node address configuration (NODECONF.NODEADDR)
+- Send delay configuration for proper addressing
 
-// Create multi-node helper
-TMC51x0MultiNode<Esp32UART> multi_node(uart, node_count);
-
-// Access nodes by address
-multi_node.GetNode(0)->rampControl.SetTargetPosition(1000);
-multi_node.GetNode(1)->rampControl.SetTargetPosition(2000);
-```
-
-### Sequential Programming
-
-For initial setup:
-
-```cpp
-// Configure node 0
-SetNAIPin(0, LOW);  // Select node 0
-SetNAIPin(1, HIGH);
-node0->communication.SetUartNodeAddress(0);
-
-// Configure node 1
-SetNAIPin(0, HIGH);
-SetNAIPin(1, LOW);  // Select node 1
-node1->communication.SetUartNodeAddress(1);
-```
+See the library's UART/multi-node documentation for the intended API patterns.
 
 ## Expected Behavior
 

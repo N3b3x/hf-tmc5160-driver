@@ -21,13 +21,8 @@ Practical applications demonstrating real-world usage:
 
 ### Motion Control Examples
 
-- **[Internal Ramp Sinusoidal Motion](internal_ramp_sinusoidal.md)** - Simple back-and-forth motion using positioning mode
-- **[Fatigue Testing](fatigue_test.md)** - Back-and-forth oscillatory motion between bounds (StallGuard2 or encoder-based detection)
-
-### Configuration Examples
-
-- **[GPIO Pin Configuration](gpio_pin_config_example.md)** - Demonstrates GPIO pin setup and usage
-- **[Pin Configuration Struct](pin_config_struct_example.md)** - Shows how to use the pin configuration struct
+- **[Internal Ramp Sinusoidal](internal_ramp_sinusoidal.md)** - Simple back-and-forth motion using positioning mode (configurable via `SELECTED_TEST_RIG`)
+- **[Fatigue Testing](fatigue_test.md)** - Point-to-point back-and-forth motion between bounds, ESP-NOW controlled, with StallGuard2 or encoder-based bounds detection
 
 ## Comprehensive Test Suites
 
@@ -36,7 +31,7 @@ Thorough validation of driver features:
 ### Single Motor Tests
 
 - **[Internal Ramp Comprehensive Test](internal_ramp_comprehensive_test.md)** - **Main comprehensive test suite** - Combines core, motor control, ramp control, diagnostics, and protection tests into a single wholesome test suite for SPI internal ramp mode (with encoder and reference switches)
-- **[Encoder Comprehensive Test](encoder_comprehensive_test.md)** - Encoder configuration, position reading, deviation detection (separate test suite)
+- Encoder configuration, position reading, and deviation detection are included in the internal ramp comprehensive test; there is no separate encoder-only test suite.
 
 ### Multi-Motor Tests
 
@@ -45,11 +40,13 @@ Thorough validation of driver features:
 
 ## Quick Start
 
-1. **Select Your Test Rig**: Edit the `SELECTED_TEST_RIG` constant at the top of your example/test file (or use `SELECTED_MOTOR` for older examples)
+1. **Select Your Test Rig**: Edit the `SELECTED_TEST_RIG` constant at the top of your example/test file (`TEST_RIG_CORE_DRIVER` or `TEST_RIG_FATIGUE`)
 2. **Configure Pins**: Modify pin assignments in `esp32_tmc51x0_test_config.hpp` if needed
 3. **Build**: Use the build script (`./scripts/build_app.sh <app_name> Debug`) or ESP-IDF build system (`idf.py build`)
-4. **Flash**: Flash to your ESP32 board using the flash script (`./scripts/flash_app.sh flash <app_name> Debug`) or `idf.py flash`
-5. **Monitor**: View output via serial monitor (`idf.py monitor` or the flash script with `monitor` option)
+4. **Flash**: Flash using the flash script (`./scripts/flash_app.sh --port /dev/ttyACM0 flash <app_name> Debug`) or `idf.py flash`
+5. **Monitor**: View output via serial monitor (`idf.py monitor` or `./scripts/flash_app.sh flash_monitor <app_name> Debug`)
+
+For detailed setup, build, and flash instructions, see the [ESP32 README](../README.md) and [scripts/README.md](../scripts/README.md).
 
 ## Hardware Requirements
 
