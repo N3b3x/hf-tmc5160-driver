@@ -1,5 +1,12 @@
 var NAVTREEINDEX6 =
 {
+"namespacetmc51x0.html#a4abe4fa0f128137c19f7da4f9b58a816a055c1a591abb0e8cd86dc969727bcc0b":[12,0,10,77,0],
+"namespacetmc51x0.html#a4abe4fa0f128137c19f7da4f9b58a816a41bc94cbd8eebea13ce0491b2ac11b88":[12,0,10,77,1],
+"namespacetmc51x0.html#a4abe4fa0f128137c19f7da4f9b58a816a5137485eff3ff278d233d993c8539599":[12,0,10,77,2],
+"namespacetmc51x0.html#a4abe4fa0f128137c19f7da4f9b58a816ab89de3b4b81c4facfac906edf29aec8c":[12,0,10,77,3],
+"namespacetmc51x0.html#a4c305b5819dc304ee0866ba0c7b63682":[12,0,10,108],
+"namespacetmc51x0.html#a52bd7474fc03fcfde3c7249fea7ea055":[12,0,10,99],
+"namespacetmc51x0.html#a52bd7474fc03fcfde3c7249fea7ea055a115f17a28532bbd6f0f5ec83ed20692a":[12,0,10,99,0],
 "namespacetmc51x0.html#a52bd7474fc03fcfde3c7249fea7ea055a41bc94cbd8eebea13ce0491b2ac11b88":[12,0,10,99,3],
 "namespacetmc51x0.html#a52bd7474fc03fcfde3c7249fea7ea055a5137485eff3ff278d233d993c8539599":[12,0,10,99,2],
 "namespacetmc51x0.html#a52bd7474fc03fcfde3c7249fea7ea055ab89de3b4b81c4facfac906edf29aec8c":[12,0,10,99,1],
@@ -242,12 +249,5 @@ var NAVTREEINDEX6 =
 "namespacetmc51x0__test__config.html#af9a64c084cd330e868fabfadaea7102a":[12,0,11,18],
 "namespacetmc51x0__test__config.html#af9a64c084cd330e868fabfadaea7102aa37963ffe381c387bd4a29dc8ba37b120":[12,0,11,18,0],
 "namespacetmc51x0__test__config.html#af9a64c084cd330e868fabfadaea7102aa4406f0f21ceab30157bbf4041edf0604":[12,0,11,18,1],
-"namespacetmc51x0__test__config_1_1ConfigValidators.html":[12,0,11,1],
-"namespacetmc51x0__test__config_1_1anonymous__namespace_02esp32__tmc51x0__test__config_8hpp_03.html":[12,0,11,0],
-"pages.html":[],
-"spi__daisy__chain__comprehensive__test_8cpp.html":[14,0,0,0,0,2,2],
-"spi__daisy__chain__comprehensive__test_8cpp.html#a016965f5fcc59ff5ef59cb2261dd24ea":[14,0,0,0,0,2,2,7],
-"spi__daisy__chain__comprehensive__test_8cpp.html#a1751b60bd475b13f7f12c4e3ab674011":[14,0,0,0,0,2,2,5],
-"spi__daisy__chain__comprehensive__test_8cpp.html#a36d3294a1d72401f566303e25f52e96c":[14,0,0,0,0,2,2,6],
-"spi__daisy__chain__comprehensive__test_8cpp.html#a3f1e89f6e3a0be599511d4a8cc389305":[14,0,0,0,0,2,2,10]
+"namespacetmc51x0__test__config_1_1ConfigValidators.html":[12,0,11,1]
 };

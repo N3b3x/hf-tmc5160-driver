@@ -514,3 +514,8 @@ if (current_mode_result) {
 - `examples/esp32/main/test_config/esp32_tmc5160_bus.hpp` - ESP32 SPI implementation with full GPIO support
 - TMC5160 Datasheet Section 2.2 - Pin function descriptions
 
+---
+
+**Navigation**
+[← Communication Interface](special_features_communication_interface.md) | [Back to Index](index.md) | [Next: Register Access →](special_features_register_access.md)
+

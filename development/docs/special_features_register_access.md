@@ -163,3 +163,8 @@ if (!driver.status.VerifySetup()) {
 - **Motor stalling early**: Decrease acceleration (`AMAX`, `A1`). Check `Run Current` (`IRUN`).
 - **StealthChop noise**: Check `PWM_SCALE_AUTO`. If near limits (+/- 255), adjust `PWM_GRAD`.
 - **Position loss**: Check `DRV_STATUS` for `ot` (Overtemp) or `s2g` (Short) events which disable the bridge.
+
+---
+
+**Navigation**
+[← GPIO Pin Configuration](gpio_pin_configuration.md) | [Back to Index](index.md) | [Next: TMC5130 Support →](tmc5130_support.md)

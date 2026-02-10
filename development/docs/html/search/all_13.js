@@ -26,10 +26,10 @@ var searchData=
   ['unified_20test_20rig_20selection_20recommended_23',['Unified Test Rig Selection (Recommended)',['../esp32__tmc51x0__test__config_8hpp.html#autotoc_md27',1,'']]],
   ['unit_24',['unit',['../structtmc51x0_1_1VelocityValue.html#af32ecf32400ba804fb8706377d187d94',1,'tmc51x0::VelocityValue::unit'],['../structtmc51x0_1_1AccelerationValue.html#a34201928df1fb6c0f0658cc7625b3c08',1,'tmc51x0::AccelerationValue::unit']]],
   ['unit_25',['Unit',['../namespacetmc51x0.html#a68e41191c288365e02cfca672681f686',1,'tmc51x0']]],
-  ['unit_20conversion_20helpers_26',['Unit Conversion Helpers',['../index.html#autotoc_md73',1,'']]],
+  ['unit_20conversion_20helpers_26',['Unit Conversion Helpers',['../index.html#autotoc_md77',1,'']]],
   ['unit_20conversions_27',['Unit Conversions',['../group__TMC51X0__Units.html',1,'']]],
   ['unit_20naming_20convention_28',['Unit Naming Convention',['../tmc51x0__config__builder_8hpp.html#autotoc_md0',1,'']]],
-  ['units_29',['Using Physical Units',['../index.html#autotoc_md56',1,'']]],
+  ['units_29',['Using Physical Units',['../index.html#autotoc_md57',1,'']]],
   ['unknown_30',['Unknown',['../espnow__security_8hpp.html#adbd7c4c417b1498b333bef443182ce51a88183b946cc5f0e8c96b2e66e1c74a7e',1,'espnow_security.hpp']]],
   ['unlock_31',['unlock',['../classTmcMutexGuard.html#af6d5dcf4642c6732aea23ea2489caaaf',1,'TmcMutexGuard']]],
   ['unpair_32',['Unpair',['../namespacePairingMsgType.html#a1f36fcbe4db30d9386b7f2effc3b18af',1,'PairingMsgType::Unpair'],['../espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2ac72301f247098ce89e41698bf0e7ac05',1,'Unpair:&#160;espnow_protocol.hpp']]],
@@ -43,6 +43,6 @@ var searchData=
   ['usage_20example_40',['Usage Example',['../classtmc51x0_1_1TMC51x0DaisyChain.html#autotoc_md4',1,'Usage Example'],['../classtmc51x0_1_1TMC51x0MultiNode.html#autotoc_md8',1,'Usage Example'],['../classtmc51x0_1_1TMC51x0.html#autotoc_md12',1,'Usage Example']]],
   ['use_5fstallguard_41',['USE_STALLGUARD',['../bounds__finding__test_8cpp.html#a6bedd0fb4c6fca316840b645b6f28a6b',1,'bounds_finding_test.cpp']]],
   ['user_5fspecified_5fchain_5flength_5f_42',['user_specified_chain_length_',['../classtmc51x0_1_1SpiCommInterface.html#ae51148b7e5a26f3318ee15d88ae5621d',1,'tmc51x0::SpiCommInterface']]],
-  ['using_20physical_20units_43',['Using Physical Units',['../index.html#autotoc_md56',1,'']]],
+  ['using_20physical_20units_43',['Using Physical Units',['../index.html#autotoc_md57',1,'']]],
   ['uv_5fcp_44',['uv_cp',['../uniontmc51x0_1_1GSTAT__Register.html#a4e1e55cfd02a01cc02ee94c3f6a1ef62',1,'tmc51x0::GSTAT_Register']]]
 ];

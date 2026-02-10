@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['🔗_20multi_20chip_20communication_0',['🔗 Multi-Chip Communication',['../index.html#autotoc_md49',1,'']]]
+  ['🚀_20quick_20start_0',['🚀 Quick Start',['../index.html#autotoc_md54',1,'']]]
 ];

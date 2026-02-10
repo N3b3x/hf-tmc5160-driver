@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['🔍_20diagnostics_20tuning_0',['🔍 Diagnostics &amp; Tuning',['../index.html#autotoc_md40',1,'']]]
+  ['🔧_20installation_0',['🔧 Installation',['../index.html#autotoc_md59',1,'']]]
 ];

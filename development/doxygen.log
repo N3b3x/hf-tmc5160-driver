@@ -1,5 +1,5 @@
-warning: ignoring unsupported tag 'PAGE_OUTLINE_PANEL' at line 1719, file /tmp/doxyfile.5FDQWR
-warning: Tag 'DOT_TRANSPARENT' at line 2742 of file '/tmp/doxyfile.5FDQWR' has become obsolete.
+warning: ignoring unsupported tag 'PAGE_OUTLINE_PANEL' at line 1719, file /tmp/doxyfile.aYRfUX
+warning: Tag 'DOT_TRANSPARENT' at line 2742 of file '/tmp/doxyfile.aYRfUX' has become obsolete.
          To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
 Doxygen version used: 1.10.0 (ebc57c6dd303a980bd19dd74b8b61c8f3f5180ca)
 Searching for include files...
@@ -1006,13 +1006,32 @@ Generating dependency /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/READ
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:17: warning: unable to resolve reference to '-documentation' for \ref command
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:18: warning: unable to resolve reference to '-contributing' for \ref command
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:19: warning: unable to resolve reference to '-license' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:263: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/installation.md' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:263: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/quickstart.md' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:268: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/platform_integration.md' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:275: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/installation.md' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:455: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/api_reference.md' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:486: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/examples.md' for \ref command
-/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:501: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/index.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:302: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/installation.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:302: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/quickstart.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:343: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/quickstart.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:343: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/troubleshooting.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:348: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/platform_integration.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:355: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/installation.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:359: warning: unable to resolve reference to 'error-handling----the-resultt-pattern' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:359: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/api_reference.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:537: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/api_reference.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:541: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/README.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:561: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/examples.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:571: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/quickstart.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:572: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/installation.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:573: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/hardware_setup.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:574: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/platform_integration.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:580: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/api_reference.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:581: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/configuration.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:582: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/examples.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:583: warning: unable to resolve reference to 'error-handling----the-resultt-pattern' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:584: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/troubleshooting.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:590: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/special_features_sensorless_homing.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:591: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/special_features_advanced_configuration.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:592: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/special_features_multi_chip.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:593: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/gpio_pin_configuration.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:594: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/tmc5130_support.md' for \ref command
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/README.md:596: warning: unable to resolve reference to '/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/docs/index.md' for \ref command
 graph for directory test_config
 Generating dependency graph for directory tuning
 Generating index page...
@@ -1037,6 +1056,6 @@ writing tag file...
 Running plantuml with JAVA...
 Running dot...
 Patching output file 1/1
-type lookup cache used 10481/65536 hits=64859 misses=10814
-symbol lookup cache used 10664/65536 hits=80662 misses=10664
+type lookup cache used 10492/65536 hits=64902 misses=10825
+symbol lookup cache used 10700/65536 hits=80810 misses=10700
 finished...

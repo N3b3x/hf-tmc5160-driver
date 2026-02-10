@@ -53,6 +53,6 @@ var searchData=
   ['broadcast_5fmac_50',['BROADCAST_MAC',['../espnow__security_8hpp.html#a2a6ed76ee97cc4018903fb2f0448c11d',1,'espnow_security.hpp']]],
   ['build_51',['Build',['../classtmc51x0_1_1ConfigBuilder.html#a3e8186a9d87b4d52e8272f9601e48312',1,'tmc51x0::ConfigBuilder']]],
   ['bus_5ftag_52',['BUS_TAG',['../esp32__tmc51x0__bus_8hpp.html#a73a911be261c628a3ee57cedbafb89a1',1,'esp32_tmc51x0_bus.hpp']]],
-  ['by_20subsystem_53',['Key Methods by Subsystem',['../index.html#autotoc_md60',1,'']]],
+  ['by_20subsystem_53',['Key Methods by Subsystem',['../index.html#autotoc_md62',1,'']]],
   ['bytes_54',['bytes',['../uniontmc51x0_1_1SpiCommand_1_1Frame.html#a50b3f151a5e22e862bfc7d6b62d78611',1,'tmc51x0::SpiCommand::Frame::bytes'],['../uniontmc51x0_1_1UartFrame_1_1Frame.html#a529ef99d1f3750e785fc0f730f7264b3',1,'tmc51x0::UartFrame::Frame::bytes']]]
 ];

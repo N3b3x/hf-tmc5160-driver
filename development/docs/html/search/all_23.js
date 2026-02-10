@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['🔄_20encoder_20integration_0',['🔄 Encoder Integration',['../index.html#autotoc_md45',1,'']]]
+  ['🔗_20multi_20chip_20communication_0',['🔗 Multi-Chip Communication',['../index.html#autotoc_md50',1,'']]]
 ];
