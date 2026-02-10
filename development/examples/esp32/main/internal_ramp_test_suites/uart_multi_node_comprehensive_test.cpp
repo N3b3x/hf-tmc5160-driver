@@ -160,7 +160,7 @@ bool test_uart_basic_communication() noexcept {
              i, static_cast<unsigned>(ioin_val), version);
 
     // Verify chip version via the subsystem method (set during Initialize)
-    uint8_t detected_version = handle->drivers[i]->io.GetChipVersion();
+    uint8_t detected_version = handle->drivers[i]->status.GetChipVersion();
     ESP_LOGI(TAG, "Driver %zu: Detected chip version via subsystem: 0x%02X", i, detected_version);
 
     if (version != 0x30 && version != 0x11) {
