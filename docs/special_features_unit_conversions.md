@@ -255,5 +255,5 @@ All motion and position settings are ultimately written to integer-valued driver
 ---
 
 **Navigation**
-⬅️ [Previous: Examples](examples.md) | [Next: Motor Setup ➡️](special_features_motor_setup.md) | [Docs Hub 📚](index.md)
+[<- Examples](examples.md) | [Next: Motor Setup ->](special_features_motor_setup.md) | [Back to Index](index.md)
 

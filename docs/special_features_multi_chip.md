@@ -158,9 +158,9 @@ spi.SetDaisyChainLength(3); // 3 devices in chain
 
 // Create multiple TMC5160 instances, each with its own daisy-chain position
 // Position 0 = first chip, Position 1 = second chip, etc.
-tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)1(spi, 0); // First chip (position 0)
-tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)2(spi, 1); // Second chip (position 1)
-tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)3(spi, 2); // Third chip (position 2)
+tmc51x0::TMC51x0<Esp32SPI> driver1(spi, 0); // First chip (position 0)
+tmc51x0::TMC51x0<Esp32SPI> driver2(spi, 1); // Second chip (position 1)
+tmc51x0::TMC51x0<Esp32SPI> driver3(spi, 2); // Third chip (position 2)
 
 // Configure each driver
 tmc51x0::DriverConfig cfg{};
@@ -192,7 +192,7 @@ driver3.GetComm().ReadRegister(0x00, value3); // Reads from chip 2
 
 ```cpp
 // Create driver with default position (0)
-tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)(spi);
+tmc51x0::TMC51x0<Esp32SPI> driver(spi);
 
 // Change position at runtime if needed
 driver.communication.SetDaisyChainPosition(2); // Now addresses chip at position 2
@@ -488,9 +488,9 @@ For manual programming without the manager class:
 MyUART uart_comm(/* ... */);
 
 // Create TMC5160 instances (initial address 0, will be programmed)
-tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)0(uart_comm, 0, 0); // Logical index 0, daisy_pos=0, uart_addr=0
-tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)1(uart_comm, 0, 0); // Logical index 1, daisy_pos=0, uart_addr=0
-tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)2(uart_comm, 0, 0); // Logical index 2, daisy_pos=0, uart_addr=0
+tmc51x0::TMC51x0<MyUART> driver0(uart_comm, 0, 0); // Logical index 0, daisy_pos=0, uart_addr=0
+tmc51x0::TMC51x0<MyUART> driver1(uart_comm, 0, 0); // Logical index 1, daisy_pos=0, uart_addr=0
+tmc51x0::TMC51x0<MyUART> driver2(uart_comm, 0, 0); // Logical index 2, daisy_pos=0, uart_addr=0
 
 // Program devices sequentially per datasheet (backwards from 254)
 // First chip: accessible at address 0, program to address 254
@@ -707,7 +707,7 @@ void programAllChipsSequentially(MyUART& uart, uint8_t num_chips) {
 | `ProgramDevice(index, send_delay = 2)` | Program a single device at logical index to address (254 - index) |
 | `AddDevice(index)` | Add an extra device at specified logical index |
 | `RemoveDevice(index)` | Remove an extra device at specified logical index |
-| `operator[](index)` | Access individual TMC51x0 driver (TMC5130 & TMC5160) by logical index (0, 1, 2, ...). Actual programmed addresses are (254, 253, 252, ...). |
+| `operator[](index)` | Access individual TMC51x0 driver by logical index (0, 1, 2, ...). Actual programmed addresses are (254, 253, 252, ...). |
 | `InitializeAll(config)` | Initialize all active devices with same configuration |
 
 ## Best Practices
@@ -769,5 +769,5 @@ void programAllChipsSequentially(MyUART& uart, uint8_t num_chips) {
 ---
 
 **Navigation**
-⬅️ [Previous: Advanced Configuration](special_features_advanced_configuration.md) | [Next: Troubleshooting ➡️](troubleshooting.md) | [Docs Hub 📚](index.md)
+[<- Advanced Configuration](special_features_advanced_configuration.md) | [Next: Troubleshooting ->](troubleshooting.md) | [Back to Index](index.md)
 

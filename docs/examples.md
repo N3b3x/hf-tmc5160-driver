@@ -1,697 +1,441 @@
 ---
 layout: default
-title: "💡 Examples"
+title: "Examples"
 description: "Complete example walkthroughs for the TMC51x0 driver (TMC5130 & TMC5160)"
 nav_order: 7
-parent: "📚 Documentation"
+parent: "Documentation"
 permalink: /docs/examples/
 ---
 
 # Examples
 
-This guide provides complete, working examples demonstrating various use cases for the TMC51x0 driver (TMC5130 & TMC5160).
+This guide walks through progressively more advanced uses of the TMC51x0 driver.
+Each example builds on the previous ones, so working through them in order is recommended.
+
+> **Prerequisites** -- Before diving in, make sure you have:
+> - The driver [installed](installation.md) and your [hardware wired](hardware_setup.md)
+> - A working [SPI or UART interface](platform_integration.md) (`MySPI` class in these examples)
+> - Read the [Quick Start](quickstart.md) for the `Result<T>` error handling pattern
+
+> **Error handling note:** These examples omit most `Result` checks for readability.
+> In production code, always check return values -- especially `Initialize()`, `Enable()`,
+> and any call that communicates with the TMC chip. See the
+> [Error Handling section in the README](../README.md#error-handling----the-resultt-pattern)
+> for the full pattern, or [`inc/tmc51x0_result.hpp`](../inc/tmc51x0_result.hpp) for all error codes.
+
+---
 
 ## Example 1: Basic Positioning Mode
 
-This example shows basic stepper motor control in positioning mode.
+**Difficulty:** Beginner | **What you learn:** Initialization, positioning mode, polling for completion
+
+Move the motor to a specific angle and wait until it arrives.
 
 ```cpp
 #include "inc/tmc51x0.hpp"
 
-// Assume MySPI is implemented (see platform_integration.md)
-MySPI spi(true, true, true); // EN, DIR, STEP active high
-tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)(spi);
+MySPI spi;                                  // Your platform SPI (see platform_integration.md)
+tmc51x0::TMC51x0<MySPI> driver(spi);
 
 int main() {
-    // Initialize driver
+    // 1. Initialize -- provide motor specs; IRUN/IHOLD/GLOBAL_SCALER are calculated for you
     tmc51x0::DriverConfig cfg{};
-    // Motor current is automatically calculated from motor_spec
-    cfg.motor_spec.rated_current_ma = 1500;
-    cfg.motor_spec.sense_resistor_mohm = 50;  // Required for calculation
-    cfg.motor_spec.supply_voltage_mv = 24000;  // Required for calculation
-    auto init_result = driver.Initialize(cfg);
-    if (!init_result) {
-        printf("Initialization error: %s\n", init_result.ErrorMessage());
-        return -1;
-    }
-    
-    // Configure positioning mode
-    auto mode_result = driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-    if (!mode_result) {
-        printf("Error setting ramp mode: %s\n", mode_result.ErrorMessage());
-        return -1;
-    }
-    
-    auto pos_result = driver.rampControl.SetTargetPosition(1000.0f, tmc51x0::Unit::Steps);  // Move 1000 steps
-    if (!pos_result) {
-        printf("Error setting target position: %s\n", pos_result.ErrorMessage());
-        return -1;
-    }
-    // Velocity defaults to revolutions per second - 0.02 rev/s ≈ 1.2 RPM for typical motor
-    driver.rampControl.SetMaxSpeed(0.02f);     // Unit::RevPerSec is default
-    driver.rampControl.SetAcceleration(0.01f); // Unit::RevPerSec is default for acceleration too
-    
-    // Enable motor
-    auto enable_result = driver.motorControl.Enable();
-    if (!enable_result) {
-        printf("Error enabling motor: %s\n", enable_result.ErrorMessage());
-        return -1;
-    }
-    
-    // Wait for target reached
+    cfg.motor_spec.rated_current_ma = 1500;        // Motor rated current (from datasheet)
+    cfg.motor_spec.sense_resistor_mohm = 50;        // Sense resistor on your board (mOhm)
+    cfg.motor_spec.supply_voltage_mv = 24000;       // Motor supply voltage (mV)
+    if (!driver.Initialize(cfg)) { return -1; }     // Check -- this can fail on SPI errors
+
+    // 2. Enable motor output, then configure motion profile
+    driver.motorControl.Enable();
+    driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+    driver.rampControl.SetMaxSpeed(60.0f, tmc51x0::Unit::RPM);          // Peak speed
+    driver.rampControl.SetAcceleration(5.0f, tmc51x0::Unit::RevPerSec); // Ramp up
+    driver.rampControl.SetDeceleration(5.0f, tmc51x0::Unit::RevPerSec); // Ramp down
+
+    // 3. Command a move -- the ramp generator handles accel/decel automatically
+    driver.rampControl.SetTargetPosition(180.0f, tmc51x0::Unit::Deg);
+
+    // 4. Poll until the internal ramp generator reports "target reached"
     while (true) {
         auto reached = driver.rampControl.IsTargetReached();
-        if (reached && reached.Value()) {
-            break; // Target reached
-        }
-        if (!reached) {
-            printf("Error checking target: %s\n", reached.ErrorMessage());
-            break;
-        }
-        // Motion in progress
+        if (reached.IsOk() && reached.Value()) break;
+        // In FreeRTOS: vTaskDelay(pdMS_TO_TICKS(10));
     }
-    
+
     return 0;
 }
 ```
 
-### Explanation
+### What's happening
 
-1. **Initialize**: Configure motor currents and initialize driver
-2. **Set Ramp Mode**: Select positioning mode
-3. **Configure Motion**: Set target position, speed, and acceleration
-4. **Enable**: Enable motor driver
-5. **Wait**: Poll until target position is reached
+| Step | What the driver does internally |
+|------|---------------------------------|
+| `Initialize(cfg)` | Resets the TMC chip, writes GCONF, calculates and writes IRUN/IHOLD/GLOBAL_SCALER from your motor specs, configures the chopper and StealthChop defaults |
+| `Enable()` | Pulls the hardware enable pin (DRV_ENN) active, powering the motor coils |
+| `SetRampMode(POSITIONING)` | Writes RAMPMODE=0 -- the internal ramp generator will decelerate and stop at the target |
+| `SetTargetPosition(180°)` | Converts 180° to microsteps (using steps_per_rev and MRES) and writes XTARGET |
+| `IsTargetReached()` | Reads the `position_reached` flag from RAMP_STAT -- returns `Result<bool>` |
+
+**Related source:** [`internal_ramp_sinusoidal.cpp`](../examples/esp32/main/internal_ramp_test_suites/internal_ramp_sinusoidal.cpp) -- a full ESP32 example using positioning mode with `BackAndForthMotion`
+
+---
 
 ## Example 2: Velocity Mode
 
-This example demonstrates velocity mode operation.
+**Difficulty:** Beginner | **What you learn:** Continuous rotation, direction control, stopping
+
+Run the motor at a constant speed -- useful for conveyors, fans, or any continuous rotation.
 
 ```cpp
 #include "inc/tmc51x0.hpp"
 
-MySPI spi(true, true, true);
-tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)(spi);
+MySPI spi;
+tmc51x0::TMC51x0<MySPI> driver(spi);
 
 int main() {
     tmc51x0::DriverConfig cfg{};
-    // Motor current is automatically calculated from motor_spec
     cfg.motor_spec.rated_current_ma = 1500;
     cfg.motor_spec.sense_resistor_mohm = 50;
     cfg.motor_spec.supply_voltage_mv = 24000;
-    auto init_result = driver.Initialize(cfg);
-    if (!init_result) {
-        printf("Initialization error: %s\n", init_result.ErrorMessage());
-        return -1;
-    }
-    
-    // Set velocity mode
-    auto mode_result = driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_POS);
-    if (!mode_result) {
-        printf("Error setting ramp mode: %s\n", mode_result.ErrorMessage());
-        return -1;
-    }
-    // Using revolutions per second (default) - 0.01 rev/s ≈ 0.6 RPM for typical motor
-    driver.rampControl.SetMaxSpeed(0.01f);  // Unit::RevPerSec is default
-    driver.rampControl.SetAcceleration(0.005f);  // Unit::RevPerSec is default
-    
-    auto enable_result = driver.motorControl.Enable();
-    if (!enable_result) {
-        printf("Error enabling motor: %s\n", enable_result.ErrorMessage());
-        return -1;
-    }
-    
-    // Motor runs continuously at 0.01 rev/s
-    // To stop, call driver.rampControl.Stop()
-    
+    if (!driver.Initialize(cfg)) { return -1; }
+
+    driver.motorControl.Enable();
+
+    // Velocity mode: motor accelerates to target speed and holds it
+    driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_POS);    // Positive direction
+    driver.rampControl.SetMaxSpeed(30.0f, tmc51x0::Unit::RPM);
+    driver.rampControl.SetAcceleration(2.0f, tmc51x0::Unit::RevPerSec);
+
+    // Motor now runs continuously at 30 RPM ...
+
+    // Reverse direction:
+    // driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_NEG);
+
+    // Decelerate to stop:
+    // driver.rampControl.Stop();
+
     return 0;
 }
 ```
+
+### Key differences from positioning mode
+
+- **VELOCITY_POS / VELOCITY_NEG**: Motor runs indefinitely until you call `Stop()` or change mode
+- **No target position**: There is no `IsTargetReached()` event -- you decide when to stop
+- **Direction**: Controlled by the ramp mode, not by the sign of the target position
+
+---
 
 ## Example 3: StealthChop Silent Operation
 
-This example configures the driver for silent operation using stealthChop.
+**Difficulty:** Intermediate | **What you learn:** StealthChop/SpreadCycle mode switching, velocity thresholds
+
+StealthChop provides near-silent motor operation at low speeds by using voltage-mode PWM.
+Above a configurable speed threshold, the driver automatically switches to SpreadCycle for better high-speed torque.
 
 ```cpp
 #include "inc/tmc51x0.hpp"
 
-MySPI spi(true, true, true);
-tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)(spi);
+MySPI spi;
+tmc51x0::TMC51x0<MySPI> driver(spi);
 
 int main() {
     tmc51x0::DriverConfig cfg{};
-    // Motor current is automatically calculated from motor_spec
     cfg.motor_spec.rated_current_ma = 1500;
     cfg.motor_spec.sense_resistor_mohm = 50;
     cfg.motor_spec.supply_voltage_mv = 24000;
-    cfg.chopper.mres = tmc51x0::MicrostepResolution::MRES_256;  // 256 microsteps for smooth operation
-    cfg.stealthchop.pwm_autoscale = true;
-    cfg.stealthchop.pwm_autograd = true;
-    auto init_result = driver.Initialize(cfg);
-    if (!init_result) {
-        printf("Initialization error: %s\n", init_result.ErrorMessage());
-        return -1;
-    }
-    
-    // Configure stealthChop thresholds
-    // Below 0.002 rev/s (~0.12 RPM): stealthChop mode (silent)
-    // Above 0.002 rev/s: spreadCycle mode (more torque)
-    driver.thresholds.SetModeChangeSpeeds(0.002f, 0.0f, 0.0f, tmc51x0::Unit::RevPerSec);  // Unit::RevPerSec is default
-    
-    auto mode_result = driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-    if (!mode_result) {
-        printf("Error setting ramp mode: %s\n", mode_result.ErrorMessage());
-        return -1;
-    }
-    
-    auto pos_result = driver.rampControl.SetTargetPosition(1000.0f, tmc51x0::Unit::Steps);
-    if (!pos_result) {
-        printf("Error setting target position: %s\n", pos_result.ErrorMessage());
-        return -1;
-    }
-    driver.rampControl.SetMaxSpeed(0.001f);  // Low speed = stealthChop (Unit::RevPerSec is default)
-    
-    auto enable_result = driver.motorControl.Enable();
-    if (!enable_result) {
-        printf("Error enabling motor: %s\n", enable_result.ErrorMessage());
-        return -1;
-    }
-    
+    if (!driver.Initialize(cfg)) { return -1; }
+
+    // Enable StealthChop -- motor MUST be at standstill when first enabled
+    driver.motorControl.SetStealthChopEnabled(true);
+
+    // Set the crossover speed: below 200 RPM = StealthChop (silent),
+    //                          above 200 RPM = SpreadCycle (higher torque)
+    driver.thresholds.SetModeChangeSpeeds(
+        200.0f,  // TPWMTHRS  -- StealthChop/SpreadCycle boundary
+        0.0f,    // TCOOLTHRS -- CoolStep threshold (0 = disabled)
+        0.0f,    // THIGH     -- high-speed threshold (0 = disabled)
+        tmc51x0::Unit::RPM
+    );
+
+    // Move at 30 RPM -- stays in StealthChop (below the 200 RPM threshold)
+    driver.motorControl.Enable();
+    driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+    driver.rampControl.SetMaxSpeed(30.0f, tmc51x0::Unit::RPM);
+    driver.rampControl.SetAcceleration(2.0f, tmc51x0::Unit::RevPerSec);
+    driver.rampControl.SetTargetPosition(90.0f, tmc51x0::Unit::Deg);
+
     while (true) {
         auto reached = driver.rampControl.IsTargetReached();
-        if (reached && reached.Value()) {
-            break; // Target reached
-        }
-        if (!reached) {
-            printf("Error checking target: %s\n", reached.ErrorMessage());
-            break;
-        }
-        // Silent operation
+        if (reached.IsOk() && reached.Value()) break;
     }
-    
+
     return 0;
 }
 ```
+
+### How StealthChop works
+
+1. **AT#1 (standstill tuning):** When StealthChop is first enabled, the driver auto-tunes PWM parameters for ~150 ms while the motor is stationary
+2. **AT#2 (motion tuning):** During the first motion, PWM gradient is optimized automatically
+3. **Mode switching:** Above TPWMTHRS velocity, the driver seamlessly switches to SpreadCycle
+
+> **Important:** StallGuard2 does **not** work in StealthChop mode. If you need stall detection, either disable StealthChop or set the threshold so the motor is in SpreadCycle during the critical phase.
+
+**Related:** [Advanced Configuration -- StealthChop](special_features_advanced_configuration.md#stealthchop-voltage-pwm-mode)
+
+---
 
 ## Example 4: Encoder Closed-Loop Control
 
-This example demonstrates encoder-based closed-loop control.
+**Difficulty:** Intermediate | **What you learn:** Encoder setup, resolution matching, step-loss detection
+
+An ABN incremental encoder provides position feedback. The TMC51x0 compares encoder position against the internal step counter and flags deviations (step loss).
 
 ```cpp
 #include "inc/tmc51x0.hpp"
 
-MySPI spi(true, true, true);
-tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)(spi);
+MySPI spi;
+tmc51x0::TMC51x0<MySPI> driver(spi);
 
 int main() {
     tmc51x0::DriverConfig cfg{};
-    // Motor current is automatically calculated from motor_spec
     cfg.motor_spec.rated_current_ma = 1500;
     cfg.motor_spec.sense_resistor_mohm = 50;
     cfg.motor_spec.supply_voltage_mv = 24000;
-    auto init_result = driver.Initialize(cfg);
-    if (!init_result) {
-        printf("Initialization error: %s\n", init_result.ErrorMessage());
-        return -1;
-    }
-    
-    // Configure encoder
-    tmc51x0::EncoderConfig enc_cfg{};
-    enc_cfg.prescaler_mode = tmc51x0::EncoderPrescalerMode::BINARY; // Binary mode
-    auto enc_result = driver.encoder.Configure(enc_cfg);
-    if (!enc_result) {
-        printf("Error configuring encoder: %s\n", enc_result.ErrorMessage());
-        return -1;
-    }
-    
-    // Set encoder resolution: 200 steps/rev motor, 1000 pulses/rev encoder
-    driver.encoder.SetResolution(200, 1000, false);
-    driver.encoder.SetAllowedDeviation(10); // 10 steps tolerance
-    
-    // Move to position
-    auto mode_result2 = driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-    if (!mode_result2) {
-        printf("Error setting ramp mode: %s\n", mode_result2.ErrorMessage());
-        return -1;
-    }
-    
-    auto pos_result2 = driver.rampControl.SetTargetPosition(1000.0f, tmc51x0::Unit::Steps);
-    if (!pos_result2) {
-        printf("Error setting target position: %s\n", pos_result2.ErrorMessage());
-        return -1;
-    }
-    driver.rampControl.SetMaxSpeed(0.02f);  // Unit::RevPerSec is default
-    auto enable_result2 = driver.motorControl.Enable();
-    if (!enable_result2) {
-        printf("Error enabling motor: %s\n", enable_result2.ErrorMessage());
-        return -1;
-    }
-    
-    // Monitor encoder deviation
+    if (!driver.Initialize(cfg)) { return -1; }
+
+    // --- Encoder setup ---
+    tmc51x0::EncoderConfig enc_cfg{};               // Default: ABN mode
+    driver.encoder.Configure(enc_cfg);
+    driver.encoder.SetResolution(
+        200,    // Motor: 200 full steps per revolution (1.8° stepper)
+        4096,   // Encoder: 4096 pulses per revolution (PPR)
+        false   // Don't invert encoder direction
+    );
+    driver.encoder.SetAllowedDeviation(100);         // Flag if >100 steps off
+
+    // --- Move and monitor ---
+    driver.motorControl.Enable();
+    driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+    driver.rampControl.SetMaxSpeed(30.0f, tmc51x0::Unit::RPM);
+    driver.rampControl.SetAcceleration(5.0f, tmc51x0::Unit::RevPerSec);
+    driver.rampControl.SetTargetPosition(180.0f, tmc51x0::Unit::Deg);
+
     while (true) {
-        auto reached2 = driver.rampControl.IsTargetReached();
-        if (reached2 && reached2.Value()) {
-            break; // Target reached
-        }
-        if (!reached2) {
-            printf("Error checking target: %s\n", reached2.ErrorMessage());
-            break;
-        }
-        
-        auto dev_result = driver.encoder.IsDeviationWarning();
-        if (dev_result && dev_result.Value()) {
-            // Step loss detected - take corrective action
+        auto reached = driver.rampControl.IsTargetReached();
+        if (reached.IsOk() && reached.Value()) break;
+
+        // Check encoder vs. internal position during motion
+        auto dev = driver.encoder.IsDeviationWarning();
+        if (dev.IsOk() && dev.Value()) {
+            printf("Step loss detected!\n");
             driver.encoder.ClearDeviationWarning();
+            // In production: consider reducing speed or increasing current
         }
     }
-    
+
+    // Final check: compare encoder position to expected
+    auto enc_pos = driver.encoder.GetPosition();
+    if (enc_pos.IsOk()) {
+        printf("Encoder position: %d\n", enc_pos.Value());
+    }
+
     return 0;
 }
 ```
 
-## Example 5: StallGuard Stall Detection
+### How the deviation check works
 
-This example shows how to use StallGuard2 for stall detection.
+The TMC51x0 continuously compares `X_ENC` (encoder position, scaled by `ENC_CONST`) against `XACTUAL` (internal step counter). When the difference exceeds `ENC_DEVIATION`, the `enc_dev_warn` flag is set in `ENC_STATUS`. This flag persists until you read and clear it.
+
+**Related source:** [`abn_encoder_reader.cpp`](../examples/esp32/main/sensors/abn_encoder_reader.cpp) -- continuous encoder position reading on ESP32
+
+---
+
+## Example 5: StallGuard2 Stall Detection
+
+**Difficulty:** Intermediate | **What you learn:** StallGuard2 configuration, load monitoring, stall response
+
+StallGuard2 measures motor load in real time (value 0--1023). A low value means high load; zero means stall. This enables sensorless homing, overload protection, and CoolStep.
 
 ```cpp
 #include "inc/tmc51x0.hpp"
 
-MySPI spi(true, true, true);
-tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)(spi);
+MySPI spi;
+tmc51x0::TMC51x0<MySPI> driver(spi);
 
 int main() {
     tmc51x0::DriverConfig cfg{};
-    // Motor current is automatically calculated from motor_spec
     cfg.motor_spec.rated_current_ma = 1500;
     cfg.motor_spec.sense_resistor_mohm = 50;
     cfg.motor_spec.supply_voltage_mv = 24000;
-    auto init_result2 = driver.Initialize(cfg);
-    if (!init_result2) {
-        printf("Initialization error: %s\n", init_result2.ErrorMessage());
-        return -1;
-    }
-    
-    // Configure StallGuard2
-    tmc51x0::StallGuardConfig sg_cfg{};
-    sg_cfg.threshold = 0;      // Threshold (tune for your motor)
-    sg_cfg.enable_filter = false; // Filter disabled
-    // Note: semin/semax are CoolStep parameters, configure separately if needed
-    auto sg_result = driver.stallGuard.ConfigureStallGuard(sg_cfg);
-    if (!sg_result) {
-        printf("Error configuring StallGuard: %s\n", sg_result.ErrorMessage());
-        return -1;
-    }
-    
-    auto mode_result3 = driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_POS);
-    if (!mode_result3) {
-        printf("Error setting ramp mode: %s\n", mode_result3.ErrorMessage());
-        return -1;
-    }
-    driver.rampControl.SetMaxSpeed(0.01f);  // Unit::RevPerSec is default
-    auto enable_result3 = driver.motorControl.Enable();
-    if (!enable_result3) {
-        printf("Error enabling motor: %s\n", enable_result3.ErrorMessage());
-        return -1;
-    }
-    
-    // Monitor StallGuard value
+    if (!driver.Initialize(cfg)) { return -1; }
+
+    // StallGuard2 ONLY works in SpreadCycle mode (not StealthChop!)
+    driver.motorControl.SetStealthChopEnabled(false);
+
+    // Configure StallGuard2 threshold: SGT range is -64 to +63
+    //   Lower = more sensitive (detects lighter loads as stalls)
+    //   Higher = less sensitive (only detects hard stalls)
+    //   Start at 0 and tune from there for your motor + mechanics
+    driver.stallGuard.ConfigureStallGuard(0, true);   // SGT=0, filter=on
+
+    // StallGuard2 only reports valid readings above TCOOLTHRS velocity
+    driver.thresholds.SetModeChangeSpeeds(0.0f, 10.0f, 0.0f, tmc51x0::Unit::RPM);
+
+    // Run in velocity mode and monitor load
+    driver.motorControl.Enable();
+    driver.rampControl.SetRampMode(tmc51x0::RampMode::VELOCITY_POS);
+    driver.rampControl.SetMaxSpeed(30.0f, tmc51x0::Unit::RPM);
+    driver.rampControl.SetAcceleration(5.0f, tmc51x0::Unit::RevPerSec);
+
     while (true) {
-        auto sg_result2 = driver.stallGuard.GetStallGuard();
-        if (sg_result2) {
-            uint16_t sg_value = sg_result2.Value();
-            if (sg_value < 100) {  // Threshold depends on motor
-                // Stall detected - stop motor
+        auto sg = driver.stallGuard.GetStallGuardResult();
+        if (sg.IsOk()) {
+            uint16_t load = sg.Value();       // 0 = stalled, 1023 = no load
+            if (load < 100) {
                 driver.rampControl.Stop();
+                printf("Stall detected! SG_RESULT=%u\n", load);
                 break;
             }
-        } else {
-            printf("Error reading StallGuard: %s\n", sg_result2.ErrorMessage());
-            break;
         }
     }
-    
+
     return 0;
 }
 ```
 
-## Example 6: Fatigue Testing - Bounds Finding and Sinuous Motion
+### Tuning StallGuard2
 
-This example is designed for **cable/strain relief fatigue testing** and demonstrates:
-- **Sensorless bounds finding** using StallGuard2 in both directions
-- **Global bounds** (hardware limits) and **local bounds** (oscillation range)
-- **Automatic clipping** of local bounds to global bounds
-- **Degree/radian support** for intuitive angle-based control
-- **Pure sinusoidal back-and-forth motion** optimized for fatigue testing
-- **Dwell times** at bounds and optionally at center
+| SGT value | Effect | Use case |
+|-----------|--------|----------|
+| -20 to -5 | Very sensitive | Sensorless homing (detect light contact) |
+| -5 to +5 | Moderate | General stall protection |
+| +5 to +30 | Less sensitive | Avoid false triggers on rough mechanics |
 
-### Key Features
+> **Tip:** Use `driver.tuning.AutoTuneStallGuard()` to automatically find the optimal SGT for your motor and velocity. See [Advanced Configuration](special_features_advanced_configuration.md#automatic-tuning-with-comprehensive-velocity-range-analysis).
 
-1. **Global vs Local Bounds**: 
-   - Global bounds are hardware limits found during initialization
-   - Local bounds define the oscillation range for testing
-   - Local bounds are automatically clipped to global bounds if they exceed them
+**Related source:** [`stallguard_tuning.cpp`](../examples/esp32/main/tuning/stallguard_tuning.cpp) -- automatic SGT tuning on ESP32
 
-2. **Fatigue Testing Optimized**: 
-   - Pure sinusoidal motion between two bounds (ideal for fatigue testing)
-   - Configurable dwell times at extremes (simulates holding tool in awkward positions)
-   - Optional center dwell for specific test requirements
+---
 
-3. **Unbounded Mode**: Handles cases where no stops are found, using current position as home
+## Example 6: Bounds Finding and Point-to-Point Fatigue Testing
 
-4. **Angle-Based Control**: Work with degrees or radians instead of steps
+**Difficulty:** Advanced | **What you learn:** Homing subsystem, bounds finding, repetitive motion
 
-### Basic Usage
+This example demonstrates the driver's **bounds finding** and **point-to-point motion** capabilities,
+as used in the production fatigue test unit ([`fatigue_test_espnow/main.cpp`](../examples/esp32/main/fatigue_test_espnow/main.cpp)).
+
+### Key concepts
+
+1. **Bounds Finding** -- Uses StallGuard2 to detect mechanical limits in both directions, then homes to center
+2. **Point-to-Point Motion** -- Positioning mode moves between two positions repeatedly for fatigue testing
+3. **Physical Units** -- All positions and speeds specified in degrees and RPM
+
+### Bounds finding
 
 ```cpp
-#include "inc/tmc51x0.hpp"
-#include "esp32_tmc5160_bus.hpp"
+using Homing = tmc51x0::TMC51x0<MySPI>::Homing;
 
-// Create driver instance
-Esp32SPI spi(SPI2_HOST, GPIO_NUM_23, GPIO_NUM_19, GPIO_NUM_18, GPIO_NUM_5,
-             GPIO_NUM_2, GPIO_NUM_4, GPIO_NUM_15, 4000000);
-tmc51x0::TMC51x0 driver (TMC5130 & TMC5160)(spi);
+// Configure bounds search parameters
+Homing::BoundsOptions opt{};
+opt.speed_unit      = tmc51x0::Unit::RPM;
+opt.position_unit   = tmc51x0::Unit::Deg;
+opt.search_speed    = 30.0f;           // Search at 30 RPM
+opt.search_span     = 360.0f;          // Max 360° travel per direction
+opt.backoff_distance = 5.0f;           // Back off 5° after hitting a stop
+opt.timeout_ms      = 10000;           // 10 s timeout per direction
+opt.search_accel    = 5.0f;
+opt.accel_unit      = tmc51x0::Unit::RevPerSec;
 
-// Initialize driver
-tmc51x0::DriverConfig cfg{};
-// Motor current is automatically calculated from motor_spec
-cfg.motor_spec.rated_current_ma = 1500;
-cfg.motor_spec.sense_resistor_mohm = 50;
-cfg.motor_spec.supply_voltage_mv = 24000;
-cfg.chopper.mres = tmc51x0::MicrostepResolution::MRES_256; // 256 microsteps
-auto init_result4 = driver.Initialize(cfg);
-if (!init_result4) {
-    printf("Initialization error: %s\n", init_result4.ErrorMessage());
-    return -1;
-}
+// Home to the center of whatever range is found
+Homing::HomeConfig home{};
+home.mode = Homing::HomePlacement::AtCenter;
 
-// Create fatigue test motion controller
-FatigueTestMotion motion(&driver);
-
-// Configure motor parameters (needed for degree/radian conversions)
-uint16_t steps_per_rev = 200 * 32; // 200 steps * 32 microsteps
-motion.ConfigureMotor(steps_per_rev, AngleUnit::DEGREES);
-
-// After finding global bounds (see full example), set global bounds
-motion.SetGlobalBoundsDegrees(-90.0f, 90.0f);  // Hardware limits: -90° to +90°
-
-// Set local bounds for oscillation (will be clipped to global bounds if needed)
-motion.SetLocalBoundsDegrees(-60.0f, 60.0f);  // Oscillate ±60° from home
-
-// Configure sinuous motion
-motion.SetSinuousAmplitudeDegrees(60.0f);  // 60° amplitude
-motion.SetSinuousParams(0, 0.5f);  // 0.5 Hz frequency
-
-// Set dwell times at bounds (can be 0 to disable)
-// For fatigue testing: dwell at extremes simulates holding tool in awkward positions
-motion.SetDwellTimes(2000,  // 2 seconds at minimum bound
-                      2000,  // 2 seconds at maximum bound
-                      0);    // No dwell at center (set to >0 to enable)
-
-// Set target cycle count (0 = infinite)
-motion.SetTargetCycles(1000);  // Run for 1000 cycles, then auto-stop
-
-// Start motion (can be called at any time)
-motion.Start();
-
-// Update in main loop
-while (true) {
-    motion.Update();
-    
-    // Settings can be changed in real-time while running:
-    // motion.SetFrequency(1.0f);  // Change frequency
-    // motion.SetSinuousAmplitudeDegrees(45.0f);  // Change amplitude
-    // motion.SetDwellTimes(1000, 1000, 0);  // Change dwell times
-    // motion.SetTargetCycles(2000);  // Change target cycles
-    
-    // Stop and restart at any time:
-    // motion.Stop();
-    // vTaskDelay(pdMS_TO_TICKS(2000));
-    // motion.Start();  // Resume from current position
-    
-    // Check status:
-    // uint32_t cycles = motion.GetCurrentCycles();
-    // bool running = motion.IsRunning();
-    // bool complete = motion.IsCycleComplete();
-    
-    vTaskDelay(pdMS_TO_TICKS(10));
+// Execute -- internally: disables StealthChop, enables StallGuard,
+// searches negative, then positive, computes span, sets XACTUAL=0 at center
+auto result = driver.homing.FindBounds(Homing::BoundsMethod::StallGuard, opt, home);
+if (result.IsOk()) {
+    auto bounds = result.Value();
+    printf("Bounds: min=%.1f° max=%.1f° span=%.1f°\n",
+           bounds.min_position, bounds.max_position, bounds.span);
+} else {
+    printf("Bounds finding failed: %s\n", result.ErrorMessage());
 }
 ```
 
-### Global vs Local Bounds
-
-The system distinguishes between global bounds (hardware limits) and local bounds (oscillation range):
+### Point-to-point fatigue motion
 
 ```cpp
-// Set global bounds (hardware limits found during initialization)
-motion.SetGlobalBoundsDegrees(-90.0f, 90.0f);
+// After bounds finding, oscillate between two positions within the safe range
+float half_range = bounds.span * 0.4f;   // Use 80% of total range
+float pos_a = -half_range;
+float pos_b = +half_range;
 
-// Set local bounds for oscillation (will be clipped to global bounds automatically)
-motion.SetLocalBoundsDegrees(-60.0f, 60.0f);  // Oscillate ±60°
+driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+driver.rampControl.SetMaxSpeed(60.0f, tmc51x0::Unit::RPM);
+driver.rampControl.SetAcceleration(5.0f, tmc51x0::Unit::RevPerSec);
+driver.rampControl.SetDeceleration(5.0f, tmc51x0::Unit::RevPerSec);
 
-// If local bounds exceed global bounds, they are automatically clipped
-motion.SetLocalBoundsDegrees(-100.0f, 100.0f);  // Will be clipped to ±90°
-```
+uint32_t cycle = 0;
+bool going_to_b = true;
+while (cycle < 10000) {
+    float target = going_to_b ? pos_b : pos_a;
+    driver.rampControl.SetTargetPosition(target, tmc51x0::Unit::Deg);
 
-### Unbounded Mode
+    while (true) {
+        auto reached = driver.rampControl.IsTargetReached();
+        if (reached.IsOk() && reached.Value()) break;
+    }
 
-When no mechanical stops are detected, the system automatically enters unbounded mode:
-
-```cpp
-// System detects no stops found
-if (!motion.IsBounded()) {
-    // Use current position as home
-    motion.SetUnbounded(current_position, 10000);  // Default range: 10000 steps
-    
-    // User can reset home to any relative angle
-    motion.ResetHomeByDegrees(45.0f);
-    
-    // Get local bounds
-    float min_deg, max_deg;
-    motion.GetLocalBoundsDegrees(min_deg, max_deg);
+    going_to_b = !going_to_b;
+    if (!going_to_b) cycle++;   // One full A->B->A = one cycle
 }
 ```
 
-### Working with Angles
+### See also
 
-The example provides full support for degree and radian operations:
+- [Fatigue Test Documentation](../examples/esp32/docs/fatigue_test.md) -- Full ESP-NOW fatigue test guide
+- [Sensorless Homing Guide](special_features_sensorless_homing.md) -- StallGuard2 homing configuration
+- [Source Code](../examples/esp32/main/fatigue_test_espnow/main.cpp) -- Production fatigue test implementation
 
-```cpp
-// Set global bounds in degrees
-motion.SetGlobalBoundsDegrees(-90.0f, 90.0f);
-
-// Set local bounds in degrees
-motion.SetLocalBoundsDegrees(-60.0f, 60.0f);
-
-// Set bounds in radians
-motion.SetGlobalBoundsRadians(-M_PI/2, M_PI/2);
-motion.SetLocalBoundsRadians(-M_PI/3, M_PI/3);
-
-// Get bounds in degrees
-float min_deg, max_deg;
-motion.GetLocalBoundsDegrees(min_deg, max_deg);
-motion.GetGlobalBoundsDegrees(min_deg, max_deg);
-
-// Reset home by degrees
-motion.ResetHomeByDegrees(30.0f);
-
-// Reset home by radians
-motion.ResetHomeByRadians(M_PI/6);
-
-// Set sinuous amplitude in degrees
-motion.SetSinuousAmplitudeDegrees(45.0f);
-
-// Set sinuous amplitude in radians
-motion.SetSinuousAmplitudeRadians(M_PI/4);
-```
-
-### Dwell Times
-
-Configure dwell times at bounds and optionally at center (can be changed in real-time):
-
-```cpp
-// Set dwell times (in milliseconds, 0 to disable)
-motion.SetDwellTimes(
-    2000,  // Dwell at minimum bound: 2 seconds
-    2000,  // Dwell at maximum bound: 2 seconds
-    500    // Dwell at center: 0.5 seconds (optional, 0 to disable)
-);
-
-// For pure fatigue testing without dwells:
-motion.SetDwellTimes(0, 0, 0);  // No dwells, continuous motion
-
-// Change dwell times while running:
-motion.SetDwellTimes(1000, 1000, 0);  // Update in real-time
-```
-
-### Cycle Count
-
-Set target cycle count and track progress. **One cycle = center → min → max → center** (or center → max → min → center). Cycles are counted at the center crossing point (0 crossing).
-
-```cpp
-// Set target cycle count (0 = infinite)
-motion.SetTargetCycles(1000);  // Run for 1000 cycles
-
-// Get current cycle count
-uint32_t cycles = motion.GetCurrentCycles();
-
-// Get target cycles
-uint32_t target = motion.GetTargetCycles();
-
-// Check if cycle count reached
-if (motion.IsCycleComplete()) {
-    ESP_LOGI(TAG, "Test complete: %lu cycles", motion.GetCurrentCycles());
-    // Motion automatically stops at center position when cycles complete
-}
-
-// Reset cycle count
-motion.ResetCycles();
-
-// Change target cycles while running
-motion.SetTargetCycles(2000);  // Update target in real-time
-```
-
-**Note**: When target cycles are reached, motion automatically moves to center position and stops there (amplitude = 0).
-
-### Start/Stop Control
-
-Motion can be started and stopped at any time:
-
-```cpp
-// Start motion (can be called at any time)
-motion.Start();
-
-// Stop motion (can be called at any time)
-motion.Stop();
-
-// Check if running
-if (motion.IsRunning()) {
-    // Motion is active
-}
-
-// Resume after stop (continues from current position)
-motion.Start();
-```
-
-### Real-Time Setting Changes
-
-All settings can be changed while motion is running:
-
-```cpp
-// Change frequency in real-time
-motion.SetFrequency(1.0f);  // Increase to 1.0 Hz
-
-// Change amplitude in real-time
-motion.SetSinuousAmplitudeDegrees(45.0f);  // Reduce to 45°
-
-// Change dwell times in real-time
-motion.SetDwellTimes(1000, 1000, 0);
-
-// Change target cycles in real-time
-motion.SetTargetCycles(2000);
-```
-
-### Complete Example Flow
-
-1. **Find Global Bounds**: Automatically detects mechanical stops in both directions
-2. **Set Home**: Sets middle position as home (or uses current position if unbounded)
-3. **Set Local Bounds**: Define oscillation range (automatically clipped to global bounds)
-4. **Configure**: Set up sinuous motion parameters, dwell times, and cycle count
-5. **Start Motion**: Begin pure sinusoidal back-and-forth motion
-6. **Update Loop**: Continuously update motion controller
-7. **Monitor**: Track cycle count and adjust settings in real-time as needed
-8. **Stop**: Motion stops automatically when cycle count reached, or can be stopped manually
-
-### Fatigue Testing Best Practices
-
-For cable/strain relief fatigue testing:
-
-- **Pure sinusoidal motion** between two bounds is ideal for worst-case fatigue testing
-- **Dwell at extremes** (1-5 seconds) simulates holding tool in awkward positions
-- **No center dwell** typically needed for pure fatigue testing
-- **Constant frequency** maximizes cycles per hour for faster test completion
-- **Angle selection**: Use realistic but aggressive angles (e.g., ±60-90°)
-
-### Running the Example
-
-For ESP32:
-
-```bash
-cd examples/esp32
-idf.py set-target esp32c6  # or your target
-idf.py build
-idf.py -p /dev/ttyUSB0 flash monitor
-```
-
-Select the example:
-```bash
-idf.py menuconfig
-# Navigate to: Example Configuration -> Example to run
-# Select: bounds_finding_sinuous_motion
-```
-
-Or build directly:
-```bash
-idf.py build -DAPP_TYPE=bounds_finding_sinuous_motion
-```
-
-### Configuration Notes
-
-- **Steps per Revolution**: Must be configured correctly for degree/radian conversions
-  - Base steps: 200 for 1.8° motors, 400 for 0.9° motors
-  - With microsteps: multiply by microstep factor (e.g., 200 × 32 = 6400)
-- **Stall Threshold**: Tune `sgt` parameter for your motor and mechanical system
-- **Search Speed**: Adjust based on your application (typically 0.004-0.02 rev/s, ~0.24-1.2 RPM for typical motors)
-- **Global vs Local Bounds**: 
-  - Global bounds are hardware limits (found during initialization)
-  - Local bounds define oscillation range (clipped to global bounds automatically)
-  - If local bounds exceed global bounds, they are automatically clipped
-- **Dwell Times**: 
-  - Set to 0 to disable dwells for continuous motion
-  - Typical values: 1-5 seconds at extremes for fatigue testing
-  - Center dwell is optional and typically not needed for pure fatigue testing
-  - Can be changed in real-time while motion is running
-- **Cycle Count**:
-  - Set target cycles (0 = infinite)
-  - **One cycle = center → min → max → center** (or center → max → min → center)
-  - Cycles are counted at center crossing point (0 crossing)
-  - Motion automatically stops at center position when target cycles reached
-  - Cycle count can be changed in real-time
-  - Use `ResetCycles()` to restart counting
-- **Start/Stop Control**:
-  - Motion can be started and stopped at any time
-  - Resuming after stop continues from current position
-  - All settings can be changed while motion is running
-
-### See Also
-
-- [Sensorless Homing Guide](special_features_sensorless_homing.md) - Detailed StallGuard2 configuration
-- [Unit Conversions](special_features_unit_conversions.md) - Physical unit conversion functions
-- [API Reference](api_reference.md) - Complete API documentation
+---
 
 ## Running the Examples
 
-### ESP32
+### ESP32 (using build scripts)
 
 ```bash
 cd examples/esp32
-idf.py build flash monitor
+# Build a specific application (see app_config.yml for available apps)
+./scripts/build_app.sh fatigue_test_espnow_unit
+# Flash and monitor
+./scripts/flash_app.sh /dev/ttyACM0
 ```
+
+See the [ESP32 Examples README](../examples/esp32/README.md) for full setup instructions.
 
 ### Other Platforms
 
-Compile with C++17 support:
+Compile with C++17 support and include the driver headers:
 ```bash
-g++ -std=c++17 -I inc/ example.cpp -o example
+g++ -std=c++17 -I path/to/hf-tmc5160-driver/ your_app.cpp -o your_app
 ```
+
+---
 
 ## Next Steps
 
-- Review the [API Reference](api_reference.md) for method details
-- Check [Troubleshooting](troubleshooting.md) if you encounter issues
-- Explore the [examples directory](../examples/) for more examples
+| Where to go | What you'll find |
+|-------------|------------------|
+| [API Reference](api_reference.md) | Complete method signatures, return types, and parameter descriptions |
+| [Platform Integration](platform_integration.md) | How to implement `MySPI` / `MyUART` for your board |
+| [Configuration](configuration.md) | `DriverConfig` fields, chopper tuning, StealthChop parameters |
+| [ESP32 example source](../examples/esp32/main/) | Production-quality implementations you can build and flash |
+| [Troubleshooting](troubleshooting.md) | Common errors and recovery strategies |
 
 ---
 
 **Navigation**
-⬅️ [API Reference](api_reference.md) | [Next: Troubleshooting ➡️](troubleshooting.md) | [Back to Index](index.md)
-
+[<- API Reference](api_reference.md) | [Next: Troubleshooting ->](troubleshooting.md) | [Back to Index](index.md)

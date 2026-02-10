@@ -943,7 +943,7 @@ StallGuard2 provides accurate measurement of motor load and can detect stalls. I
 **See Also**: 
 - [Advanced Configuration Guide](../docs/special_features_advanced_configuration.md#stallguard2-load-measurement) for detailed tuning guide and examples
 - `TuneStallGuard()` with `StallGuardTuningResult` for comprehensive automatic tuning
-- `GetStallGuard()` method to read SG_RESULT value
+- `GetStallGuardResult()` method to read SG_RESULT value
 - `EnableStopOnStall()` method for real-time control
 
 ### StallGuardTuningResult
@@ -1082,7 +1082,7 @@ CoolStep automatically reduces motor current when load is low, saving energy and
 
 **See Also**: 
 - [Advanced Configuration Guide](../docs/special_features_advanced_configuration.md#coolstep-current-reduction) for detailed tuning guide and examples
-- `GetStallGuard()` method to monitor SG_RESULT for threshold tuning
+- `GetStallGuardResult()` method to monitor SG_RESULT for threshold tuning
 
 ### ReferenceSwitchConfig
 
@@ -1601,7 +1601,7 @@ while (true) {
         break;
     }
     // Target not reached yet, continue waiting
-    driver.comm.DelayMs(10);
+    driver.GetComm().DelayMs(10);
 }
 ```
 
@@ -1763,11 +1763,16 @@ motor_x.rampControl.SetTargetPosition(1000);
 
 ## Next Steps
 
-- See [Examples](examples.md) for usage examples
-- Check [Configuration](configuration.md) for configuration options
-- Review [Multi-Chip Communication](special_features_multi_chip.md) for daisy-chaining
+| Where to go | What you'll find |
+|-------------|------------------|
+| [Quick Start](quickstart.md) | Minimal working example and `Result<T>` error handling primer |
+| [Examples](examples.md) | Progressively harder walkthroughs with explanations |
+| [Configuration](configuration.md) | `DriverConfig` fields, chopper tuning |
+| [Multi-Chip Communication](special_features_multi_chip.md) | SPI daisy chain and UART multi-node |
+| [Troubleshooting](troubleshooting.md) | Error codes, common failures, recovery strategies |
+| [Source Code Header](../inc/tmc51x0_result.hpp) | `Result<T>` and `ErrorCode` definitions |
 
 ---
 
 **Navigation**
-⬅️ [Configuration](configuration.md) | [Next: Examples ➡️](examples.md) | [Back to Index](index.md)
+[<- Configuration](configuration.md) | [Next: Examples ->](examples.md) | [Back to Index](index.md)

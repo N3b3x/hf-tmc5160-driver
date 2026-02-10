@@ -165,3 +165,8 @@ motor_driver.Initialize(config);
 motor_driver.rampControl.SetTargetPosition(51200);
 ```
 
+---
+
+**Navigation**
+[← Multi-Chip Communication](special_features_multi_chip.md) | [Back to Index](index.md) | [Next: GPIO Pin Configuration →](gpio_pin_configuration.md)
+

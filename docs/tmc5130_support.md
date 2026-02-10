@@ -81,3 +81,8 @@ The driver doesn't enforce these limits automatically - ensure your motor curren
 
 The driver is fully compatible with both chips. All features work the same way, with the exception of GLOBAL_SCALER which is automatically skipped for TMC5130.
 
+---
+
+**Navigation**
+[← Register Access](special_features_register_access.md) | [Back to Index](index.md) | [Next: Troubleshooting →](troubleshooting.md)
+

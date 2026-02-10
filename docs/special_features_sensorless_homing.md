@@ -137,8 +137,8 @@ void tuneStallThreshold() {
             break;
         }
         
-        auto sg_result = driver.stallGuard.GetStallGuard();
-        if (sg_result) {
+        auto sg_result = driver.stallGuard.GetStallGuardResult();
+        if (sg_result.IsOk()) {
             uint16_t sg_value = sg_result.Value();
             printf("StallGuard: %d\n", sg_value);
             
@@ -331,7 +331,7 @@ bool homeManual() {
     uint32_t start_time = getCurrentTimeMs();
     
     while (getCurrentTimeMs() - start_time < TIMEOUT_MS) {
-        uint16_t sg_value = driver.stallGuard.GetStallGuard().Value();
+        uint16_t sg_value = driver.stallGuard.GetStallGuardResult().Value();
         
         if (sg_value < STALL_THRESHOLD) {
             // Stall detected
@@ -347,8 +347,15 @@ bool homeManual() {
 }
 ```
 
+## See Also
+
+- [Examples -- Bounds Finding and Fatigue Testing](examples.md#example-6-bounds-finding-and-point-to-point-fatigue-testing) -- Complete bounds finding walkthrough
+- [Advanced Configuration -- StallGuard2 Automatic Tuning](special_features_advanced_configuration.md#automatic-tuning-with-comprehensive-velocity-range-analysis) -- Let the driver find optimal SGT for you
+- [Fatigue Test Source Code](../examples/esp32/main/fatigue_test_espnow/main.cpp) -- Production sensorless homing implementation
+- [StallGuard Tuning Source](../examples/esp32/main/tuning/stallguard_tuning.cpp) -- ESP32 automatic SGT tuning
+
 ---
 
 **Navigation**
-⬅️ [Previous: Motor Setup](special_features_motor_setup.md) | [Next: Advanced Configuration ➡️](special_features_advanced_configuration.md) | [Docs Hub 📚](index.md)
+[<- Motor Setup](special_features_motor_setup.md) | [Next: Advanced Configuration ->](special_features_advanced_configuration.md) | [Back to Index](index.md)
 

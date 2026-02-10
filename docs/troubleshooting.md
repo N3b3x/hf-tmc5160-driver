@@ -102,7 +102,9 @@ The driver uses `Result<T>` return types for explicit error handling. Understand
 
 ### Understanding Error Codes
 
-All `Result<T>` objects contain an `ErrorCode` that indicates what went wrong:
+All `Result<T>` objects contain an `ErrorCode` that indicates what went wrong.
+Error codes are defined in [`inc/tmc51x0_result.hpp`](../inc/tmc51x0_result.hpp).
+See the [Quick Start -- Error Handling](quickstart.md#understanding-resultt----error-handling) for the basic usage pattern.
 
 ```cpp
 auto result = driver.Initialize(cfg);
@@ -255,7 +257,7 @@ Different errors require different recovery strategies:
 auto result = driver.Initialize(cfg);
 if (!result && result.Error() == tmc51x0::ErrorCode::COMM_ERROR) {
     // Retry initialization
-    driver.comm.DelayMs(100);
+    driver.GetComm().DelayMs(100);
     result = driver.Initialize(cfg);
     if (!result) {
         printf("Retry failed: %s\n", result.ErrorMessage());
@@ -268,7 +270,7 @@ auto status = driver.status.GetStatus();
 if (status == tmc51x0::DriverStatus::OVERTEMP) {
     // Reduce current and wait
     driver.motorControl.SetCurrent(10, 5);  // Lower current
-    driver.comm.DelayMs(5000);  // Wait for cooling
+    driver.GetComm().DelayMs(5000);  // Wait for cooling
     // Retry operation
 }
 ```
@@ -406,5 +408,5 @@ If you're still experiencing issues:
 ---
 
 **Navigation**
-⬅️ [Examples](examples.md) | [Back to Index](index.md)
+[<- Examples](examples.md) | [Back to Index](index.md)
 

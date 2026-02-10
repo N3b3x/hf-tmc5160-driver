@@ -195,5 +195,5 @@ SD_MODE  (pin 21) ──────> GND  (LOW)
 ---
 
 **Navigation**
-⬅️ [Quick Start](quickstart.md) | [Next: Platform Integration ➡️](platform_integration.md) | [Back to Index](index.md)
+[<- Quick Start](quickstart.md) | [Next: Platform Integration ->](platform_integration.md) | [Back to Index](index.md)
 

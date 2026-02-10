@@ -108,5 +108,5 @@ To verify the installation:
 ---
 
 **Navigation**
-⬅️ [Back to Index](index.md) | [Next: Quick Start ➡️](quickstart.md)
+[<- Back to Index](index.md) | [Next: Quick Start ->](quickstart.md)
 

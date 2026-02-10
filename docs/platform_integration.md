@@ -328,5 +328,5 @@ You must implement:
 ---
 
 **Navigation**
-⬅️ [Hardware Setup](hardware_setup.md) | [Next: Configuration ➡️](configuration.md) | [Back to Index](index.md)
+[<- Hardware Setup](hardware_setup.md) | [Next: Configuration ->](configuration.md) | [Back to Index](index.md)
 

@@ -48,15 +48,20 @@ to find and use the features you need:
 tmc51x0::TMC51x0<MySPI> driver(spi);
 
 // Organized subsystems for intuitive access
-driver.rampControl      // Motion planning and positioning
-driver.motorControl     // Current control and chopper modes
-driver.encoder          // Encoder integration and closed-loop control
-driver.diagnostics      // Status monitoring and StallGuard2 reading
-driver.tuning           // Automatic parameter optimization
-driver.homing           // Sensorless and switch-based homing
-driver.protection       // Safety and protection systems
-driver.communication    // Multi-chip communication setup
-driver.printer          // Debug register printing
+driver.rampControl      // Motion planning, positioning, and velocity control
+driver.motorControl     // Current control, chopper modes, StealthChop
+driver.switches         // Reference switches / endstops
+driver.thresholds       // Mode-change speed thresholds (StealthChop, CoolStep, high-speed)
+driver.stallGuard       // StallGuard2 reading, stop-on-stall
+driver.status           // Driver status, diagnostics, temperature, open-load detection
+driver.tuning           // Automatic StallGuard2 threshold optimization
+driver.homing           // Sensorless, switch-based, and encoder homing; bounds finding
+driver.encoder          // ABN encoder integration and deviation detection
+driver.powerStage       // Short-circuit and overtemperature protection
+driver.communication    // Clock, SPI daisy-chain, UART node addressing
+driver.io               // IOIN register, operating mode pins
+driver.events           // X_COMPARE position events
+driver.printer          // Debug register printing (GCONF, DRV_STATUS, etc.)
 ```
 
 The driver uses **CRTP (Curiously Recurring Template Pattern)** for hardware-agnostic communication interfaces, allowing it 
@@ -96,15 +101,18 @@ overhead** while maintaining complete platform independence.
 
 ### 🔍 Diagnostics & Tuning
 
-#### Diagnostics Subsystem
+#### Status Subsystem (`driver.status`)
 - ✅ **Status Monitoring**: Comprehensive driver status (overtemperature, short circuit, etc.)
-- ✅ **StallGuard2 Reading**: Real-time load measurement (0-1023) for diagnostics
 - ✅ **Open Load Detection**: Detect interrupted cables or connector issues
 - ✅ **Lost Steps Counter**: Monitor step loss during operation
-- ✅ **Register Access**: Direct read/write access to all 47 registers
-- ✅ **Setup Verification**: Comprehensive startup verification and diagnostics
+- ✅ **Setup Verification**: Comprehensive startup verification and diagnostics (`VerifySetup()`)
 
-#### Tuning Subsystem ⭐ NEW
+#### StallGuard Subsystem (`driver.stallGuard`)
+- ✅ **StallGuard2 Reading**: Real-time load measurement (0-1023) for diagnostics
+- ✅ **Stop on Stall**: Configure automatic stop when stall is detected
+- ✅ **Soft Stop**: Deceleration ramp on stall instead of hard stop
+
+#### Tuning Subsystem (`driver.tuning`)
 - ✅ **Automatic SGT Tuning**: Intelligent StallGuard2 threshold optimization
 - ✅ **Velocity Range Analysis**: Finds optimal SGT for target velocity with min/max range testing
 - ✅ **Comprehensive Results**: Returns detailed tuning results including actual achievable velocities
@@ -112,11 +120,13 @@ overhead** while maintaining complete platform independence.
 
 ### 🏠 Homing & Positioning
 
-#### Homing Subsystem
+#### Homing Subsystem (`driver.homing`)
 - ✅ **Sensorless Homing**: Endstop-free homing using StallGuard2 stall detection
 - ✅ **Switch-Based Homing**: Homing using reference switches/endstops
+- ✅ **Encoder Index Homing**: Homing to encoder N-channel index pulse
+- ✅ **Bounds Finding**: Detect mechanical limits and home to center, min, or max (`FindBounds()`)
 - ✅ **Automatic Settings Caching**: Preserves and restores driver settings during homing
-- ✅ **Configurable Search Speed**: Adjustable homing speed and switch approach speed
+- ✅ **Cancel Callback**: Abort homing mid-operation via user-provided callback
 
 ### 🔄 Encoder Integration
 
@@ -128,11 +138,10 @@ overhead** while maintaining complete platform independence.
 
 ### 🛡️ Protection Systems
 
-#### Protection Subsystem
-- ✅ **Short Circuit Protection**: Configurable voltage thresholds and timing
-- ✅ **Overtemperature Protection**: Automatic shutdown on overtemperature
-- ✅ **Overvoltage Protection**: Undervoltage charge pump monitoring
-- ✅ **Driver Status**: Real-time monitoring of all protection flags
+#### PowerStage Subsystem (`driver.powerStage`)
+- ✅ **Short Circuit Protection**: Configurable S2VS and S2G voltage thresholds
+- ✅ **Power Stage Configuration**: MOSFET drive strength, break-before-make timing
+- ✅ **Overtemperature Protection**: Automatic shutdown on overtemperature (monitored via `driver.status`)
 
 ### 🔗 Multi-Chip Communication
 
@@ -176,14 +185,46 @@ overhead** while maintaining complete platform independence.
 ```cpp
 #include "inc/tmc51x0.hpp"
 
-// 1. Implement the communication interface (see platform_integration.md)
+// 1. Implement the communication interface - implement these required methods for your platform.
+//    See docs/platform_integration.md for full implementation examples (ESP32, STM32, etc.).
 class MySPI : public tmc51x0::SpiCommInterface<MySPI> {
-    // ... implement required methods
+public:
+    // SPI transfer: tx/rx buffers, byte length. Return Ok on success.
+    tmc51x0::Result<void> SpiTransfer(const uint8_t* tx, uint8_t* rx, size_t length) noexcept {
+        // TODO: Call your platform's SPI transfer (e.g. spi_transmit, HAL_SPI_TransmitReceive)
+        (void)tx; (void)rx; (void)length;
+        return tmc51x0::Result<void>();
+    }
+    // GPIO output: pin (EN, DIR, STEP, SPI_MODE, SD_MODE, CS, CLK, etc.), signal (ACTIVE/INACTIVE)
+    tmc51x0::Result<void> GpioSet(tmc51x0::TMC51x0CtrlPin pin, tmc51x0::GpioSignal signal) noexcept {
+        // TODO: Map pin to your GPIO, set output high/low per signal
+        (void)pin; (void)signal;
+        return tmc51x0::Result<void>();
+    }
+    // GPIO input: read pin state (ACTIVE/INACTIVE)
+    tmc51x0::Result<tmc51x0::GpioSignal> GpioRead(tmc51x0::TMC51x0CtrlPin pin) noexcept {
+        // TODO: Map pin to your GPIO, read and return GpioSignal::ACTIVE or INACTIVE
+        (void)pin;
+        return tmc51x0::Result<tmc51x0::GpioSignal>(tmc51x0::GpioSignal::INACTIVE);
+    }
+    void DelayMs(uint32_t ms) noexcept {
+        // TODO: Platform delay (e.g. vTaskDelay, HAL_Delay)
+        (void)ms;
+    }
+    void DelayUs(uint32_t us) noexcept {
+        // TODO: Platform microsecond delay
+        (void)us;
+    }
+protected:
+    void DebugLog(int level, const char* tag, const char* format, va_list args) noexcept {
+        // TODO: Optional - forward to your logging (printf, ESP_LOGD, etc.)
+        (void)level; (void)tag; (void)format; (void)args;
+    }
 };
 
 // 2. Create driver instance
 MySPI spi;
-tmc51x0::TMC51x0 driver(spi);
+tmc51x0::TMC51x0<MySPI> driver(spi);
 
 // 3. Initialize driver
 tmc51x0::DriverConfig cfg{};
@@ -197,19 +238,18 @@ if (!init_result) {
     return -1;
 }
 
-// 4. Configure and start motor
-auto mode_result = driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-if (!mode_result) {
-    printf("Error setting ramp mode: %s\n", mode_result.ErrorMessage());
-    return -1;
-}
-driver.rampControl.SetTargetPosition(1000);
-driver.rampControl.SetMaxSpeed(1000.0f);
-driver.rampControl.SetAcceleration(500.0f);
-auto enable_result = driver.motorControl.Enable();
-if (!enable_result) {
-    printf("Error enabling motor: %s\n", enable_result.ErrorMessage());
-    return -1;
+// 4. Enable and start motion
+driver.motorControl.Enable();
+driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+driver.rampControl.SetMaxSpeed(60.0f, tmc51x0::Unit::RPM);               // 60 RPM
+driver.rampControl.SetAcceleration(5.0f, tmc51x0::Unit::RevPerSec);      // 5 rev/s²
+driver.rampControl.SetDeceleration(5.0f, tmc51x0::Unit::RevPerSec);      // 5 rev/s²
+driver.rampControl.SetTargetPosition(180.0f, tmc51x0::Unit::Deg);        // Move to 180°
+
+// Wait for target position
+while (true) {
+    auto reached = driver.rampControl.IsTargetReached();
+    if (reached.IsOk() && reached.Value()) break;
 }
 ```
 
@@ -217,57 +257,97 @@ if (!enable_result) {
 
 ```cpp
 #include "inc/tmc51x0.hpp"
-#include "inc/tmc51x0_daisy_chain.hpp"
+#include "inc/features/tmc51x0_daisy_chain.hpp"
 
 // 1. Create SPI communication interface (shared by all devices)
 MySPI spi;
-spi.Initialize();
 
-// 2. Create daisy-chain manager with 3 onboard devices
+// 2. Create daisy-chain manager: 3 devices, max 5 supported, 12 MHz clock
 tmc51x0::TMC51x0DaisyChain<MySPI, 5> chain(spi, 3, 12'000'000);
 
-// 3. Initialize all devices
+// 3. Initialize all devices with motor specifications
 tmc51x0::DriverConfig cfg{};
-cfg.motor.irun = 20;
-cfg.motor.ihold = 10;
+cfg.motor_spec.rated_current_ma = 2000;
+cfg.motor_spec.sense_resistor_mohm = 50;
+cfg.motor_spec.supply_voltage_mv = 24000;
 chain.InitializeAll(cfg);
 
-// 4. Access individual motors
+// 4. Access individual motors by index
 auto& x_axis = chain[0];
 auto& y_axis = chain[1];
 auto& z_axis = chain[2];
 
-x_axis.rampControl.SetTargetPosition(1000);
-y_axis.rampControl.SetMaxSpeed(500.0f);
+x_axis.rampControl.SetTargetPosition(90.0f, tmc51x0::Unit::Deg);
+y_axis.rampControl.SetMaxSpeed(30.0f, tmc51x0::Unit::RPM);
 z_axis.motorControl.Enable();
 ```
 
 ### Using Physical Units
 
+All position, speed, and acceleration methods accept a `Unit` parameter:
+
 ```cpp
-#include "inc/tmc51x0.hpp"
-#include "inc/tmc51x0_units.hpp"
+using tmc51x0::Unit;
 
-// Motor: 200 steps/rev, Lead screw: 2mm pitch
-constexpr uint16_t STEPS_PER_REV = 200;
-constexpr float LEAD_SCREW_PITCH_MM = 2.0f;
+// Position in degrees, millimeters, or revolutions
+driver.rampControl.SetTargetPosition(90.0f, Unit::Deg);       // 90 degrees
+driver.rampControl.SetTargetPosition(25.0f, Unit::Mm);        // 25 mm (requires MechanicalSystem in config)
+driver.rampControl.MoveRelative(-10.0f, Unit::Deg);           // Move 10° backward
 
-// Move 10mm using convenience method
-driver.rampControl.SetTargetPositionMm(10.0f, STEPS_PER_REV, LEAD_SCREW_PITCH_MM);
+// Speed in RPM or revolutions per second (default)
+driver.rampControl.SetMaxSpeed(60.0f, Unit::RPM);             // 60 RPM
+driver.rampControl.SetMaxSpeed(1.0f, Unit::RevPerSec);        // 1 rev/s (same as 60 RPM)
 
-// Set speed in RPM
-driver.rampControl.SetMaxSpeedRpm(100.0f, STEPS_PER_REV);
+// Acceleration in rev/s²
+driver.rampControl.SetAcceleration(5.0f, Unit::RevPerSec);    // 5 rev/s²
 
-// Or use conversion functions directly
-int32_t steps = tmc51x0::MmToSteps(10.0f, STEPS_PER_REV, LEAD_SCREW_PITCH_MM);
-auto pos_result = driver.rampControl.SetTargetPosition(steps);
-if (!pos_result) {
-    printf("Error setting target position: %s\n", pos_result.ErrorMessage());
-    return -1;
-}
+// Read position back in any unit
+auto pos = driver.rampControl.GetCurrentPosition(Unit::Deg);  // Current position in degrees
+auto spd = driver.rampControl.GetCurrentSpeed(Unit::RPM);     // Current speed in RPM
 ```
 
 For detailed setup, see [Installation](docs/installation.md) and [Quick Start Guide](docs/quickstart.md).
+
+### Error Handling -- the `Result<T>` Pattern
+
+Every driver method returns a `Result<T>` -- a lightweight wrapper that carries either a **value** or an **error code**. This replaces exceptions (which are disabled in most embedded toolchains) with a zero-overhead, type-safe pattern.
+
+```cpp
+// Check success with IsOk() or boolean conversion
+auto result = driver.rampControl.SetMaxSpeed(60.0f, tmc51x0::Unit::RPM);
+if (!result) {                                      // boolean shorthand (same as !result.IsOk())
+    printf("Error: %s\n", result.ErrorMessage());   // human-readable message
+    tmc51x0::ErrorCode code = result.Error();       // machine-readable code
+    return;
+}
+
+// For methods that return a value, use Value() after checking
+auto pos = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
+if (pos.IsOk()) {
+    float degrees = pos.Value();                    // safe -- we checked first
+}
+
+// Or use ValueOr() for a safe default without branching
+float degrees = pos.ValueOr(0.0f);                 // returns 0.0 if error
+```
+
+**Error codes** ([`inc/tmc51x0_result.hpp`](inc/tmc51x0_result.hpp)):
+
+| ErrorCode | Meaning |
+|-----------|---------|
+| `OK` | Success |
+| `COMM_ERROR` | SPI/UART transfer failed |
+| `NOT_INITIALIZED` | `Initialize()` not called yet |
+| `INVALID_VALUE` | Parameter out of range |
+| `INVALID_STATE` | Operation not valid now (e.g. moving while reconfiguring) |
+| `TIMEOUT` | Operation exceeded time limit |
+| `HARDWARE_ERROR` | TMC driver fault (`drv_err`, `uv_cp`, `reset`) |
+| `SHORT_CIRCUIT` | Short to supply or ground detected |
+| `OVERTEMP_WARNING` | Temperature warning threshold exceeded |
+| `OVERTEMP_SHUTDOWN` | Temperature shutdown |
+| `UNSUPPORTED` | Feature not available on this chip (TMC5130 vs TMC5160) |
+
+> **Note on the Quick Start examples above:** Error checks are omitted for brevity. In production code, always check `Result` return values -- especially `Initialize()`, `Enable()`, and communication-dependent calls. See the [Quick Start Guide](docs/quickstart.md) and [Troubleshooting](docs/troubleshooting.md) for complete error handling examples.
 
 ## 🔧 Installation
 
@@ -281,87 +361,66 @@ For detailed setup, see [Installation](docs/installation.md) and [Quick Start Gu
 
 For detailed installation instructions, see [docs/installation.md](docs/installation.md).
 
-## 📖 API Reference
+## API Reference
+
+> All methods return [`Result<T>`](#error-handling----the-resultt-pattern) types. Check with `IsOk()` / `operator bool` before using `Value()`. See the [full API Reference](docs/api_reference.md) for complete signatures and return types.
 
 ### Class Structure & Subsystems
 
 The `TMC51x0` class is organized into intuitive subsystems for easy access to functionality:
 
 ```cpp
-tmc51x0::TMC51x0<CommType> driver(comm_interface);
+tmc51x0::TMC51x0<MySPI> driver(spi);
+using Unit = tmc51x0::Unit;
+using Homing = tmc51x0::TMC51x0<MySPI>::Homing;
 
-// Motion Control
-auto mode_result = driver.rampControl.SetRampMode(RampMode::POSITIONING);
-if (!mode_result) {
-    printf("Error setting ramp mode: %s\n", mode_result.ErrorMessage());
-    return -1;
-}
-auto pos_result = driver.rampControl.SetTargetPosition(1000, Unit::Steps);
-if (!pos_result) {
-    printf("Error setting target position: %s\n", pos_result.ErrorMessage());
-    return -1;
-}
-// Velocity functions default to revolutions per second (RevPerSec) - much more intuitive!
-auto speed_result = driver.rampControl.SetMaxSpeed(0.02f);       // 0.02 rev/s (~1.2 RPM) - Unit::RevPerSec is default
-if (!speed_result) {
-    printf("Error setting max speed: %s\n", speed_result.ErrorMessage());
-    return -1;
-}
-auto accel_result = driver.rampControl.SetAcceleration(0.01f);    // 0.01 rev/s² - Unit::RevPerSec is default
-if (!accel_result) {
-    printf("Error setting acceleration: %s\n", accel_result.ErrorMessage());
-    return -1;
-}
+// --- Motion Control ---
+driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+driver.rampControl.SetMaxSpeed(60.0f, Unit::RPM);
+driver.rampControl.SetAcceleration(5.0f, Unit::RevPerSec);
+driver.rampControl.SetDeceleration(5.0f, Unit::RevPerSec);
+driver.rampControl.SetTargetPosition(180.0f, Unit::Deg);
 
-// Motor Control
-auto enable_result = driver.motorControl.Enable();
-if (!enable_result) {
-    printf("Error enabling motor: %s\n", enable_result.ErrorMessage());
-    return -1;
-}
-auto current_result = driver.motorControl.SetCurrent(20, 10);  // IRUN, IHOLD
-if (!current_result) {
-    printf("Error setting current: %s\n", current_result.ErrorMessage());
-    return -1;
-}
-auto stealth_result = driver.motorControl.SetStealthChopEnabled(true);
-if (!stealth_result) {
-    printf("Error enabling StealthChop: %s\n", stealth_result.ErrorMessage());
-    return -1;
-}
+// --- Motor Control ---
+driver.motorControl.Enable();
+driver.motorControl.SetCurrent(20, 10);              // IRUN=20, IHOLD=10
+driver.motorControl.SetStealthChopEnabled(true);      // Silent mode
 
-// Diagnostics & Monitoring
-DriverStatus status = driver.status.GetStatus();
-auto sg_value_result = driver.stallGuard.GetStallGuard();
-uint16_t sg_value = sg_value_result.IsOk() ? sg_value_result.Value() : 0;
+// --- Diagnostics & Monitoring ---
+auto status = driver.status.GetStatus();               // DriverStatus struct
+auto sg = driver.stallGuard.GetStallGuardResult();     // StallGuard2 value (0-1023)
+driver.status.VerifySetup();                           // Comprehensive startup check
 
-// Automatic Tuning ⭐
-StallGuardTuningResult result;
-driver.tuning.AutoTuneStallGuard(target_velocity, result, min_sgt, max_sgt,
-                                  acceleration, min_velocity, max_velocity,
-                                  tmc51x0::Unit::RevPerSec, 0.3f);  // 30% current reduction
-// Or simpler version:
-driver.tuning.TuneStallGuard(target_velocity, result, min_sgt, max_sgt, 
-                              acceleration, min_velocity, max_velocity);
+// --- Automatic Tuning ---
+tmc51x0::StallGuardTuningResult tune_result;
+driver.tuning.AutoTuneStallGuard(
+    30.0f, tune_result, -20, 20,                       // target RPM, SGT range
+    5.0f, 0.0f, 0.0f,                                  // accel, min/max velocity
+    Unit::RPM, Unit::RevPerSec, 0.3f);                  // units, current reduction
 
-// Homing
-int32_t final_position;
-tmc51x0::TMC51x0<MyComm>::Homing::BoundsOptions opt{};
-opt.speed_unit = tmc51x0::Unit::RPM;
-opt.position_unit = tmc51x0::Unit::Deg;
-opt.search_speed = search_speed;
-opt.search_span = 360.0F;
-opt.backoff_distance = 5.0F;
+// --- Bounds Finding (searches for mechanical limits, homes to center) ---
+Homing::BoundsOptions opt{};
+opt.speed_unit = Unit::RPM;
+opt.position_unit = Unit::Deg;
+opt.search_speed = 30.0f;
+opt.search_span = 360.0f;
 opt.timeout_ms = 10000;
-driver.homing.PerformSensorlessHoming(true, opt, final_position);
+opt.search_accel = 5.0f;
+opt.accel_unit = Unit::RevPerSec;
 
-// Encoder Integration
-driver.encoder.ConfigureEncoder(encoder_config);
-driver.encoder.EnableDeviationDetection(100);  // 100 step threshold
+Homing::HomeConfig home{};
+home.mode = Homing::HomePlacement::AtCenter;
+auto bounds = driver.homing.FindBounds(Homing::BoundsMethod::StallGuard, opt, home);
 
-// Protection
-driver.powerStage.ConfigureShortProtection(short_config);
-bool ot = driver.status.GetStatus() == DriverStatus::OT;
+// --- Encoder Integration ---
+tmc51x0::EncoderConfig enc_cfg{};
+driver.encoder.Configure(enc_cfg);
+driver.encoder.SetResolution(200, 4096, false);        // 200 steps/rev, 4096 PPR encoder
+driver.encoder.SetAllowedDeviation(100);               // 100-step deviation threshold
+
+// --- Power Stage / Protection ---
+tmc51x0::PowerStageParameters ps_cfg{};
+driver.powerStage.ConfigureShortProtection(ps_cfg);
 ```
 
 ### Key Methods by Subsystem
@@ -392,55 +451,78 @@ bool ot = driver.status.GetStatus() == DriverStatus::OT;
 | `ConfigurePowerStage()` | Configure DRV_CONF (power MOSFET drive, BBM, OT) |
 | `ConfigureShortProtection()` | Configure SHORT_CONF levels (short protection) |
 
-#### MotorControl Subsystem
+#### MotorControl Subsystem (`driver.motorControl`)
 | Method | Description |
 |--------|-------------|
 | `Enable()` / `Disable()` | Enable/disable motor driver |
-| `SetCurrent()` | Set run and hold currents |
-| `SetStealthChopEnabled()` | Enable/disable silent stealthChop mode |
-| `SetModeChangeSpeeds()` | Configure velocity thresholds for mode switching |
+| `SetCurrent()` | Set run and hold currents (IRUN, IHOLD) |
+| `SetStealthChopEnabled()` | Enable/disable silent StealthChop mode |
+| `ConfigureChopper()` | Configure SpreadCycle chopper settings |
+| `ConfigureStealthChop()` | Configure StealthChop PWM settings |
+| `ConfigureMotorCurrent()` | Auto-calculate current from motor specs |
 
-#### Diagnostics Subsystem
+#### StallGuard Subsystem (`driver.stallGuard`)
 | Method | Description |
 |--------|-------------|
-| `GetStatus()` | Get comprehensive driver status |
-| `GetStallGuard()` | Read StallGuard2 value (0-1023) |
-| `ConfigureStallGuard()` | Configure StallGuard2 settings |
+| `GetStallGuardResult()` | Read StallGuard2 value (0-1023) |
+| `ConfigureStallGuard()` | Configure StallGuard2 threshold and filter |
+| `EnableStopOnStall()` | Enable/disable automatic stop on stall |
+| `IsStallDetected()` | Check if stall event was detected |
+
+#### Status Subsystem (`driver.status`)
+| Method | Description |
+|--------|-------------|
+| `GetStatus()` | Get comprehensive driver status struct |
+| `GetGlobalStatus()` | Read GSTAT (reset, drv_err, uv_cp) |
 | `IsOpenLoadA()` / `IsOpenLoadB()` | Check for open load conditions |
+| `IsOvertemperature()` | Check overtemperature flag |
+| `GetLostSteps()` | Read lost steps counter |
 | `VerifySetup()` | Run comprehensive startup verification |
 
-#### Tuning Subsystem ⭐ NEW
+#### Tuning Subsystem (`driver.tuning`)
 | Method | Description |
 |--------|-------------|
-| `AutoTuneStallGuard()` | Comprehensive automatic SGT tuning with current reduction (recommended) |
-| `TuneStallGuard()` | Automatic SGT tuning with comprehensive velocity range analysis |
-| Returns `StallGuardTuningResult` with optimal SGT, velocity compatibility, and actual achievable velocities |
+| `AutoTuneStallGuard()` | Automatic SGT tuning with current reduction (recommended) |
+| `TuneStallGuard()` | SGT tuning with velocity range analysis |
+| Both return results via `StallGuardTuningResult` | Optimal SGT, velocity compatibility, achievable velocities |
 
-#### Homing Subsystem
+#### Homing Subsystem (`driver.homing`)
 | Method | Description |
 |--------|-------------|
-| `PerformSensorlessHoming()` | Sensorless homing using StallGuard2 |
+| `FindBounds()` | Find mechanical limits and home (StallGuard, encoder, or switch) |
+| `FindBoundsStallGuard()` | Bounds finding using StallGuard2 specifically |
+| `PerformSensorlessHoming()` | Single-direction sensorless homing |
 | `PerformSwitchHoming()` | Homing using reference switches |
+| `PerformEncoderIndexHoming()` | Homing to encoder N-channel index |
 
-#### Encoder Subsystem
+#### Encoder Subsystem (`driver.encoder`)
 | Method | Description |
 |--------|-------------|
-| `ConfigureEncoder()` | Configure encoder settings |
-| `EnableDeviationDetection()` | Enable step loss detection |
-| `GetDeviation()` | Read position deviation |
+| `Configure()` | Configure encoder settings |
+| `SetResolution()` | Set motor steps, encoder PPR, invert direction |
+| `SetAllowedDeviation()` | Set deviation threshold for step loss detection |
+| `GetPosition()` | Read encoder position |
+| `IsDeviationWarning()` | Check if deviation threshold exceeded |
 
-#### Protection Subsystem
+#### PowerStage Subsystem (`driver.powerStage`)
 | Method | Description |
 |--------|-------------|
-| `ConfigureShortProtection()` | Configure short circuit protection |
-| `ConfigureOvertemperature()` | Configure overtemperature protection |
+| `ConfigureShortProtection()` | Configure short circuit protection (S2VS, S2G) |
+| `ConfigurePowerStage()` | Configure MOSFET drive strength and BBM |
 
-#### Communication Subsystem
+#### Thresholds Subsystem (`driver.thresholds`)
+| Method | Description |
+|--------|-------------|
+| `SetModeChangeSpeeds()` | Set StealthChop/CoolStep/high-speed thresholds |
+| `SetStealthChopVelocityThreshold()` | Set TPWMTHRS threshold |
+| `SetModeHysteresis()` | Configure hysteresis for smooth mode transitions |
+
+#### Communication Subsystem (`driver.communication`)
 | Method | Description |
 |--------|-------------|
 | `SetDaisyChainPosition()` | Set SPI daisy chain position |
-| `SetDaisyChainLength()` | Configure SPI chain length |
-| `ConfigureUartNodeAddress()` | Configure UART node address |
+| `ConfigureUartNodeAddress()` | Configure UART node address and send delay |
+| `SetClkFreq()` | Set clock frequency |
 
 ### Multi-Chip Support
 
@@ -463,49 +545,62 @@ For complete API documentation with all methods and parameters, see [docs/api_re
 
 ## 📊 Examples
 
-Comprehensive ESP32 examples are available in the [examples/esp32](examples/esp32/) directory, demonstrating all major features:
+Comprehensive ESP32 examples are available in [`examples/esp32/main/`](examples/esp32/main/), demonstrating all major features. Build and flash using the project scripts (see [`examples/esp32/README.md`](examples/esp32/README.md)).
 
-### Core Functionality
-- **Basic Motor Control**: Simple positioning and velocity control
-- **Ramp Control**: Advanced motion profiles with multi-phase acceleration
-- **Motor Configuration**: Current control, chopper modes, stealthChop
+### Comprehensive Test Suite
+- **[`internal_ramp_comprehensive_test.cpp`](examples/esp32/main/internal_ramp_test_suites/internal_ramp_comprehensive_test.cpp)** -- Main test suite covering core init, motor control, ramp control, StealthChop, StallGuard2, encoder, reference switches, diagnostics, and protection in one integrated test
+
+### Motion Control
+- **[`internal_ramp_sinusoidal.cpp`](examples/esp32/main/internal_ramp_test_suites/internal_ramp_sinusoidal.cpp)** -- Back-and-forth positioning with `BackAndForthMotion` class, configurable via `SELECTED_TEST_RIG`
+- **[`fatigue_test_espnow/main.cpp`](examples/esp32/main/fatigue_test_espnow/main.cpp)** -- Production fatigue test: bounds finding, point-to-point motion, ESP-NOW remote control, UART console
+
+### Tuning & Homing
+- **[`stallguard_tuning.cpp`](examples/esp32/main/tuning/stallguard_tuning.cpp)** -- Automatic StallGuard2 threshold (SGT) tuning with `AutoTuneStallGuard()`
+- **[`bounds_finding_test.cpp`](examples/esp32/main/tuning/bounds_finding_test.cpp)** -- Standalone bounds finding: searches for mechanical limits, homes to center
 
 ### Multi-Chip Communication
-- **`spi_daisy_chain_comprehensive_test.cpp`**: SPI daisy chaining with automatic chain detection
-- **`uart_multi_node_comprehensive_test.cpp`**: UART multi-node addressing with sequential programming
+- **[`spi_daisy_chain_comprehensive_test.cpp`](examples/esp32/main/internal_ramp_test_suites/spi_daisy_chain_comprehensive_test.cpp)** -- SPI daisy chain setup and multi-motor coordination (2+ drivers required)
+- **[`uart_multi_node_comprehensive_test.cpp`](examples/esp32/main/internal_ramp_test_suites/uart_multi_node_comprehensive_test.cpp)** -- UART multi-node addressing (placeholder implementation)
+
+### Sensors & Diagnostics
+- **[`abn_encoder_reader.cpp`](examples/esp32/main/sensors/abn_encoder_reader.cpp)** -- Continuous ABN encoder position reading
+
+All examples use a unified test rig selection (`SELECTED_TEST_RIG`) for compile-time motor/board/platform configuration. See [docs/examples.md](docs/examples.md) for detailed walkthroughs.
+
+## Documentation
+
+**[Complete Documentation on GitHub Pages](https://n3b3x.github.io/hf-tmc5160-driver/)**
+
+### Getting Started
+
+| Guide | Description |
+|-------|-------------|
+| [Quick Start](docs/quickstart.md) | Minimal working example, `Result<T>` primer, subsystem overview |
+| [Installation](docs/installation.md) | Cloning, compiler requirements, include paths |
+| [Hardware Setup](docs/hardware_setup.md) | Wiring, power supply, sense resistors |
+| [Platform Integration](docs/platform_integration.md) | Implementing `MySPI` / `MyUART` for your board (ESP32, STM32, Arduino) |
+
+### Reference
+
+| Guide | Description |
+|-------|-------------|
+| [API Reference](docs/api_reference.md) | Complete method signatures, return types, and parameters |
+| [Configuration](docs/configuration.md) | `DriverConfig` fields, chopper tuning, StealthChop parameters |
+| [Examples](docs/examples.md) | Progressively harder walkthroughs with explanations |
+| [Error Handling](#error-handling----the-resultt-pattern) | `Result<T>`, `ErrorCode`, common patterns |
+| [Troubleshooting](docs/troubleshooting.md) | Error codes, common failures, recovery strategies |
 
 ### Advanced Features
-- **`stallguard_tuning.cpp`**: Automatic StallGuard2 threshold tuning with velocity range analysis ⭐
-- **`encoder_comprehensive_test.cpp`**: Encoder integration and closed-loop control with deviation detection
-- **`diagnostics_comprehensive_test.cpp`**: Comprehensive diagnostics, status monitoring, and StallGuard2 reading
-- **`protection_comprehensive_test.cpp`**: Protection system configuration and monitoring
-- **`internal_ramp_sinusoidal.cpp`**: Sinusoidal motion profiles using internal ramp generator
 
-### Motor Control & Motion
-- **`motor_control_comprehensive_test.cpp`**: Advanced motor control features (CoolStep, dcStep, freewheeling)
-- **`ramp_control_comprehensive_test.cpp`**: Ramp control modes and motion profiles
-- **`bounds_finding_sinuous_motion.cpp`**: Advanced motion control with automatic bounds finding
+| Guide | Description |
+|-------|-------------|
+| [Sensorless Homing](docs/special_features_sensorless_homing.md) | StallGuard2 homing and bounds finding |
+| [Advanced Configuration](docs/special_features_advanced_configuration.md) | CoolStep, dcStep, StealthChop tuning |
+| [Multi-Chip Communication](docs/special_features_multi_chip.md) | SPI daisy chain and UART multi-node |
+| [GPIO Pin Configuration](docs/gpio_pin_configuration.md) | DIAG0/DIAG1, STEP/DIR, reference switches |
+| [TMC5130 Support](docs/tmc5130_support.md) | Differences from TMC5160, compatibility notes |
 
-### Specialized Applications
-- **`internal_ramp_comprehensive_test.cpp`**: Internal ramp generator comprehensive testing
-- **`stallguard_tuning.cpp`**: Automatic SGT tuning for optimal stall detection
-
-All examples include detailed documentation and are ready to compile and run. See [docs/examples.md](docs/examples.md) for detailed walkthroughs.
-
-## 📚 Documentation
-
-**📖 [Complete Documentation](https://n3b3x.github.io/hf-tmc5160-driver/)**
-
-The complete documentation is available on GitHub Pages with interactive guides, API reference, examples, and step-by-step tutorials. This includes:
-
-- **Quick Start Guide**: Get up and running in minutes
-- **Installation Instructions**: Platform-specific setup guides
-- **API Reference**: Complete method documentation with examples
-- **Configuration Guides**: Hardware setup and driver configuration
-- **Examples**: Comprehensive example code for all features
-- **Advanced Topics**: Multi-chip communication, sensorless homing, tuning, and more
-
-For local documentation, see the [docs directory](docs/index.md).
+For local browsing, see the [docs directory](docs/index.md).
 
 ## 🤝 Contributing
 

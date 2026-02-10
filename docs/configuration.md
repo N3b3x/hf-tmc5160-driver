@@ -706,5 +706,5 @@ if (enc_pos_result) {
 ---
 
 **Navigation**
-⬅️ [Platform Integration](platform_integration.md) | [Next: API Reference ➡️](api_reference.md) | [Back to Index](index.md)
+[<- Platform Integration](platform_integration.md) | [Next: API Reference ->](api_reference.md) | [Back to Index](index.md)
 

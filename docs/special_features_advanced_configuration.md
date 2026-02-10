@@ -217,9 +217,9 @@ coolstep.increment_step = tmc51x0::CoolStepIncrementStep::STEP_4;  // Fast incre
 coolstep.decrement_speed = tmc51x0::CoolStepDecrementSpeed::EVERY_32;  // Slow decrease
 coolstep.min_current = tmc51x0::CoolStepMinCurrent::QUARTER_IRUN;  // 25% minimum
 coolstep.enable_filter = true;
-coolstep.min_velocity = 1000.0f;
-coolstep.max_velocity = 10000.0f;
-coolstep.velocity_unit = tmc51x0::Unit::RevPerSec;
+coolstep.min_velocity = 10.0f;
+coolstep.max_velocity = 120.0f;
+coolstep.velocity_unit = tmc51x0::Unit::RPM;
 driver.motorControl.ConfigureCoolStep(coolstep);
 ```
 
@@ -234,9 +234,9 @@ coolstep.increment_step = tmc51x0::CoolStepIncrementStep::STEP_8;  // Very fast 
 coolstep.decrement_speed = tmc51x0::CoolStepDecrementSpeed::EVERY_2;  // Fast decrease
 coolstep.min_current = tmc51x0::CoolStepMinCurrent::HALF_IRUN;
 coolstep.enable_filter = false;  // Disable filter for fastest response
-coolstep.min_velocity = 200.0f;
-coolstep.max_velocity = 8000.0f;
-coolstep.velocity_unit = tmc51x0::Unit::RevPerSec;
+coolstep.min_velocity = 5.0f;
+coolstep.max_velocity = 100.0f;
+coolstep.velocity_unit = tmc51x0::Unit::RPM;
 driver.motorControl.ConfigureCoolStep(coolstep);
 ```
 
@@ -254,7 +254,7 @@ sg_config.enable_filter = true;  // Enable filter for stable readings
 driver.stallGuard.ConfigureStallGuard(sg_config);
 
 // Monitor SG_RESULT during operation
-uint16_t sg_value = driver.stallGuard.GetStallGuard().Value();
+uint16_t sg_value = driver.stallGuard.GetStallGuardResult().Value();
 // Adjust threshold until SG_RESULT is in the middle of the range (200-600) at typical load
 ```
 
@@ -268,7 +268,7 @@ uint16_t sg_min = 1023;
 uint16_t sg_max = 0;
 
 for (int i = 0; i < 1000; i++) {
-    uint16_t sg = driver.stallGuard.GetStallGuard().Value();
+    uint16_t sg = driver.stallGuard.GetStallGuardResult().Value();
     sg_min = std::min(sg_min, sg);
     sg_max = std::max(sg_max, sg);
     vTaskDelay(pdMS_TO_TICKS(10));
@@ -303,7 +303,7 @@ coolstep.upper_threshold_sg = upper_sg;  // Automatically converts to SEMAX inte
 ### Best Practices
 
 1. **Start Conservative**: Begin with moderate settings and gradually optimize
-2. **Monitor SG Values**: Use `GetStallGuard()` to understand your motor's load profile
+2. **Monitor SG Values**: Use `GetStallGuardResult()` to understand your motor's load profile
 3. **Match Velocity Range**: Set velocity thresholds to your typical operating speeds
 4. **Test Under Load**: Test CoolStep under actual operating conditions
 5. **Maintain Torque Reserve**: Ensure minimum current provides adequate torque (30-50% reserve)
@@ -487,8 +487,8 @@ driver.motorControl.ConfigureDcStep(dcstep);
 ```cpp
 // For applications requiring specific PWM on-time
 tmc51x0::DcStepConfig dcstep{};
-dcstep.min_velocity = 500.0f;
-dcstep.velocity_unit = tmc51x0::Unit::RevPerSec;
+dcstep.min_velocity = 60.0f;
+dcstep.velocity_unit = tmc51x0::Unit::RPM;
 dcstep.pwm_on_time_us = 3.0f;  // 3µs PWM on-time (for 12MHz clock = 36 clock cycles)
 dcstep.stall_sensitivity = tmc51x0::DcStepStallSensitivity::HIGH;  // High sensitivity
 dcstep.stop_on_stall = true;  // Stop motor on stall
@@ -500,8 +500,8 @@ driver.motorControl.ConfigureDcStep(dcstep);
 ```cpp
 // Maximum torque capability
 tmc51x0::DcStepConfig dcstep{};
-dcstep.min_velocity = 2000.0f;  // Higher threshold = more torque headroom
-dcstep.velocity_unit = tmc51x0::Unit::RevPerSec;
+dcstep.min_velocity = 120.0f;  // Higher threshold = more torque headroom
+dcstep.velocity_unit = tmc51x0::Unit::RPM;
 dcstep.pwm_on_time_us = 5.0f;  // Higher PWM on-time = higher torque capability
 dcstep.stall_sensitivity = tmc51x0::DcStepStallSensitivity::LOW;  // Fewer false positives
 dcstep.stop_on_stall = false;
@@ -513,8 +513,8 @@ driver.motorControl.ConfigureDcStep(dcstep);
 ```cpp
 // Operation down to low velocities
 tmc51x0::DcStepConfig dcstep{};
-dcstep.min_velocity = 200.0f;  // Lower threshold = operation at lower velocities
-dcstep.velocity_unit = tmc51x0::Unit::RevPerSec;
+dcstep.min_velocity = 30.0f;  // Lower threshold = operation at lower velocities
+dcstep.velocity_unit = tmc51x0::Unit::RPM;
 dcstep.pwm_on_time_us = 1.5f;  // Lower PWM on-time = operation at lower velocities
 dcstep.stall_sensitivity = tmc51x0::DcStepStallSensitivity::MODERATE;
 dcstep.stop_on_stall = true;  // Stop on stall for safety
@@ -741,9 +741,9 @@ void configureStallGuard() {
 tmc51x0::StallGuardConfig sg_config(
     tmc51x0::StallGuardSensitivity::MODERATE,  // Threshold = 0
     true,   // Enable filter
-    500.0f, // Min velocity
-    5000.0f, // Max velocity
-    tmc51x0::Unit::RevPerSec,
+    10.0f,  // Min velocity
+    120.0f, // Max velocity
+    tmc51x0::Unit::RPM,
     false   // Don't stop on stall
 );
 driver.stallGuard.ConfigureStallGuard(sg_config);
@@ -756,9 +756,9 @@ driver.stallGuard.ConfigureStallGuard(sg_config);
 tmc51x0::StallGuardConfig sg_config{};
 sg_config.threshold = -10;  // More sensitive for stall detection
 sg_config.enable_filter = false;  // Disable filter for faster response
-sg_config.min_velocity = 1000.0f;  // Match search speed
+sg_config.min_velocity = 10.0f;  // Match search speed
 sg_config.max_velocity = 0.0f;  // No upper limit
-sg_config.velocity_unit = tmc51x0::Unit::RevPerSec;
+sg_config.velocity_unit = tmc51x0::Unit::RPM;
 sg_config.stop_on_stall = true;  // Stop motor on stall
 driver.stallGuard.ConfigureStallGuard(sg_config);
 ```
@@ -770,9 +770,9 @@ driver.stallGuard.ConfigureStallGuard(sg_config);
 tmc51x0::StallGuardConfig sg_config{};
 sg_config.threshold = 0;  // Moderate sensitivity
 sg_config.enable_filter = true;  // Enable filter for smoother readings
-sg_config.min_velocity = 500.0f;  // Match CoolStep min_velocity
-sg_config.max_velocity = 5000.0f;  // Match CoolStep max_velocity
-sg_config.velocity_unit = tmc51x0::Unit::RevPerSec;
+sg_config.min_velocity = 10.0f;   // Match CoolStep min_velocity
+sg_config.max_velocity = 120.0f;  // Match CoolStep max_velocity
+sg_config.velocity_unit = tmc51x0::Unit::RPM;
 sg_config.stop_on_stall = false;  // CoolStep handles current, not stopping
 driver.stallGuard.ConfigureStallGuard(sg_config);
 ```
@@ -870,7 +870,7 @@ uint16_t sg_min = 1023;
 uint16_t sg_max = 0;
 
 for (int i = 0; i < 1000; i++) {
-    uint16_t sg = driver.stallGuard.GetStallGuard().Value();
+    uint16_t sg = driver.stallGuard.GetStallGuardResult().Value();
     sg_min = std::min(sg_min, sg);
     sg_max = std::max(sg_max, sg);
     vTaskDelay(pdMS_TO_TICKS(10));
@@ -906,7 +906,7 @@ driver.stallGuard.ConfigureStallGuard(sg_config);
 4. **Check Results**: Always check `actual_min_velocity` and `actual_max_velocity` if requested velocities don't work
 5. **Tune First**: Always tune StallGuard2 before using CoolStep
 6. **Test Under Load**: Test under actual operating conditions
-7. **Monitor SG_RESULT**: Use `GetStallGuard()` to understand your motor's load profile
+7. **Monitor SG_RESULT**: Use `GetStallGuardResult()` to understand your motor's load profile
 8. **Match Velocity Range**: Set velocity thresholds to your typical operating speeds
 9. **Use Filter Appropriately**: Enable for CoolStep, disable for sensorless homing
 10. **Verify SpreadCycle**: Always ensure SpreadCycle is enabled before configuring
@@ -1276,7 +1276,7 @@ driver.motorControl.SetStealthChopEnabled(true);
 
 // IMPORTANT: Motor must be at standstill
 // Keep motor stopped for at least 128 chopper periods
-driver.comm.DelayMs(150);  // Ensure AT#1 completes (≤130ms)
+driver.GetComm().DelayMs(150);  // Ensure AT#1 completes (≤130ms)
 ```
 
 #### Step 2: AT#1 - Standstill Tuning
@@ -1331,7 +1331,7 @@ while (true) {
         // PWM_SCALE_AUTO should approach 0 during constant velocity phase
         ESP_LOGI(TAG, "PWM_SCALE_SUM = %d", pwm_scale_sum);
     }
-    driver.comm.DelayMs(10);
+    driver.GetComm().DelayMs(10);
 }
 
 // Read final automatic tuning results
@@ -1356,7 +1356,7 @@ driver.motorControl.ConfigureStealthChop(stealth);
 // Set velocity threshold (TPWMTHRS)
 // Below threshold: StealthChop (silent)
 // Above threshold: SpreadCycle (more torque)
-driver.thresholds.SetModeChangeSpeeds(100.0f, 0.0f, 0.0f, tmc51x0::Unit::Steps);
+driver.thresholds.SetModeChangeSpeeds(200.0f, 0.0f, 0.0f, tmc51x0::Unit::RPM);
 
 // Use low transfer velocity to avoid jerk at switching point
 // Typical: 1 to a few 10 RPM
@@ -2003,11 +2003,12 @@ void setupAdvancedMotor() {
         return;
     }
     
-    // Set mode change speeds
+    // Set mode change speeds (StealthChop, CoolStep, High-speed thresholds + unit)
     auto speed_result = driver.thresholds.SetModeChangeSpeeds(
-        1000.0f,  // stealthChop threshold
-        500.0f,   // CoolStep threshold
-        5000.0f   // High-speed threshold
+        200.0f,   // stealthChop threshold (TPWMTHRS)
+        30.0f,    // CoolStep threshold (TCOOLTHRS)
+        300.0f,   // High-speed threshold (THIGH)
+        tmc51x0::Unit::RPM
     );
     if (!speed_result) {
         printf("Error setting mode change speeds: %s\n", speed_result.ErrorMessage());
@@ -2055,8 +2056,15 @@ void setupAdvancedMotor() {
 - Verify switch signal reaches driver (check IO_INPUT register)
 - Ensure `stop_mode` is SOFT_STOP for smooth stopping
 
+## See Also
+
+- [Examples](examples.md) -- Progressively harder walkthroughs including StealthChop, StallGuard, and fatigue testing
+- [Sensorless Homing](special_features_sensorless_homing.md) -- StallGuard2 homing and bounds finding
+- [API Reference](api_reference.md) -- Complete method signatures for all subsystems
+- [ESP32 Example Source Code](../examples/esp32/main/) -- Production implementations you can build and flash
+
 ---
 
 **Navigation**
-⬅️ [Previous: Sensorless Homing](special_features_sensorless_homing.md) | [Next: Troubleshooting ➡️](troubleshooting.md) | [Docs Hub 📚](index.md)
+[<- Sensorless Homing](special_features_sensorless_homing.md) | [Next: Troubleshooting ->](troubleshooting.md) | [Back to Index](index.md)
 

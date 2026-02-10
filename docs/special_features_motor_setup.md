@@ -255,5 +255,5 @@ uint8_t calculateIrun(uint16_t target_current_ma, uint16_t global_scaler) {
 ---
 
 **Navigation**
-⬅️ [Previous: Unit Conversions](special_features_unit_conversions.md) | [Next: Sensorless Homing ➡️](special_features_sensorless_homing.md) | [Docs Hub 📚](index.md)
+[<- Unit Conversions](special_features_unit_conversions.md) | [Next: Sensorless Homing ->](special_features_sensorless_homing.md) | [Back to Index](index.md)
 
