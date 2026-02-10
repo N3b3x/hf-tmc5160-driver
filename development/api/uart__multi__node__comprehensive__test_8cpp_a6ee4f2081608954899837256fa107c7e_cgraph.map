@@ -1,0 +1,5 @@
+<map id="test_send_delay_configuration" name="test_send_delay_configuration">
+<area shape="rect" id="Node000001" title="Test send delay configuration." alt="" coords="5,5,225,31"/>
+<area shape="rect" id="Node000002" href="$uart__multi__node__comprehensive__test_8cpp.html#a68672c7d56331e3b3fb341fd1b61896d" title="Create UART interface and driver instances." alt="" coords="273,5,421,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="226,15,260,15,260,21,226,21"/>
+</map>

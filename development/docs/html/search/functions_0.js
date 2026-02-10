@@ -14,7 +14,7 @@ var searchData=
   ['applyboardconfig_11',['ApplyBoardConfig',['../namespacetmc51x0__test__config.html#ab181530d17380b1f284e0c6b9223f7ea',1,'tmc51x0_test_config']]],
   ['applyhomeplacement_12',['ApplyHomePlacement',['../structtmc51x0_1_1TMC51x0_1_1Homing.html#a5798952825e02afe3755b1b9a55976cb',1,'tmc51x0::TMC51x0::Homing']]],
   ['applymotionconfigfromsettings_5f_13',['ApplyMotionConfigFromSettings_',['../main_8cpp.html#aa57215c763eed0b2d653533cf6392ffc',1,'main.cpp']]],
-  ['applypinconfig_14',['ApplyPinConfig',['../classEsp32SPI.html#a9a80686bdcd3cc21f7756bf64d81e124',1,'Esp32SPI']]],
+  ['applypinconfig_14',['ApplyPinConfig',['../classEsp32SPI.html#a9a80686bdcd3cc21f7756bf64d81e124',1,'Esp32SPI::ApplyPinConfig()'],['../classEsp32UART.html#a4ee6f6c3caf2f910be56c3c29f184e69',1,'Esp32UART::ApplyPinConfig()']]],
   ['applyplatformconfig_15',['ApplyPlatformConfig',['../namespacetmc51x0__test__config.html#a90b2bc1714b42e67ff0125a86807d8cb',1,'tmc51x0_test_config']]],
   ['areboundsvalid_16',['AreBoundsValid',['../namespaceBoundsCache.html#ae4eb0a6db10372b5c14aeaf29c2d28b0',1,'BoundsCache']]],
   ['autodetectchainlength_17',['AutoDetectChainLength',['../classtmc51x0_1_1SpiCommInterface.html#a919ad17ed88687fa30ac45f60f405a4b',1,'tmc51x0::SpiCommInterface']]],

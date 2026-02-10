@@ -57,5 +57,6 @@ var searchData=
   ['rw_5faddress_54',['rw_address',['../uniontmc51x0_1_1UartFrame_1_1Frame.html#adb1b98bdb6be2e4a358c47c54791c911',1,'tmc51x0::UartFrame::Frame']]],
   ['rx_5fbuf_5fsize_55',['RX_BUF_SIZE',['../classUartCommandParser.html#a8c85b7234bca147407b09bdedab478dd',1,'UartCommandParser']]],
   ['rx_5fbuffer_5f_56',['rx_buffer_',['../classUartCommandParser.html#a64ce7b221fe1feea9af1a9b9681df668',1,'UartCommandParser']]],
-  ['rx_5fscratch_5f_57',['rx_scratch_',['../classtmc51x0_1_1SpiCommInterface.html#a7849870486bbf15ec2f69420d51183f4',1,'tmc51x0::SpiCommInterface']]]
+  ['rx_5fpin_5f_57',['rx_pin_',['../classEsp32UART.html#a36ea7e6b861561ab457947f42f1f56df',1,'Esp32UART']]],
+  ['rx_5fscratch_5f_58',['rx_scratch_',['../classtmc51x0_1_1SpiCommInterface.html#a7849870486bbf15ec2f69420d51183f4',1,'tmc51x0::SpiCommInterface']]]
 ];

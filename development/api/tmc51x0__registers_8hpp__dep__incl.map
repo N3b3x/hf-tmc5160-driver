@@ -1,49 +1,50 @@
 <map id="tmc51x0_registers.hpp" name="tmc51x0_registers.hpp">
-<area shape="rect" id="Node000001" title="Register definitions and bitfield structures for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)" alt="" coords="603,5,773,31"/>
+<area shape="rect" id="Node000001" title="Register definitions and bitfield structures for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)" alt="" coords="587,5,757,31"/>
 <area shape="rect" id="Node000002" href="$main_8cpp.html" title="Fatigue test unit with ESP&#45;NOW communication." alt="" coords="5,321,88,346"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="589,27,471,44,404,58,334,78,264,104,196,137,133,178,78,227,63,250,54,275,49,321,44,320,49,274,58,247,74,224,130,174,193,133,262,99,332,73,403,53,471,39,589,22"/>
-<area shape="rect" id="Node000003" href="$tmc51x0_8hpp.html" title="Main TMC51x0 stepper motor driver interface and subsystem classes (TMC5130 &amp; TMC5160)" alt="" coords="748,152,855,177"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="693,44,701,73,715,102,745,130,777,150,774,154,741,134,711,106,696,75,688,45"/>
-<area shape="rect" id="Node000013" href="$tmc51x0__types_8hpp.html" title="Type definitions and enumerations for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)" alt="" coords="726,79,877,104"/>
-<area shape="poly" id="edge15_Node000001_Node000013" title=" " alt="" coords="720,36,784,76,781,81,717,40"/>
-<area shape="poly" id="edge9_Node000003_Node000002" title=" " alt="" coords="735,180,735,180,674,184,598,185,422,185,332,187,249,194,177,207,123,228,97,248,77,274,53,322,48,319,73,271,94,244,120,223,175,202,248,189,332,182,422,180,598,180,674,179,734,175,735,175"/>
-<area shape="rect" id="Node000004" href="$fatigue__motion_8hpp.html" title="Unified fatigue test motion controller." alt="" coords="133,233,283,258"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="735,180,735,180,487,214,283,238,282,233,486,208,734,175,735,175"/>
-<area shape="rect" id="Node000006" href="$internal__ramp__comprehensive__test_8cpp.html" title="Comprehensive internal ramp test suite for TMC51x0 (single motor)" alt="" coords="322,313,542,353"/>
-<area shape="poly" id="edge7_Node000003_Node000006" title=" " alt="" coords="735,182,616,207,538,228,510,247,485,270,447,315,443,311,481,266,507,243,536,223,615,201,734,176"/>
-<area shape="rect" id="Node000007" href="$internal__ramp__sinusoidal_8cpp.html" title="Back&#45;and&#45;forth motion example for TMC51x0 stepper motor driver." alt="" coords="1160,321,1373,346"/>
-<area shape="poly" id="edge8_Node000003_Node000007" title=" " alt="" coords="787,190,778,208,771,228,770,247,778,264,806,282,846,295,896,302,952,306,1063,307,1148,311,1197,318,1196,323,1148,316,1063,312,952,311,896,308,845,300,803,287,774,267,765,248,766,227,773,206,783,188"/>
-<area shape="rect" id="Node000008" href="$spi__daisy__chain__comprehensive__test_8cpp.html" title="Comprehensive SPI Daisy Chain testing suite for TMC51x0 (MULTI&#45;MOTOR)" alt="" coords="1397,313,1629,353"/>
-<area shape="poly" id="edge10_Node000003_Node000008" title=" " alt="" coords="801,191,804,229,810,248,822,263,834,270,856,277,920,287,1097,300,1386,311,1398,312,1397,317,1385,316,1097,305,919,292,855,282,832,275,818,267,805,250,798,230,796,191"/>
-<area shape="rect" id="Node000009" href="$tmc51x0_8cpp.html" title="Implementation of TMC51x0 driver methods (TMC5130 &amp; TMC5160)" alt="" coords="1517,233,1624,258"/>
-<area shape="poly" id="edge11_Node000003_Node000009" title=" " alt="" coords="868,165,988,169,1147,179,1326,196,1506,223,1536,230,1535,235,1505,228,1326,202,1147,184,988,175,868,170"/>
-<area shape="rect" id="Node000010" href="$tmc51x0__daisy__chain_8hpp.html" title="High&#45;level daisy&#45;chain manager for multiple TMC51x0 drivers (TMC5130 &amp; TMC5160)" alt="" coords="833,233,1023,258"/>
-<area shape="poly" id="edge12_Node000003_Node000010" title=" " alt="" coords="833,182,911,230,908,235,830,187"/>
-<area shape="rect" id="Node000011" href="$tmc51x0__multi__node_8hpp.html" title="High&#45;level multi&#45;node manager for multiple TMC51x0 drivers on UART (TMC5130 &amp; TMC5160)" alt="" coords="1048,233,1235,258"/>
-<area shape="poly" id="edge13_Node000003_Node000011" title=" " alt="" coords="864,178,1092,230,1091,235,863,183"/>
-<area shape="rect" id="Node000012" href="$uart__multi__node__comprehensive__test_8cpp.html" title="Comprehensive UART Multi&#45;Node testing suite for TMC51x0 (MULTI&#45;MOTOR)" alt="" coords="1259,225,1493,265"/>
-<area shape="poly" id="edge14_Node000003_Node000012" title=" " alt="" coords="869,172,1247,223,1259,224,1258,230,1246,228,868,177"/>
-<area shape="poly" id="edge6_Node000004_Node000002" title=" " alt="" coords="175,267,70,323,67,318,173,262"/>
-<area shape="rect" id="Node000005" href="$fatigue__motion__impl_8hpp.html" title="Full implementation of FatigueTestMotion class." alt="" coords="113,321,298,346"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="202,271,202,320,197,320,196,271"/>
-<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="212,307,211,258,217,258,217,307"/>
-<area shape="poly" id="edge16_Node000013_Node000003" title=" " alt="" coords="804,118,804,152,799,152,799,118"/>
-<area shape="rect" id="Node000014" href="$tmc51x0__config__builder_8hpp.html" title="Fluent configuration builder for TMC51x0 driver." alt="" coords="519,152,723,177"/>
-<area shape="poly" id="edge17_Node000013_Node000014" title=" " alt="" coords="761,111,652,154,650,149,759,106"/>
-<area shape="rect" id="Node000019" href="$tmc51x0__motor__calc_8hpp.html" title="Motor current calculation functions for TMC51x0 (TMC5130 &amp; TMC5160)" alt="" coords="1181,152,1368,177"/>
-<area shape="poly" id="edge27_Node000013_Node000019" title=" " alt="" coords="891,103,1199,149,1198,155,890,109"/>
-<area shape="rect" id="Node000015" href="$esp32__tmc51x0__test__config_8hpp.html" title="ESP32 GPIO pin configuration and compile&#45;time configuration for TMC51x0 driver (TMC5130 &amp; TMC5160)" alt="" coords="549,225,707,265"/>
-<area shape="poly" id="edge18_Node000014_Node000015" title=" " alt="" coords="626,191,629,225,624,225,621,191"/>
-<area shape="poly" id="edge24_Node000015_Node000002" title=" " alt="" coords="536,255,334,275,217,293,101,316,76,323,75,318,99,311,216,287,334,270,535,250"/>
-<area shape="poly" id="edge21_Node000015_Node000005" title=" " alt="" coords="536,268,262,323,261,318,535,263"/>
-<area shape="poly" id="edge22_Node000015_Node000006" title=" " alt="" coords="574,273,476,316,474,311,572,268"/>
-<area shape="poly" id="edge23_Node000015_Node000007" title=" " alt="" coords="721,262,726,263,844,279,937,288,1148,311,1198,318,1197,323,1148,316,936,293,844,284,725,268,720,267"/>
-<area shape="poly" id="edge25_Node000015_Node000008" title=" " alt="" coords="721,256,776,263,947,278,1081,286,1214,294,1386,311,1398,312,1397,317,1385,316,1214,300,1081,291,947,283,776,268,720,262"/>
-<area shape="rect" id="Node000016" href="$abn__encoder__reader_8cpp.html" title="ABN Encoder Position Reader &#45; Continuously reads encoder position." alt="" coords="566,321,746,346"/>
-<area shape="poly" id="edge19_Node000015_Node000016" title=" " alt="" coords="641,277,655,319,650,321,636,279"/>
-<area shape="rect" id="Node000017" href="$bounds__finding__test_8cpp.html" title="Standalone Bounds Finding Test Tool." alt="" coords="771,321,949,346"/>
-<area shape="poly" id="edge20_Node000015_Node000017" title=" " alt="" coords="693,268,830,318,828,323,691,273"/>
-<area shape="rect" id="Node000018" href="$stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool with Current Reduction." alt="" coords="973,321,1136,346"/>
-<area shape="poly" id="edge26_Node000015_Node000018" title=" " alt="" coords="720,262,998,318,997,323,719,268"/>
-<area shape="poly" id="edge28_Node000019_Node000009" title=" " alt="" coords="1334,178,1506,223,1532,230,1531,235,1505,228,1333,183"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="591,36,446,65,275,108,193,134,121,163,64,194,43,210,28,227,19,250,22,275,31,300,41,319,37,322,26,302,17,277,14,249,23,224,39,206,61,189,119,158,191,129,273,103,444,60,590,31"/>
+<area shape="rect" id="Node000003" href="$tmc51x0_8hpp.html" title="Main TMC51x0 stepper motor driver interface and subsystem classes (TMC5130 &amp; TMC5160)" alt="" coords="619,152,725,177"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="675,45,675,152,669,152,669,45"/>
+<area shape="rect" id="Node000013" href="$tmc51x0__types_8hpp.html" title="Type definitions and enumerations for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)" alt="" coords="743,79,894,104"/>
+<area shape="poly" id="edge15_Node000001_Node000013" title=" " alt="" coords="709,34,796,76,794,81,706,39"/>
+<area shape="poly" id="edge9_Node000003_Node000002" title=" " alt="" coords="605,170,458,175,281,185,126,202,73,214,46,227,35,249,33,274,38,299,44,319,39,321,33,301,28,275,30,248,42,223,72,209,125,197,281,180,458,170,605,165"/>
+<area shape="rect" id="Node000004" href="$fatigue__motion_8hpp.html" title="Unified fatigue test motion controller." alt="" coords="483,233,632,258"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="645,187,576,235,573,230,642,183"/>
+<area shape="rect" id="Node000006" href="$internal__ramp__comprehensive__test_8cpp.html" title="Comprehensive internal ramp test suite for TMC51x0 (single motor)" alt="" coords="595,313,815,353"/>
+<area shape="poly" id="edge7_Node000003_Node000006" title=" " alt="" coords="682,190,691,225,705,313,700,313,685,226,677,191"/>
+<area shape="rect" id="Node000007" href="$internal__ramp__sinusoidal_8cpp.html" title="Back&#45;and&#45;forth motion example for TMC51x0 stepper motor driver." alt="" coords="840,321,1053,346"/>
+<area shape="poly" id="edge8_Node000003_Node000007" title=" " alt="" coords="696,185,742,224,797,263,859,295,915,318,913,323,857,300,795,268,738,228,693,189"/>
+<area shape="rect" id="Node000008" href="$spi__daisy__chain__comprehensive__test_8cpp.html" title="Comprehensive SPI Daisy Chain testing suite for TMC51x0." alt="" coords="1672,313,1904,353"/>
+<area shape="poly" id="edge10_Node000003_Node000008" title=" " alt="" coords="739,175,882,200,978,223,994,233,1004,244,1014,254,1029,263,1088,279,1163,290,1341,300,1521,304,1660,311,1672,312,1672,317,1660,316,1521,309,1341,305,1162,295,1087,284,1027,268,1011,258,1000,248,991,237,976,228,881,206,738,180"/>
+<area shape="rect" id="Node000009" href="$tmc51x0_8cpp.html" title="Implementation of TMC51x0 driver methods (TMC5130 &amp; TMC5160)" alt="" coords="1040,233,1147,258"/>
+<area shape="poly" id="edge11_Node000003_Node000009" title=" " alt="" coords="739,174,1022,223,1053,230,1051,235,1021,228,738,179"/>
+<area shape="rect" id="Node000010" href="$tmc51x0__daisy__chain_8hpp.html" title="High&#45;level daisy&#45;chain manager for multiple TMC51x0 drivers (TMC5130 &amp; TMC5160)" alt="" coords="57,233,247,258"/>
+<area shape="poly" id="edge12_Node000003_Node000010" title=" " alt="" coords="605,178,260,228,216,235,215,230,260,223,605,172"/>
+<area shape="rect" id="Node000011" href="$tmc51x0__multi__node_8hpp.html" title="High&#45;level multi&#45;node manager for multiple TMC51x0 drivers on UART (TMC5130 &amp; TMC5160)" alt="" coords="272,233,459,258"/>
+<area shape="poly" id="edge13_Node000003_Node000011" title=" " alt="" coords="615,183,411,235,409,230,614,178"/>
+<area shape="rect" id="Node000012" href="$uart__multi__node__comprehensive__test_8cpp.html" title="Comprehensive UART communication testing suite for TMC51x0." alt="" coords="336,313,571,353"/>
+<area shape="poly" id="edge14_Node000003_Node000012" title=" " alt="" coords="674,192,667,230,658,250,646,267,608,297,564,316,562,311,605,292,642,263,654,247,661,228,669,191"/>
+<area shape="poly" id="edge6_Node000004_Node000002" title=" " alt="" coords="495,263,471,268,371,283,292,290,214,299,114,316,84,323,83,318,113,311,213,293,291,285,370,277,470,263,494,258"/>
+<area shape="rect" id="Node000005" href="$fatigue__motion__impl_8hpp.html" title="Full implementation of FatigueTestMotion class." alt="" coords="126,321,311,346"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="493,264,258,323,257,318,492,259"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="283,315,517,256,519,261,285,320"/>
+<area shape="poly" id="edge16_Node000013_Node000003" title=" " alt="" coords="784,112,697,154,695,149,782,107"/>
+<area shape="rect" id="Node000014" href="$tmc51x0__config__builder_8hpp.html" title="Fluent configuration builder for TMC51x0 driver." alt="" coords="762,152,966,177"/>
+<area shape="poly" id="edge17_Node000013_Node000014" title=" " alt="" coords="836,114,859,150,854,153,831,117"/>
+<area shape="rect" id="Node000019" href="$tmc51x0__motor__calc_8hpp.html" title="Motor current calculation functions for TMC51x0 (TMC5130 &amp; TMC5160)" alt="" coords="996,152,1183,177"/>
+<area shape="poly" id="edge28_Node000013_Node000019" title=" " alt="" coords="876,105,1046,149,1045,154,874,110"/>
+<area shape="rect" id="Node000015" href="$esp32__tmc51x0__test__config_8hpp.html" title="ESP32 GPIO pin configuration and compile&#45;time configuration for TMC51x0 driver (TMC5130 &amp; TMC5160)" alt="" coords="808,225,965,265"/>
+<area shape="poly" id="edge18_Node000014_Node000015" title=" " alt="" coords="874,190,884,224,879,226,869,191"/>
+<area shape="poly" id="edge24_Node000015_Node000002" title=" " alt="" coords="794,257,392,290,114,316,83,323,82,318,113,311,391,285,794,252"/>
+<area shape="poly" id="edge21_Node000015_Node000005" title=" " alt="" coords="794,259,579,283,324,316,280,323,279,318,324,311,579,277,794,253"/>
+<area shape="poly" id="edge22_Node000015_Node000006" title=" " alt="" coords="836,274,746,316,744,311,834,269"/>
+<area shape="poly" id="edge23_Node000015_Node000007" title=" " alt="" coords="910,275,941,319,936,322,905,278"/>
+<area shape="poly" id="edge25_Node000015_Node000008" title=" " alt="" coords="979,262,984,263,1174,282,1322,289,1470,295,1660,311,1672,312,1672,317,1660,316,1470,300,1322,295,1173,287,984,268,979,267"/>
+<area shape="poly" id="edge27_Node000015_Node000012" title=" " alt="" coords="795,267,549,316,548,311,794,262"/>
+<area shape="rect" id="Node000016" href="$abn__encoder__reader_8cpp.html" title="ABN Encoder Position Reader &#45; Continuously reads encoder position." alt="" coords="1078,321,1258,346"/>
+<area shape="poly" id="edge19_Node000015_Node000016" title=" " alt="" coords="962,267,1131,318,1130,323,960,272"/>
+<area shape="rect" id="Node000017" href="$bounds__finding__test_8cpp.html" title="Standalone Bounds Finding Test Tool." alt="" coords="1283,321,1461,346"/>
+<area shape="poly" id="edge20_Node000015_Node000017" title=" " alt="" coords="979,262,984,263,1271,311,1311,318,1310,323,1270,316,984,268,978,267"/>
+<area shape="rect" id="Node000018" href="$stallguard__tuning_8cpp.html" title="Automatic StallGuard2 Tuning Tool with Current Reduction." alt="" coords="1485,321,1648,346"/>
+<area shape="poly" id="edge26_Node000015_Node000018" title=" " alt="" coords="979,262,984,263,1122,279,1229,286,1336,294,1474,311,1515,318,1514,323,1473,316,1336,299,1229,292,1121,284,984,268,979,267"/>
+<area shape="poly" id="edge29_Node000019_Node000009" title=" " alt="" coords="1093,191,1095,232,1090,233,1088,191"/>
 </map>

@@ -1,0 +1,5 @@
+<map id="test_uart_basic_communication" name="test_uart_basic_communication">
+<area shape="rect" id="Node000001" title="Verify basic UART register read/write communication." alt="" coords="5,5,235,31"/>
+<area shape="rect" id="Node000002" href="$uart__multi__node__comprehensive__test_8cpp.html#a68672c7d56331e3b3fb341fd1b61896d" title="Create UART interface and driver instances." alt="" coords="283,5,431,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="235,15,269,15,269,21,235,21"/>
+</map>

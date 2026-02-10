@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="ESP32 UART implementation with NAI/NAO pin control for daisy chaining.">
+<g id="a_Node000001"><a xlink:title="ESP32 UART implementation of TMC51x0 communication interface.">
 <polygon fill="#999999" stroke="#666666" points="117,-19 45,-19 45,0 117,0 117,-19"/>
 <text text-anchor="middle" x="81" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Esp32UART</text>
 </a>
@@ -20,9 +20,9 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classtmc5160_1_1UartCommInterface.html" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="classtmc51x0_1_1UartCommInterface.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="162,-85 0,-85 0,-55 162,-55 162,-85"/>
-<text text-anchor="start" x="8" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">tmc5160::UartCommInterface</text>
+<text text-anchor="start" x="8" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::UartCommInterface</text>
 <text text-anchor="middle" x="81" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; Esp32UART &gt;</text>
 </a>
 </g>
@@ -39,9 +39,9 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classtmc5160_1_1CommInterface.html" target="_top" xlink:title="CRTP&#45;based communication interface for register read/write operations.">
+<g id="a_Node000003"><a xlink:href="classtmc51x0_1_1CommInterface.html" target="_top" xlink:title="CRTP&#45;based communication interface for register read/write operations.">
 <polygon fill="white" stroke="#666666" points="151.5,-151 10.5,-151 10.5,-121 151.5,-121 151.5,-151"/>
-<text text-anchor="start" x="18.5" y="-139" font-family="Helvetica,sans-Serif" font-size="10.00">tmc5160::CommInterface</text>
+<text text-anchor="start" x="18.5" y="-139" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0::CommInterface</text>
 <text text-anchor="middle" x="81" y="-128" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; Derived &gt;</text>
 </a>
 </g>

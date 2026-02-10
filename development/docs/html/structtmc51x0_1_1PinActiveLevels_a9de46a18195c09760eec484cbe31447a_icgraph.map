@@ -1,7 +1,11 @@
 <map id="tmc51x0::PinActiveLevels::SetActiveLevel" name="tmc51x0::PinActiveLevels::SetActiveLevel">
-<area shape="rect" id="Node000001" title="Set active level for a specific pin." alt="" coords="475,5,665,45"/>
-<area shape="rect" id="Node000002" href="$classEsp32SPI.html#ad77658ff038c4804d222cc91f64ea138" title="Set pin mapping for a TMC51x0 control pin." alt="" coords="240,13,427,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="461,28,427,28,427,23,461,23"/>
-<area shape="rect" id="Node000003" href="$classEsp32SPI.html#a9a80686bdcd3cc21f7756bf64d81e124" title="Apply pin configuration structure (handles compound pins automatically)" alt="" coords="5,13,192,38"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="227,28,192,28,192,23,227,23"/>
+<area shape="rect" id="Node000001" title="Set active level for a specific pin." alt="" coords="503,23,693,63"/>
+<area shape="rect" id="Node000002" href="$classEsp32SPI.html#ad77658ff038c4804d222cc91f64ea138" title="Set pin mapping for a TMC51x0 control pin." alt="" coords="261,5,448,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="489,35,448,30,448,25,489,29"/>
+<area shape="rect" id="Node000004" href="$classEsp32UART.html#aaa4edaeae80cb588c675be893044b7bb" title=" " alt="" coords="255,55,455,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="489,57,455,60,455,55,489,51"/>
+<area shape="rect" id="Node000003" href="$classEsp32SPI.html#a9a80686bdcd3cc21f7756bf64d81e124" title="Apply pin configuration structure (handles compound pins automatically)" alt="" coords="13,5,199,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="248,21,199,21,199,15,248,15"/>
+<area shape="rect" id="Node000005" href="$classEsp32UART.html#a4ee6f6c3caf2f910be56c3c29f184e69" title=" " alt="" coords="5,55,207,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="241,70,207,70,207,65,241,65"/>
 </map>

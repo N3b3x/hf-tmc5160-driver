@@ -1,22 +1,27 @@
 <map id="app_main" name="app_main">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,183,92,209"/>
-<area shape="rect" id="Node000002" href="$TestFramework_8h.html#a7bb80345e5681c19686df292fa897daf" title="Flip the test progression indicator to show next test." alt="" coords="181,5,319,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="52,182,82,121,107,86,138,55,167,40,169,44,142,59,111,89,87,124,57,184"/>
-<area shape="rect" id="Node000003" href="$TestFramework_8h.html#a200bb35a3a48c625b9cb8d2511d6bd87" title="Print standardized test summary." alt="" coords="181,69,319,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="60,181,94,150,139,119,166,107,168,112,141,124,97,154,64,185"/>
-<area shape="rect" id="Node000006" href="$TestFramework_8h.html#ab7e4c076755ecdf2ad6212cb8f6578ab" title="Print standardized test summary." alt="" coords="173,134,327,159"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="92,181,139,168,174,160,176,165,141,173,93,186"/>
-<area shape="rect" id="Node000007" href="$uart__multi__node__comprehensive__test_8cpp.html#a5540756c4425759d8d7f9a1a3cd1d8e9" title="Test multi&#45;node coordination via UART." alt="" coords="143,183,357,209"/>
-<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="92,193,129,193,129,199,92,199"/>
-<area shape="rect" id="Node000008" href="$uart__multi__node__comprehensive__test_8cpp.html#a6ee4f2081608954899837256fa107c7e" title="Test send delay configuration for UART multi&#45;node." alt="" coords="140,233,360,258"/>
-<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="93,205,141,217,180,227,179,232,139,223,91,210"/>
-<area shape="rect" id="Node000009" href="$uart__multi__node__comprehensive__test_8cpp.html#a3d51614a9462c934ba45b4fc950fa559" title="Test UART node address configuration." alt="" coords="161,283,339,323"/>
-<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="65,207,98,237,141,267,159,275,156,280,139,272,94,241,61,211"/>
-<area shape="rect" id="Node000010" href="$uart__multi__node__comprehensive__test_8cpp.html#af0d6b8c92d7be7f167aaecfa615f0f1a" title="Test UART node addressing functionality." alt="" coords="151,347,349,373"/>
-<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="57,208,86,268,110,303,142,333,153,339,150,344,138,337,106,307,81,271,52,210"/>
-<area shape="rect" id="Node000004" href="$TestFramework_8h.html#a57a48f91a141d98e45f82937581e1a97" title="Automatically initialize GPIO14 test indicator if not already done." alt="" coords="408,106,596,131"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="320,95,395,104,394,109,319,100"/>
-<area shape="rect" id="Node000005" href="$TestFramework_8h.html#a3967179ac699a5b02ef9787b549409fe" title="Initialize the test progression indicator on GPIO14." alt="" coords="644,99,783,139"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="596,116,630,116,630,121,596,121"/>
-<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="327,136,394,128,395,133,327,141"/>
+<area shape="rect" id="Node000002" href="$TestFramework_8h.html#a7bb80345e5681c19686df292fa897daf" title="Flip the test progression indicator to show next test." alt="" coords="186,5,323,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="52,182,82,121,107,86,138,55,172,38,174,43,142,59,111,89,87,124,57,184"/>
+<area shape="rect" id="Node000003" href="$TestFramework_8h.html#a200bb35a3a48c625b9cb8d2511d6bd87" title="Print standardized test summary." alt="" coords="185,69,324,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="60,181,94,150,139,119,171,105,173,110,141,124,97,154,64,185"/>
+<area shape="rect" id="Node000006" href="$TestFramework_8h.html#ab7e4c076755ecdf2ad6212cb8f6578ab" title="Print standardized test summary." alt="" coords="178,134,331,159"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="92,181,139,168,176,160,177,165,141,173,93,186"/>
+<area shape="rect" id="Node000007" href="$uart__multi__node__comprehensive__test_8cpp.html#a6ee4f2081608954899837256fa107c7e" title="Test send delay configuration." alt="" coords="145,183,365,209"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="92,193,131,193,131,199,92,199"/>
+<area shape="rect" id="Node000009" href="$uart__multi__node__comprehensive__test_8cpp.html#ae7d6a88afbea00b65d07f2f16489ee09" title="Verify basic UART register read/write communication." alt="" coords="140,233,369,258"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="93,205,141,217,182,227,180,232,139,223,91,210"/>
+<area shape="rect" id="Node000010" href="$uart__multi__node__comprehensive__test_8cpp.html#ae310b1c5cb8c9a802578592d44b66126" title="Test motor control operations over UART." alt="" coords="165,282,344,307"/>
+<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="64,207,97,238,141,267,162,275,160,280,139,272,94,242,60,211"/>
+<area shape="rect" id="Node000011" href="$uart__multi__node__comprehensive__test_8cpp.html#a3d51614a9462c934ba45b4fc950fa559" title="Test UART node address configuration via NODECONF register." alt="" coords="166,332,343,372"/>
+<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="58,207,89,261,112,292,142,318,155,326,152,330,138,322,109,295,84,264,53,210"/>
+<area shape="rect" id="Node000004" href="$TestFramework_8h.html#a57a48f91a141d98e45f82937581e1a97" title="Automatically initialize GPIO14 test indicator if not already done." alt="" coords="417,106,605,131"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="324,95,404,104,403,109,324,100"/>
+<area shape="rect" id="Node000005" href="$TestFramework_8h.html#a3967179ac699a5b02ef9787b549409fe" title="Initialize the test progression indicator on GPIO14." alt="" coords="653,99,792,139"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="605,116,640,116,640,121,605,121"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="331,136,404,128,404,133,332,141"/>
+<area shape="rect" id="Node000008" href="$uart__multi__node__comprehensive__test_8cpp.html#a68672c7d56331e3b3fb341fd1b61896d" title="Create UART interface and driver instances." alt="" coords="437,257,585,282"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="324,206,370,217,466,249,464,254,369,223,322,211"/>
+<area shape="poly" id="edge10_Node000009_Node000008" title=" " alt="" coords="370,253,424,259,423,264,369,259"/>
+<area shape="poly" id="edge12_Node000010_Node000008" title=" " alt="" coords="344,283,423,275,424,281,344,289"/>
+<area shape="poly" id="edge14_Node000011_Node000008" title=" " alt="" coords="329,329,369,317,463,284,465,289,370,323,331,334"/>
 </map>

@@ -2,8 +2,8 @@
 <area shape="rect" id="Node000001" title="Shared testing framework for ESP32&#45;C6 comprehensive test suites." alt="" coords="299,5,433,31"/>
 <area shape="rect" id="Node000002" href="$internal__ramp__comprehensive__test_8cpp.html" title="Comprehensive internal ramp test suite for TMC51x0 (single motor)" alt="" coords="5,79,225,119"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="317,37,176,81,175,76,316,32"/>
-<area shape="rect" id="Node000003" href="$spi__daisy__chain__comprehensive__test_8cpp.html" title="Comprehensive SPI Daisy Chain testing suite for TMC51x0 (MULTI&#45;MOTOR)" alt="" coords="250,79,482,119"/>
+<area shape="rect" id="Node000003" href="$spi__daisy__chain__comprehensive__test_8cpp.html" title="Comprehensive SPI Daisy Chain testing suite for TMC51x0." alt="" coords="250,79,482,119"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="369,44,369,79,363,79,363,44"/>
-<area shape="rect" id="Node000004" href="$uart__multi__node__comprehensive__test_8cpp.html" title="Comprehensive UART Multi&#45;Node testing suite for TMC51x0 (MULTI&#45;MOTOR)" alt="" coords="506,79,741,119"/>
+<area shape="rect" id="Node000004" href="$uart__multi__node__comprehensive__test_8cpp.html" title="Comprehensive UART communication testing suite for TMC51x0." alt="" coords="506,79,741,119"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="417,32,562,76,561,81,415,37"/>
 </map>

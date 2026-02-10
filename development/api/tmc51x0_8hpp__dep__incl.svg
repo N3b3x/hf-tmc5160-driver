@@ -93,7 +93,7 @@
 <!-- Node7 -->
 <g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_Node000007"><a xlink:href="spi__daisy__chain__comprehensive__test_8cpp.html" target="_top" xlink:title="Comprehensive SPI Daisy Chain testing suite for TMC51x0 (MULTI&#45;MOTOR)">
+<g id="a_Node000007"><a xlink:href="spi__daisy__chain__comprehensive__test_8cpp.html" target="_top" xlink:title="Comprehensive SPI Daisy Chain testing suite for TMC51x0.">
 <polygon fill="white" stroke="#666666" points="743.5,-85 569.5,-85 569.5,-55 743.5,-55 743.5,-85"/>
 <text text-anchor="start" x="577.5" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">spi_daisy_chain_comprehensive</text>
 <text text-anchor="middle" x="656.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">_test.cpp</text>
@@ -166,7 +166,7 @@
 <!-- Node11 -->
 <g id="Node000011" class="node">
 <title>Node11</title>
-<g id="a_Node000011"><a xlink:href="uart__multi__node__comprehensive__test_8cpp.html" target="_top" xlink:title="Comprehensive UART Multi&#45;Node testing suite for TMC51x0 (MULTI&#45;MOTOR)">
+<g id="a_Node000011"><a xlink:href="uart__multi__node__comprehensive__test_8cpp.html" target="_top" xlink:title="Comprehensive UART communication testing suite for TMC51x0.">
 <polygon fill="white" stroke="#666666" points="1355.5,-85 1179.5,-85 1179.5,-55 1355.5,-55 1355.5,-85"/>
 <text text-anchor="start" x="1187.5" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">uart_multi_node_comprehensive</text>
 <text text-anchor="middle" x="1267.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">_test.cpp</text>

@@ -1,0 +1,884 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-default.css">
+
+  <link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/just-the-docs-head-nav.css" id="jtd-head-nav-stylesheet">
+
+  <style id="jtd-nav-activation">
+  
+
+    .site-nav > ul.nav-list:first-child > li > a,
+    .site-nav > ul.nav-list:first-child > li > ul > li > a,
+    .site-nav > ul.nav-list:first-child > li > ul > li > ul > li > a,
+    
+    .site-nav > ul.nav-list:first-child > li > ul > li > ul > li > ul > li:not(:nth-child(3)) > a,
+    .site-nav > ul.nav-list:first-child > li > ul > li > ul > li > ul > li > ul > li a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:not(:first-child) a,
+    .site-nav li.external a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:first-child > li:nth-child(1) > ul > li:nth-child(1) > ul > li:nth-child(18) > ul > li:nth-child(3) > a {
+      font-weight: 600;
+      text-decoration: none;
+    }.site-nav > ul.nav-list:first-child > li:nth-child(1) > button svg,
+    .site-nav > ul.nav-list:first-child > li:nth-child(1) > ul > li:nth-child(1) > button svg,
+    .site-nav > ul.nav-list:first-child > li:nth-child(1) > ul > li:nth-child(1) > ul > li:nth-child(18) > button svg,
+    .site-nav > ul.nav-list:first-child > li:nth-child(1) > ul > li:nth-child(1) > ul > li:nth-child(18) > ul > li:nth-child(3) > button svg {
+      transform: rotate(-90deg);
+    }.site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(1) > ul.nav-list,
+    .site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(1) > ul.nav-list > li.nav-list-item:nth-child(1) > ul.nav-list,
+    .site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(1) > ul.nav-list > li.nav-list-item:nth-child(1) > ul.nav-list > li.nav-list-item:nth-child(18) > ul.nav-list,
+    .site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(1) > ul.nav-list > li.nav-list-item:nth-child(1) > ul.nav-list > li.nav-list-item:nth-child(18) > ul.nav-list > li.nav-list-item:nth-child(3) > ul.nav-list {
+      display: block;
+    }
+  </style>
+
+  
+
+  
+    <script src="/hf-tmc5160-driver/development/assets/js/vendor/lunr.min.js"></script>
+  
+
+  <script src="/hf-tmc5160-driver/development/assets/js/just-the-docs.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+
+
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Driver Configuration Guide | HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Driver Configuration Guide" />
+<meta name="author" content="N3b3x" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Compile-time configuration hierarchy for the TMC51x0 driver on ESP32" />
+<meta property="og:description" content="Compile-time configuration hierarchy for the TMC51x0 driver on ESP32" />
+<link rel="canonical" href="https://n3b3x.github.io/hf-tmc5160-driver/development/docs/esp32-examples/driver-configuration/" />
+<meta property="og:url" content="https://n3b3x.github.io/hf-tmc5160-driver/development/docs/esp32-examples/driver-configuration/" />
+<meta property="og:site_name" content="HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Driver Configuration Guide" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"N3b3x","url":"https://github.com/n3b3x"},"description":"Compile-time configuration hierarchy for the TMC51x0 driver on ESP32","headline":"Driver Configuration Guide","url":"https://n3b3x.github.io/hf-tmc5160-driver/development/docs/esp32-examples/driver-configuration/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- =============================================================================
+     Custom Head Content for HardFOC Driver Documentation
+     =============================================================================
+     This file is included in the <head> section of every page.
+     It loads custom CSS and JavaScript for enhanced functionality.
+     ============================================================================= -->
+
+<!-- Custom CSS for enhanced styling and fixes -->
+<link rel="stylesheet" href="/hf-tmc5160-driver/development/assets/css/custom.css">
+
+<!-- Custom JavaScript for interactive features -->
+<script src="/hf-tmc5160-driver/development/assets/js/custom.js" defer></script>
+
+
+
+</head>
+
+<body>
+  <a class="skip-to-main" href="#main-content">Skip to main content</a>
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="svg-link" viewBox="0 0 24 24">
+  <title>Link</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+  </svg>
+</symbol>
+
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+  <title>Menu</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+    <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+</symbol>
+
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+  <title>Expand</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </svg>
+</symbol>
+
+  <!-- Feather. MIT License: https://github.com/feathericons/feather/blob/master/LICENSE -->
+<symbol id="svg-external-link" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link">
+  <title id="svg-external-link-title">(external link)</title>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
+</symbol>
+
+  
+    <symbol id="svg-doc" viewBox="0 0 24 24">
+  <title>Document</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+  </svg>
+</symbol>
+
+    <symbol id="svg-search" viewBox="0 0 24 24">
+  <title>Search</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+</symbol>
+
+  
+  
+    <!-- Bootstrap Icons. MIT License: https://github.com/twbs/icons/blob/main/LICENSE.md -->
+<symbol id="svg-copy" viewBox="0 0 16 16">
+  <title>Copy</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+  </svg>
+</symbol>
+<symbol id="svg-copied" viewBox="0 0 16 16">
+  <title>Copied</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 16">
+    <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/>
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/>
+  </svg>
+</symbol>
+
+  
+</svg>
+
+  
+    <header class="side-bar">
+  <div class="site-header">
+    <a href="/hf-tmc5160-driver/development/" class="site-title lh-tight">
+  HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development
+
+</a>
+    <button id="menu-button" class="site-button btn-reset" aria-label="Menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-menu"></use></svg>
+    </button>
+  </div>
+
+  <nav aria-label="Main" id="site-nav" class="site-nav">
+  
+  
+    <ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="HardFOC TMC51x0 Driver (TMC5130 & TMC5160) submenu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/" class="nav-list-link">HardFOC TMC51x0 Driver (TMC5130 & TMC5160)</a><ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="📚 Documentation submenu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/" class="nav-list-link">🔗 Multi-Chip Communication</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/tmc5130_support/" class="nav-list-link">🔧 TMC5130 Support</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/communication-interface/" class="nav-list-link">Communication Interface</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/gpio-pin-configuration/" class="nav-list-link">GPIO Pin Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/register-access/" class="nav-list-link">Register Access</a></li><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="ESP32 Examples submenu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="/hf-tmc5160-driver/development/docs/esp32-examples/" class="nav-list-link">ESP32 Examples</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/esp32-examples/dev-board-setup/" class="nav-list-link">Dev Board Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/esp32-examples/motor-configuration/" class="nav-list-link">Motor Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/esp32-examples/driver-configuration/" class="nav-list-link">Driver Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/esp32-examples/internal-ramp-comprehensive-test/" class="nav-list-link">Internal Ramp Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/esp32-examples/back-and-forth-motion/" class="nav-list-link">Back-and-Forth Motion Example</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/esp32-examples/spi-daisy-chain-test/" class="nav-list-link">SPI Daisy Chain Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/esp32-examples/uart-communication-test/" class="nav-list-link">UART Communication Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/esp32-examples/fatigue-test/" class="nav-list-link">Fatigue Test (ESP-NOW)</a></li></ul></li></ul></li></ul></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/BOUNDS_CACHING.html" class="nav-list-link">Bounds Finding Cache System</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/PROTOCOL.html" class="nav-list-link">ESP-NOW Protocol Specification</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/PAIRING_PROTOCOL.html" class="nav-list-link">ESP-NOW Secure Pairing Protocol</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/CODING_STANDARDS.html" class="nav-list-link">Embedded Systems Coding Standards</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/" class="nav-list-link">Fatigue Test ESP-NOW System Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/ARCHITECTURE.html" class="nav-list-link">Fatigue Test ESP-NOW Unit - Architecture Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/" class="nav-list-link">Fatigue Test with ESP-NOW Communication</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/HARDWARE_SETUP.html" class="nav-list-link">Hardware Setup Guide - Fatigue Test ESP-NOW Unit</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/" class="nav-list-link">TMC5160 Driver - ESP32 Examples</a></li></ul>
+  
+</nav>
+
+
+<div class="d-md-block d-none site-footer">
+  
+  
+    This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
+  
+  </div>
+</header>
+
+  
+  <div class="main" id="top">
+    <div id="main-header" class="main-header">
+  
+    
+
+<div class="search" role="search">
+  <div class="search-input-wrap">
+    <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development" autocomplete="off">
+    <label for="search-input" class="search-label">
+      <span class="sr-only">Search HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development</span>
+      <svg viewBox="0 0 24 24" class="search-icon" aria-hidden="true"><use xlink:href="#svg-search"></use></svg>
+    </label>
+  </div>
+  <div id="search-results" class="search-results"></div>
+</div>
+
+  
+  
+  
+    <nav aria-label="Auxiliary" class="aux-nav">
+  <ul class="aux-nav-list">
+    
+      <li class="aux-nav-list-item">
+        <a href="/hf-tmc5160-driver/development/api/index.html" class="site-button"
+          
+        >
+          📖 API Reference
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver" class="site-button"
+          
+        >
+          📚 GitHub Repository
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/issues" class="site-button"
+          
+        >
+          🐛 Report Issues
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/n3b3x/hf-tmc5160-driver/stargazers" class="site-button"
+          
+        >
+          ⭐ Star on GitHub
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+
+  
+</div>
+
+    <div class="main-content-wrap">
+      <nav aria-label="Breadcrumb" class="breadcrumb-nav">
+  <ol class="breadcrumb-nav-list">
+    <li class="breadcrumb-nav-list-item"><a href="/hf-tmc5160-driver/development/">HardFOC TMC51x0 Driver (TMC5130 & TMC5160)</a></li>
+    <li class="breadcrumb-nav-list-item"><a href="/hf-tmc5160-driver/development/docs/">📚 Documentation</a></li>
+    <li class="breadcrumb-nav-list-item"><a href="/hf-tmc5160-driver/development/docs/esp32-examples/">ESP32 Examples</a></li>
+    <li class="breadcrumb-nav-list-item"><span>Driver Configuration Guide</span></li>
+  </ol>
+</nav>
+
+
+      <div id="main-content" class="main-content">
+        <main>
+          
+            <h1 id="driver-configuration-guide">
+  
+  
+    <a href="#driver-configuration-guide" class="anchor-heading" aria-labelledby="driver-configuration-guide"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Driver Configuration Guide
+  
+  
+</h1>
+    
+<h2 id="overview">
+  
+  
+    <a href="#overview" class="anchor-heading" aria-labelledby="overview"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Overview
+  
+  
+</h2>
+    
+
+<p>The TMC51x0 driver (TMC5130 &amp; TMC5160) library uses a <strong>compile-time configuration</strong> approach with struct-based configuration using <code class="language-plaintext highlighter-rouge">static constexpr</code> members for zero runtime overhead. The configuration system has four distinct layers:</p>
+<ol>
+  <li><strong>MotorConfig</strong>: Motor-specific parameters (physical specs, chopper, StealthChop)</li>
+  <li><strong>BoardConfig</strong>: Board-specific hardware parameters (sense resistor, MOSFETs, clock)</li>
+  <li><strong>PlatformConfig</strong>: Platform/application-specific parameters (reference switches, encoder, mechanical system)</li>
+  <li><strong>TestConfig</strong>: Test-specific parameters (StallGuard, motion profiles)</li>
+</ol>
+
+<p>All configurations are defined as structs in <code class="language-plaintext highlighter-rouge">esp32_tmc51x0_test_config.hpp</code> and automatically converted to driver register values during initialization.</p>
+<h2 id="configuration-hierarchy">
+  
+  
+    <a href="#configuration-hierarchy" class="anchor-heading" aria-labelledby="configuration-hierarchy"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Configuration Hierarchy
+  
+  
+</h2>
+    
+<h3 id="1-boardconfig-board-specific-hardware">
+  
+  
+    <a href="#1-boardconfig-board-specific-hardware" class="anchor-heading" aria-labelledby="1-boardconfig-board-specific-hardware"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 1. BoardConfig (Board-Specific Hardware)
+  
+  
+</h3>
+    
+
+<p><strong>Board-specific</strong>: These parameters depend on the TMC51x0 driver (TMC5130 &amp; TMC5160) board hardware and stay the same regardless of which motor is connected or what platform it’s used on.</p>
+
+<ul>
+  <li>Sense resistor value (e.g., 50 mOhm for 0.05Ω)</li>
+  <li>Supply voltage (e.g., 24000 mV for 24V)</li>
+  <li>Clock frequency (e.g., 12000000 Hz for 12 MHz)</li>
+  <li>Power stage MOSFET characteristics (Miller charge, BBM time)</li>
+  <li>Short protection defaults</li>
+</ul>
+
+<p><strong>Location</strong>: <code class="language-plaintext highlighter-rouge">BoardConfig_*</code> structs in <code class="language-plaintext highlighter-rouge">esp32_tmc51x0_test_config.hpp</code></p>
+<h3 id="2-motorconfig-motor-specific">
+  
+  
+    <a href="#2-motorconfig-motor-specific" class="anchor-heading" aria-labelledby="2-motorconfig-motor-specific"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 2. MotorConfig (Motor-Specific)
+  
+  
+</h3>
+    
+
+<p><strong>Motor-specific</strong>: These parameters depend on the motor being used and how it should be driven.</p>
+
+<ul>
+  <li>Motor physical specs (steps/rev, rated current, resistance, inductance)</li>
+  <li>Chopper settings (TOFF, TBL, HSTRT, HEND)</li>
+  <li>StealthChop settings (PWM frequency, offset, autoscale)</li>
+  <li>Motor-specific gear ratio (if motor has integrated gearbox)</li>
+</ul>
+
+<p><strong>Location</strong>: <code class="language-plaintext highlighter-rouge">MotorConfig_*</code> structs in <code class="language-plaintext highlighter-rouge">esp32_tmc51x0_test_config.hpp</code></p>
+<h3 id="3-platformconfig-platformapplication-specific">
+  
+  
+    <a href="#3-platformconfig-platformapplication-specific" class="anchor-heading" aria-labelledby="3-platformconfig-platformapplication-specific"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 3. PlatformConfig (Platform/Application-Specific)
+  
+  
+</h3>
+    
+
+<p><strong>Platform-specific</strong>: These parameters depend on how the motor is integrated into the mechanical system and what sensors/switches are used. The same motor can be used on different platforms with different configurations.</p>
+
+<ul>
+  <li>Reference switches (endstops) configuration</li>
+  <li>Encoder configuration</li>
+  <li>Mechanical system type (DirectDrive, LeadScrew, BeltDrive, Gearbox)</li>
+  <li>Lead screw pitch, belt parameters (if applicable)</li>
+</ul>
+
+<p><strong>Location</strong>: <code class="language-plaintext highlighter-rouge">PlatformConfig_*</code> structs in <code class="language-plaintext highlighter-rouge">esp32_tmc51x0_test_config.hpp</code></p>
+<h2 id="key-concepts">
+  
+  
+    <a href="#key-concepts" class="anchor-heading" aria-labelledby="key-concepts"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Key Concepts
+  
+  
+</h2>
+    
+<h3 id="automatic-current-calculation">
+  
+  
+    <a href="#automatic-current-calculation" class="anchor-heading" aria-labelledby="automatic-current-calculation"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Automatic Current Calculation
+  
+  
+</h3>
+    
+
+<p>The driver <strong>automatically calculates</strong> IRUN, IHOLD, and GLOBAL_SCALER from motor physical specifications:</p>
+<ul>
+  <li>Motor rated current (<code class="language-plaintext highlighter-rouge">rated_current_ma</code>)</li>
+  <li>Sense resistor value (<code class="language-plaintext highlighter-rouge">sense_resistor_mohm</code>) - from BoardConfig</li>
+  <li>Supply voltage (<code class="language-plaintext highlighter-rouge">supply_voltage_mv</code>) - from BoardConfig</li>
+</ul>
+
+<p><strong>You should NOT manually set IRUN, IHOLD, or GLOBAL_SCALER</strong> - these are calculated internally.</p>
+<h3 id="configuration-flow">
+  
+  
+    <a href="#configuration-flow" class="anchor-heading" aria-labelledby="configuration-flow"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Configuration Flow
+  
+  
+</h3>
+    
+
+<ol>
+  <li><strong>Board Configuration</strong> (<code class="language-plaintext highlighter-rouge">BoardConfig</code> namespace):
+    <ul>
+      <li>Sense resistor value (e.g., 50 mOhm for 0.05Ω)</li>
+      <li>Supply voltage (e.g., 24000 mV for 24V)</li>
+      <li>Clock frequency (e.g., 12000000 Hz for 12 MHz)</li>
+      <li>Power stage MOSFET characteristics</li>
+    </ul>
+  </li>
+  <li><strong>Motor Configuration</strong> (Motor config namespaces):
+    <ul>
+      <li>Motor physical specs (steps/rev, rated current, resistance, inductance)</li>
+      <li>Chopper settings (TOFF, TBL, HSTRT, HEND)</li>
+      <li>StealthChop settings</li>
+      <li>Motor-specific gear ratio</li>
+    </ul>
+  </li>
+  <li><strong>Platform Configuration</strong> (<code class="language-plaintext highlighter-rouge">PlatformConfig</code> namespace):
+    <ul>
+      <li>Reference switches configuration</li>
+      <li>Encoder configuration</li>
+      <li>Mechanical system type and parameters</li>
+    </ul>
+  </li>
+  <li><strong>Helper Functions</strong>:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg)</code> - Configures motor + board</li>
+      <li><code class="language-plaintext highlighter-rouge">ConfigureDriverFromMotor_17HS4401S_Direct(cfg)</code> - Configures motor + board</li>
+      <li><code class="language-plaintext highlighter-rouge">ConfigureDriverFromMotor_AppliedMotion_5034(cfg)</code> - Configures motor + board</li>
+      <li><code class="language-plaintext highlighter-rouge">ApplyPlatformConfig(cfg)</code> - Applies platform config to DriverConfig</li>
+      <li><code class="language-plaintext highlighter-rouge">GetReferenceSwitchConfig()</code> - Gets reference switch config from PlatformConfig</li>
+      <li><code class="language-plaintext highlighter-rouge">GetEncoderConfig()</code> - Gets encoder config from PlatformConfig</li>
+    </ul>
+  </li>
+</ol>
+<h2 id="usage-example">
+  
+  
+    <a href="#usage-example" class="anchor-heading" aria-labelledby="usage-example"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Usage Example
+  
+  
+</h2>
+    
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+</pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"esp32_tmc51x0_test_config.hpp"</span><span class="cp">
+</span>
+<span class="c1">// Recommended: Use test rig selection (automatically configures motor, board, and platform)</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">TestRigType</span> <span class="n">SELECTED_TEST_RIG</span> <span class="o">=</span> 
+    <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">TestRigType</span><span class="o">::</span><span class="n">TEST_RIG_CORE_DRIVER</span><span class="p">;</span>
+
+<span class="c1">// Configure driver from test rig</span>
+<span class="n">tmc51x0</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
+<span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">ConfigureDriverFromTestRig</span><span class="o">&lt;</span><span class="n">SELECTED_TEST_RIG</span><span class="o">&gt;</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+
+<span class="c1">// Alternative: Manual selection (for advanced use cases)</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">MotorType</span> <span class="n">SELECTED_MOTOR</span> <span class="o">=</span> 
+    <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">MotorType</span><span class="o">::</span><span class="n">MOTOR_17HS4401S_GEARBOX</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">BoardType</span> <span class="n">SELECTED_BOARD</span> <span class="o">=</span> 
+    <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">BoardType</span><span class="o">::</span><span class="n">BOARD_TMC51x0_EVAL</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">constexpr</span> <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">PlatformType</span> <span class="n">SELECTED_PLATFORM</span> <span class="o">=</span> 
+    <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">PlatformType</span><span class="o">::</span><span class="n">PLATFORM_CORE_DRIVER_TEST_RIG</span><span class="p">;</span>
+
+<span class="c1">// 1. Configure motor</span>
+<span class="n">tmc51x0</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
+
+<span class="k">if</span> <span class="k">constexpr</span> <span class="p">(</span><span class="n">SELECTED_MOTOR</span> <span class="o">==</span> <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">MotorType</span><span class="o">::</span><span class="n">MOTOR_17HS4401S_GEARBOX</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">ConfigureDriverFromMotor_17HS4401S_Gearbox</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="k">constexpr</span> <span class="p">(</span><span class="n">SELECTED_MOTOR</span> <span class="o">==</span> <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">MotorType</span><span class="o">::</span><span class="n">MOTOR_17HS4401S_DIRECT</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">ConfigureDriverFromMotor_17HS4401S_Direct</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="k">constexpr</span> <span class="p">(</span><span class="n">SELECTED_MOTOR</span> <span class="o">==</span> <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">MotorType</span><span class="o">::</span><span class="n">MOTOR_APPLIED_MOTION_5034</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">ConfigureDriverFromMotor_AppliedMotion_5034</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// 2. Apply board configuration (sense resistor, supply voltage, MOSFETs, etc.)</span>
+<span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">ApplyBoardConfig</span><span class="o">&lt;</span><span class="n">SELECTED_BOARD</span><span class="o">&gt;</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+
+<span class="c1">// 3. Apply platform configuration (mechanical system type, etc.)</span>
+<span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">ApplyPlatformConfig</span><span class="o">&lt;</span><span class="n">SELECTED_PLATFORM</span><span class="o">&gt;</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+
+<span class="c1">// 4. Initialize driver (current settings calculated automatically)</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+
+<span class="c1">// 5. Configure platform-specific features after initialization</span>
+<span class="c1">// Reference switches</span>
+<span class="k">auto</span> <span class="n">ref_cfg</span> <span class="o">=</span> <span class="n">tmc5160_test_config</span><span class="o">::</span><span class="n">GetReferenceSwitchConfig</span><span class="o">&lt;</span><span class="n">SELECTED_PLATFORM</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">switches</span><span class="p">.</span><span class="n">ConfigureReferenceSwitch</span><span class="p">(</span><span class="n">ref_cfg</span><span class="p">);</span>
+
+<span class="c1">// Encoder</span>
+<span class="k">auto</span> <span class="n">enc_cfg</span> <span class="o">=</span> <span class="n">tmc5160_test_config</span><span class="o">::</span><span class="n">GetEncoderConfig</span><span class="o">&lt;</span><span class="n">SELECTED_PLATFORM</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">Configure</span><span class="p">(</span><span class="n">enc_cfg</span><span class="p">);</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">encoder</span><span class="p">.</span><span class="n">SetResolution</span><span class="p">(</span>
+    <span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">steps_per_rev</span><span class="p">,</span>
+    <span class="n">tmc5160_test_config</span><span class="o">::</span><span class="n">GetEncoderPulsesPerRev</span><span class="o">&lt;</span><span class="n">SELECTED_PLATFORM</span><span class="o">&gt;</span><span class="p">(),</span>
+    <span class="n">tmc5160_test_config</span><span class="o">::</span><span class="n">GetEncoderInvertDirection</span><span class="o">&lt;</span><span class="n">SELECTED_PLATFORM</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="p">);</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="what-gets-configured-automatically">
+  
+  
+    <a href="#what-gets-configured-automatically" class="anchor-heading" aria-labelledby="what-gets-configured-automatically"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> What Gets Configured Automatically
+  
+  
+</h2>
+    
+<h3 id="board-configuration-from-boardconfig">
+  
+  
+    <a href="#board-configuration-from-boardconfig" class="anchor-heading" aria-labelledby="board-configuration-from-boardconfig"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Board Configuration (from <code class="language-plaintext highlighter-rouge">BoardConfig</code>)
+  
+  
+</h3>
+    
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">motor_spec.sense_resistor_mohm</code>: Sense resistor value (from BoardConfig)</li>
+  <li><code class="language-plaintext highlighter-rouge">motor_spec.supply_voltage_mv</code>: Supply voltage (from BoardConfig)</li>
+  <li><code class="language-plaintext highlighter-rouge">power_stage.mosfet_miller_charge_nc</code>: MOSFET Miller charge (from BoardConfig)</li>
+  <li><code class="language-plaintext highlighter-rouge">power_stage.bbm_time_ns</code>: Break-before-make time (from BoardConfig)</li>
+  <li><code class="language-plaintext highlighter-rouge">power_stage.s2vs_voltage_mv</code>: Short to VS threshold (from BoardConfig)</li>
+  <li><code class="language-plaintext highlighter-rouge">power_stage.s2g_voltage_mv</code>: Short to GND threshold (from BoardConfig)</li>
+  <li><code class="language-plaintext highlighter-rouge">f_clk</code>: Clock frequency (from BoardConfig)</li>
+</ul>
+<h3 id="motor-specifications-motor_spec">
+  
+  
+    <a href="#motor-specifications-motor_spec" class="anchor-heading" aria-labelledby="motor-specifications-motor_spec"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Motor Specifications (<code class="language-plaintext highlighter-rouge">motor_spec</code>)
+  
+  
+</h3>
+    
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">steps_per_rev</code>: Motor full steps per revolution (from MotorConfig)</li>
+  <li><code class="language-plaintext highlighter-rouge">rated_current_ma</code>: Motor rated current (from MotorConfig, used for calculation)</li>
+  <li><code class="language-plaintext highlighter-rouge">winding_resistance_mohm</code>: Motor winding resistance (from MotorConfig, if available)</li>
+  <li><code class="language-plaintext highlighter-rouge">winding_inductance_mh</code>: Motor winding inductance (from MotorConfig, if available)</li>
+</ul>
+<h3 id="chopper-configuration-chopper">
+  
+  
+    <a href="#chopper-configuration-chopper" class="anchor-heading" aria-labelledby="chopper-configuration-chopper"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Chopper Configuration (<code class="language-plaintext highlighter-rouge">chopper</code>)
+  
+  
+</h3>
+    
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">mode</code>: SpreadCycle (recommended) or Classic</li>
+  <li><code class="language-plaintext highlighter-rouge">toff</code>: Off time setting</li>
+  <li><code class="language-plaintext highlighter-rouge">tbl</code>: Blank time</li>
+  <li><code class="language-plaintext highlighter-rouge">hstrt</code>: Hysteresis start</li>
+  <li><code class="language-plaintext highlighter-rouge">hend</code>: Hysteresis end</li>
+  <li><code class="language-plaintext highlighter-rouge">mres</code>: Microstep resolution</li>
+  <li><code class="language-plaintext highlighter-rouge">intpol</code>: Interpolation enable</li>
+</ul>
+<h3 id="stealthchop-configuration-stealthchop">
+  
+  
+    <a href="#stealthchop-configuration-stealthchop" class="anchor-heading" aria-labelledby="stealthchop-configuration-stealthchop"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> StealthChop Configuration (<code class="language-plaintext highlighter-rouge">stealthchop</code>)
+  
+  
+</h3>
+    
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">pwm_freq</code>: PWM frequency</li>
+  <li><code class="language-plaintext highlighter-rouge">pwm_ofs</code>: PWM offset</li>
+  <li><code class="language-plaintext highlighter-rouge">pwm_autoscale</code>: Automatic scaling enable</li>
+  <li><code class="language-plaintext highlighter-rouge">pwm_autograd</code>: Automatic gradient enable</li>
+</ul>
+<h3 id="power-stage-configuration-power_stage">
+  
+  
+    <a href="#power-stage-configuration-power_stage" class="anchor-heading" aria-labelledby="power-stage-configuration-power_stage"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Power Stage Configuration (<code class="language-plaintext highlighter-rouge">power_stage</code>)
+  
+  
+</h3>
+    
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">mosfet_miller_charge_nc</code>: MOSFET Miller charge (from PlatformConfig)</li>
+  <li><code class="language-plaintext highlighter-rouge">bbm_time_ns</code>: Break-before-make time (from PlatformConfig)</li>
+  <li><code class="language-plaintext highlighter-rouge">sense_filter</code>: Sense amplifier filter time</li>
+  <li><code class="language-plaintext highlighter-rouge">over_temp_protection</code>: Over-temperature protection level</li>
+  <li><code class="language-plaintext highlighter-rouge">s2vs_voltage_mv</code>: Short to VS voltage threshold</li>
+  <li><code class="language-plaintext highlighter-rouge">s2g_voltage_mv</code>: Short to GND voltage threshold</li>
+</ul>
+<h3 id="mechanical-system-mechanical">
+  
+  
+    <a href="#mechanical-system-mechanical" class="anchor-heading" aria-labelledby="mechanical-system-mechanical"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Mechanical System (<code class="language-plaintext highlighter-rouge">mechanical</code>)
+  
+  
+</h3>
+    
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">gear_ratio</code>: Gear ratio (from MotorConfig - motor-specific)</li>
+  <li><code class="language-plaintext highlighter-rouge">system_type</code>: DirectDrive, Gearbox, LeadScrew, BeltDrive (from PlatformConfig - platform-specific)</li>
+  <li><code class="language-plaintext highlighter-rouge">lead_screw_pitch_mm</code>: Lead screw pitch (from PlatformConfig, if applicable)</li>
+  <li><code class="language-plaintext highlighter-rouge">belt_pulley_teeth</code>: Belt pulley teeth (from PlatformConfig, if applicable)</li>
+  <li><code class="language-plaintext highlighter-rouge">belt_pitch_mm</code>: Belt pitch (from PlatformConfig, if applicable)</li>
+</ul>
+<h3 id="platform-configuration-configured-after-initialization">
+  
+  
+    <a href="#platform-configuration-configured-after-initialization" class="anchor-heading" aria-labelledby="platform-configuration-configured-after-initialization"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Platform Configuration (configured after initialization)
+  
+  
+</h3>
+    
+<ul>
+  <li><strong>Reference Switches</strong>: Use <code class="language-plaintext highlighter-rouge">GetReferenceSwitchConfig()</code> to get configuration from <code class="language-plaintext highlighter-rouge">PlatformConfig::ReferenceSwitches</code></li>
+  <li><strong>Encoder</strong>: Use <code class="language-plaintext highlighter-rouge">GetEncoderConfig()</code> to get configuration from <code class="language-plaintext highlighter-rouge">PlatformConfig::Encoder</code></li>
+</ul>
+<h2 id="important-notes">
+  
+  
+    <a href="#important-notes" class="anchor-heading" aria-labelledby="important-notes"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Important Notes
+  
+  
+</h2>
+    
+
+<ol>
+  <li>
+    <p><strong>Current Settings</strong>: IRUN, IHOLD, and GLOBAL_SCALER are <strong>calculated automatically</strong> during <code class="language-plaintext highlighter-rouge">Initialize()</code>. Do not set them manually.</p>
+  </li>
+  <li>
+    <p><strong>Board Config</strong>: All board-specific values (sense resistor, supply voltage, MOSFET characteristics) are defined in <code class="language-plaintext highlighter-rouge">BoardConfig</code> namespace and shared across all motors on the same board.</p>
+  </li>
+  <li>
+    <p><strong>Motor Configs</strong>: Each motor has its own namespace (e.g., <code class="language-plaintext highlighter-rouge">MotorConfig_17HS4401S</code>) with motor-specific settings (chopper, StealthChop, gear ratio).</p>
+  </li>
+  <li>
+    <p><strong>Platform Config</strong>: Platform-specific values (reference switches, encoder, mechanical system type) are defined in <code class="language-plaintext highlighter-rouge">PlatformConfig</code> namespace. These can vary between different platforms/applications even with the same motor.</p>
+  </li>
+  <li><strong>Configuration Order</strong>:
+    <ul>
+      <li>First: Configure motor (via <code class="language-plaintext highlighter-rouge">ConfigureDriverFromMotor_*()</code>)</li>
+      <li>Second: Apply board config (via <code class="language-plaintext highlighter-rouge">ApplyBoardConfig&lt;SELECTED_BOARD&gt;()</code>)</li>
+      <li>Third: Apply platform config (via <code class="language-plaintext highlighter-rouge">ApplyPlatformConfig&lt;SELECTED_PLATFORM&gt;()</code>)</li>
+      <li>Fourth: Initialize driver</li>
+      <li>Fifth: Configure platform-specific features (reference switches, encoder) after initialization</li>
+    </ul>
+  </li>
+  <li><strong>Override Values</strong>: You can override any configuration value after calling the helper functions:
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">ConfigureDriverFromMotor_17HS4401S_Gearbox</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="n">ApplyBoardConfig</span><span class="o">&lt;</span><span class="n">SELECTED_BOARD</span><span class="o">&gt;</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="n">ApplyPlatformConfig</span><span class="o">&lt;</span><span class="n">SELECTED_PLATFORM</span><span class="o">&gt;</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">chopper</span><span class="p">.</span><span class="n">mres</span> <span class="o">=</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">MicrostepResolution</span><span class="o">::</span><span class="n">MRES_16</span><span class="p">;</span>  <span class="c1">// Override microstep resolution</span>
+</pre></td></tr></tbody></table></div></code></pre></div>    </div>
+  </li>
+  <li><strong>Adding New Boards/Platforms</strong>: To add a new board or platform:
+    <ul>
+      <li>Create a new namespace (e.g., <code class="language-plaintext highlighter-rouge">BoardConfig_OtherBoard</code> or <code class="language-plaintext highlighter-rouge">PlatformConfig_3DPrinter</code>)</li>
+      <li>Add a new enum value (e.g., <code class="language-plaintext highlighter-rouge">BOARD_OTHER_BOARD</code> or <code class="language-plaintext highlighter-rouge">PLATFORM_3D_PRINTER</code>)</li>
+      <li>Add a new <code class="language-plaintext highlighter-rouge">if constexpr</code> branch in <code class="language-plaintext highlighter-rouge">ApplyBoardConfig</code> or <code class="language-plaintext highlighter-rouge">ApplyPlatformConfig</code> template functions</li>
+    </ul>
+  </li>
+</ol>
+<h2 id="migration-from-old-code">
+  
+  
+    <a href="#migration-from-old-code" class="anchor-heading" aria-labelledby="migration-from-old-code"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Migration from Old Code
+  
+  
+</h2>
+    
+<h3 id="old-approach-deprecated">
+  
+  
+    <a href="#old-approach-deprecated" class="anchor-heading" aria-labelledby="old-approach-deprecated"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Old Approach (Deprecated)
+  
+  
+</h3>
+    
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">irun</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">ihold</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor</span><span class="p">.</span><span class="n">global_scaler</span> <span class="o">=</span> <span class="mi">160</span><span class="p">;</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h3 id="new-approach-recommended">
+  
+  
+    <a href="#new-approach-recommended" class="anchor-heading" aria-labelledby="new-approach-recommended"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> New Approach (Recommended)
+  
+  
+</h3>
+    
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="c1">// Set motor specifications - current settings calculated automatically</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">rated_current_ma</span> <span class="o">=</span> <span class="mi">1680</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">sense_resistor_mohm</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">supply_voltage_mv</span> <span class="o">=</span> <span class="mi">24000</span><span class="p">;</span>
+
+<span class="c1">// Or use helper function (recommended)</span>
+<span class="n">ConfigureDriverFromMotor_17HS4401S_Gearbox</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+</pre></td></tr></tbody></table></div></code></pre></div></div>
+<h2 id="troubleshooting">
+  
+  
+    <a href="#troubleshooting" class="anchor-heading" aria-labelledby="troubleshooting"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Troubleshooting
+  
+  
+</h2>
+    
+<h3 id="current-settings-not-applied">
+  
+  
+    <a href="#current-settings-not-applied" class="anchor-heading" aria-labelledby="current-settings-not-applied"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Current Settings Not Applied
+  
+  
+</h3>
+    
+<ul>
+  <li>Ensure <code class="language-plaintext highlighter-rouge">BoardConfig::SENSE_RESISTOR_MOHM</code> and <code class="language-plaintext highlighter-rouge">BoardConfig::SUPPLY_VOLTAGE_MV</code> are set correctly</li>
+  <li>Check that motor <code class="language-plaintext highlighter-rouge">rated_current_ma</code> is set correctly in MotorConfig</li>
+  <li>Verify initialization succeeded (<code class="language-plaintext highlighter-rouge">driver.Initialize(cfg)</code> returns true)</li>
+</ul>
+<h3 id="wrong-current-values">
+  
+  
+    <a href="#wrong-current-values" class="anchor-heading" aria-labelledby="wrong-current-values"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Wrong Current Values
+  
+  
+</h3>
+    
+<ul>
+  <li>Check motor specifications match your actual motor (MotorConfig)</li>
+  <li>Verify sense resistor value matches your board hardware (BoardConfig)</li>
+  <li>Check supply voltage matches your power supply (BoardConfig)</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">scaler_adjustment_percent</code>, <code class="language-plaintext highlighter-rouge">irun_adjustment_percent</code>, <code class="language-plaintext highlighter-rouge">ihold_adjustment_percent</code> for fine-tuning</li>
+</ul>
+<h3 id="configuration-not-working">
+  
+  
+    <a href="#configuration-not-working" class="anchor-heading" aria-labelledby="configuration-not-working"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Configuration Not Working
+  
+  
+</h3>
+    
+<ul>
+  <li>Ensure you’re using the correct helper function for your motor</li>
+  <li>Check that <code class="language-plaintext highlighter-rouge">SELECTED_MOTOR</code> matches your motor type</li>
+  <li>Verify all required fields are set in <code class="language-plaintext highlighter-rouge">motor_spec</code></li>
+  <li>Ensure <code class="language-plaintext highlighter-rouge">ApplyPlatformConfig()</code> is called after motor configuration</li>
+  <li>Verify platform-specific features (reference switches, encoder) are configured after initialization</li>
+</ul>
+<h3 id="reference-switchesencoder-not-working">
+  
+  
+    <a href="#reference-switchesencoder-not-working" class="anchor-heading" aria-labelledby="reference-switchesencoder-not-working"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Reference Switches/Encoder Not Working
+  
+  
+</h3>
+    
+<ul>
+  <li>Ensure <code class="language-plaintext highlighter-rouge">GetReferenceSwitchConfig()</code> or <code class="language-plaintext highlighter-rouge">GetEncoderConfig()</code> are called after initialization</li>
+  <li>Verify platform configuration matches your hardware setup</li>
+  <li>Check that platform-specific features are configured via driver methods, not just in DriverConfig</li>
+</ul><hr />
+
+<div class="table-wrapper"><table>
+  <tbody>
+    <tr>
+      <td><strong>Navigation:</strong> <a href="/hf-tmc5160-driver/development/docs/esp32-examples/motor-configuration/">← Previous: Motor Configuration</a></td>
+      <td><a href="/hf-tmc5160-driver/development/docs/esp32-examples/">Index</a></td>
+      <td><a href="/hf-tmc5160-driver/development/docs/esp32-examples/back-and-forth-motion/">Next: Internal Ramp Sinusoidal →</a></td>
+    </tr>
+  </tbody>
+</table></div>
+
+          
+
+          
+            
+          
+        </main>
+        
+<hr>
+<footer>
+  
+
+  <!-- =============================================================================
+     Custom Footer Content for HardFOC Driver Documentation
+     =============================================================================
+     This footer is displayed at the bottom of every page.
+     ============================================================================= -->
+
+<footer class="site-footer">
+  <div class="site-footer-credits">
+    <p>Built with ❤️ using <a href="https://just-the-docs.github.io/just-the-docs/">Just the Docs</a></p>
+    <p>
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development/blob/main/LICENSE">GPL v3 License</a> • 
+      <a href="https://github.com/n3b3x/hf-tmc5160-driver/development">View on GitHub</a>
+    </p>
+  </div>
+</footer>
+
+
+
+  <div class="d-md-none mt-4 fs-2">
+    
+    
+      This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
+    
+  </div>
+</footer>
+
+      </div>
+    </div>
+    
+      
+<button id="search-button" class="search-button btn-reset" aria-label="Focus on search">
+  <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-search"></use></svg>
+</button>
+
+
+<div class="search-overlay"></div>
+
+    
+  </div>
+
+  
+</body>
+</html>
+

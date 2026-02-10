@@ -137,23 +137,23 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "TestFramework_8h.html",
-"classOptionParser.html#adefa0c88ca33ef5e90b54714f3e9f4bb",
-"classtmc51x0_1_1Result_3_01void_01_4.html#afc53fbd1b251bf950cf569f174003760",
-"espnow__protocol_8hpp.html#a4d47dc9870566f2f294eaab1426094a2a8a74f6c559c36ff78e885f75931a7cf2",
-"group__TMC51X0__CommInterface.html",
-"main_8cpp.html#a66bfe49bec32266461faae91315b9ffa",
-"namespacetmc51x0.html#a4abe4fa0f128137c19f7da4f9b58a816a055c1a591abb0e8cd86dc969727bcc0b",
-"namespacetmc51x0__test__config_1_1anonymous__namespace_02esp32__tmc51x0__test__config_8hpp_03.html",
-"structtmc51x0_1_1ChopperConfig.html#a4fa0f7bcdd271f442e9a3d704b5aa561",
-"structtmc51x0_1_1MicrostepChangeOptions.html#aa2b735c9d2f231ab9e7b97ad03a13220",
-"structtmc51x0_1_1StealthChopConfig.html#a7538da6fcc7888f96236495e85403b3a",
-"structtmc51x0_1_1TMC51x0_1_1StallGuard.html",
-"structtmc51x0__test__config_1_1MotorConfig__17HS4401S.html#ac7ae33f14af0497cd6d97b2713d41a37",
-"structtmc51x0__test__config_1_1TestConfigAccessor_1_1Motion.html#a2e34e07730a02d3f1e3889160ea9df06",
-"tmc51x0__result_8hpp.html#a29f23dd48483983409679925db836440",
-"uniontmc51x0_1_1CHOPCONF__Register.html#ae8c119b6a849df392f997b02ef1fb57a",
-"uniontmc51x0_1_1IOIN__Register.html#af0b2d5e8eccbafdd9f2b708bbcfec9a9",
-"uniontmc51x0_1_1UartFrame_1_1Frame.html#a03bcaf93ded602d2a7ca2d6f7c78f5e0"
+"classFatigueTest_1_1FatigueTestMotion.html#acc783c726d21ac36fff70a31ad108864",
+"classtmc51x0_1_1Result.html#ab74d4fb35bd2933480a2b417f02fd59d",
+"espnow__peer__store_8cpp.html#a5a85b9c772bbeb480b209a3e6ea92b4c",
+"globals.html",
+"main_8cpp.html#a25a95fc0d7fa9ed58edd599d795ecd86",
+"namespacetmc51x0.html#a20af559eb85dbac784b3a4cb644cf63bad3fe043af498c0c3096222212fbeef50",
+"namespacetmc51x0__test__config.html#a7bc2612c019048baa387dc973d3c2365",
+"structstd_1_1tuple__size_3_01tmc51x0_1_1Result_3_01void_01_4_01_4.html",
+"structtmc51x0_1_1InputStatus.html#a36deada4793988b09e7f83cad2eae02a",
+"structtmc51x0_1_1StallGuardTuningResult.html#a569d0acfacd8af0f787ebf7c3f45e1c5",
+"structtmc51x0_1_1TMC51x0_1_1Printer.html#acff7f8cc159716b3a4585ec1bb2f384f",
+"structtmc51x0__test__config_1_1MotorConfig__17HS4401S.html#a1c8f60ed2391c01a2b7cf5f518a80238",
+"structtmc51x0__test__config_1_1PlatformConfig__FatigueTestRig_1_1Encoder.html#ae14a4105feee32e5a1cc248f9beb47e0",
+"tmc51x0__motor__calc_8hpp.html#a735799ad1db46015a3121adbf1cec9ac",
+"uart__multi__node__comprehensive__test_8cpp.html#ae310b1c5cb8c9a802578592d44b66126",
+"uniontmc51x0_1_1IHOLD__IRUN__Register.html#a32a5682e4e399b1f3b6334e56604ddcc",
+"uniontmc51x0_1_1SW__MODE__Register.html#a2a5ecb7ecab609fbe440df094dcf68c1"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -8,7 +8,7 @@
 <area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="814,33,503,82,502,77,813,27"/>
 <area shape="rect" id="Node000006" href="$internal__ramp__sinusoidal_8cpp.html" title="Back&#45;and&#45;forth motion example for TMC51x0 stepper motor driver." alt="" coords="527,86,741,111"/>
 <area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="833,37,671,89,669,83,831,32"/>
-<area shape="rect" id="Node000007" href="$spi__daisy__chain__comprehensive__test_8cpp.html" title="Comprehensive SPI Daisy Chain testing suite for TMC51x0 (MULTI&#45;MOTOR)" alt="" coords="765,79,997,119"/>
+<area shape="rect" id="Node000007" href="$spi__daisy__chain__comprehensive__test_8cpp.html" title="Comprehensive SPI Daisy Chain testing suite for TMC51x0." alt="" coords="765,79,997,119"/>
 <area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="883,44,883,79,878,79,878,44"/>
 <area shape="rect" id="Node000008" href="$tmc51x0_8cpp.html" title="Implementation of TMC51x0 driver methods (TMC5130 &amp; TMC5160)" alt="" coords="1021,86,1127,111"/>
 <area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="922,33,1047,84,1045,88,920,38"/>
@@ -16,7 +16,7 @@
 <area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="948,31,1195,83,1193,89,947,36"/>
 <area shape="rect" id="Node000010" href="$tmc51x0__multi__node_8hpp.html" title="High&#45;level multi&#45;node manager for multiple TMC51x0 drivers on UART (TMC5130 &amp; TMC5160)" alt="" coords="1367,86,1554,111"/>
 <area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="948,24,1132,46,1356,76,1400,83,1399,89,1355,81,1131,51,947,29"/>
-<area shape="rect" id="Node000011" href="$uart__multi__node__comprehensive__test_8cpp.html" title="Comprehensive UART Multi&#45;Node testing suite for TMC51x0 (MULTI&#45;MOTOR)" alt="" coords="1578,79,1813,119"/>
+<area shape="rect" id="Node000011" href="$uart__multi__node__comprehensive__test_8cpp.html" title="Comprehensive UART communication testing suite for TMC51x0." alt="" coords="1578,79,1813,119"/>
 <area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="948,21,1218,42,1566,76,1578,77,1577,83,1566,81,1218,47,947,27"/>
 <area shape="rect" id="Node000003" href="$fatigue__motion__impl_8hpp.html" title="Full implementation of FatigueTestMotion class." alt="" coords="5,167,191,192"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="108,124,97,167,92,166,103,123"/>

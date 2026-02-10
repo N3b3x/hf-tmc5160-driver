@@ -95,39 +95,49 @@ $(function(){initNavTree('uart__multi__node__comprehensive__test_8cpp.html','');
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">uart_multi_node_comprehensive_test.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Comprehensive UART Multi-Node testing suite for TMC51x0 (MULTI-MOTOR)  
+<p>Comprehensive UART communication testing suite for TMC51x0.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="tmc51x0_8hpp_source.html">tmc51x0.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="esp32__tmc51x0__bus_8hpp_source.html">test_config/esp32_tmc51x0_bus.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="esp32__tmc51x0__test__config_8hpp_source.html">test_config/esp32_tmc51x0_test_config.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="TestFramework_8h_source.html">test_config/TestFramework.h</a>&quot;</code><br />
 <code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for uart_multi_node_comprehensive_test.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="uart__multi__node__comprehensive__test_8cpp__incl.svg" width="2571" height="432"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="uart__multi__node__comprehensive__test_8cpp__incl.svg" width="2774" height="520"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structUartTestHandle.html">UartTestHandle</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:af0d6b8c92d7be7f167aaecfa615f0f1a" id="r_af0d6b8c92d7be7f167aaecfa615f0f1a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af0d6b8c92d7be7f167aaecfa615f0f1a">test_uart_node_addressing</a> () noexcept</td></tr>
-<tr class="memdesc:af0d6b8c92d7be7f167aaecfa615f0f1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test UART node addressing functionality.  <br /></td></tr>
-<tr class="separator:af0d6b8c92d7be7f167aaecfa615f0f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68672c7d56331e3b3fb341fd1b61896d" id="r_a68672c7d56331e3b3fb341fd1b61896d"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="structUartTestHandle.html">UartTestHandle</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a68672c7d56331e3b3fb341fd1b61896d">create_uart_drivers</a> () noexcept</td></tr>
+<tr class="memdesc:a68672c7d56331e3b3fb341fd1b61896d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create UART interface and driver instances.  <br /></td></tr>
+<tr class="separator:a68672c7d56331e3b3fb341fd1b61896d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7d6a88afbea00b65d07f2f16489ee09" id="r_ae7d6a88afbea00b65d07f2f16489ee09"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae7d6a88afbea00b65d07f2f16489ee09">test_uart_basic_communication</a> () noexcept</td></tr>
+<tr class="memdesc:ae7d6a88afbea00b65d07f2f16489ee09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Verify basic UART register read/write communication.  <br /></td></tr>
+<tr class="separator:ae7d6a88afbea00b65d07f2f16489ee09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d51614a9462c934ba45b4fc950fa559" id="r_a3d51614a9462c934ba45b4fc950fa559"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d51614a9462c934ba45b4fc950fa559">test_uart_node_address_configuration</a> () noexcept</td></tr>
-<tr class="memdesc:a3d51614a9462c934ba45b4fc950fa559"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test UART node address configuration.  <br /></td></tr>
+<tr class="memdesc:a3d51614a9462c934ba45b4fc950fa559"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test UART node address configuration via NODECONF register.  <br /></td></tr>
 <tr class="separator:a3d51614a9462c934ba45b4fc950fa559"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ee4f2081608954899837256fa107c7e" id="r_a6ee4f2081608954899837256fa107c7e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ee4f2081608954899837256fa107c7e">test_send_delay_configuration</a> () noexcept</td></tr>
-<tr class="memdesc:a6ee4f2081608954899837256fa107c7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test send delay configuration for UART multi-node.  <br /></td></tr>
+<tr class="memdesc:a6ee4f2081608954899837256fa107c7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test send delay configuration.  <br /></td></tr>
 <tr class="separator:a6ee4f2081608954899837256fa107c7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5540756c4425759d8d7f9a1a3cd1d8e9" id="r_a5540756c4425759d8d7f9a1a3cd1d8e9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5540756c4425759d8d7f9a1a3cd1d8e9">test_multi_node_coordination</a> () noexcept</td></tr>
-<tr class="memdesc:a5540756c4425759d8d7f9a1a3cd1d8e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test multi-node coordination via UART.  <br /></td></tr>
-<tr class="separator:a5540756c4425759d8d7f9a1a3cd1d8e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae310b1c5cb8c9a802578592d44b66126" id="r_ae310b1c5cb8c9a802578592d44b66126"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae310b1c5cb8c9a802578592d44b66126">test_uart_motor_control</a> () noexcept</td></tr>
+<tr class="memdesc:ae310b1c5cb8c9a802578592d44b66126"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test motor control operations over UART.  <br /></td></tr>
+<tr class="separator:ae310b1c5cb8c9a802578592d44b66126"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a630544a7f0a2cc40d8a7fefab7e2fe70" id="r_a630544a7f0a2cc40d8a7fefab7e2fe70"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a630544a7f0a2cc40d8a7fefab7e2fe70">app_main</a> (void)</td></tr>
 <tr class="separator:a630544a7f0a2cc40d8a7fefab7e2fe70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -137,49 +147,53 @@ Variables</h2></td></tr>
 <tr class="separator:a5a85b9c772bbeb480b209a3e6ea92b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaff89257c54366921eebb8ec1348b1fd" id="r_aaff89257c54366921eebb8ec1348b1fd"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structTestResults.html">TestResults</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaff89257c54366921eebb8ec1348b1fd">g_test_results</a></td></tr>
 <tr class="separator:aaff89257c54366921eebb8ec1348b1fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b0cc66ab6bfb83f4cc83b01368f70b8" id="r_a9b0cc66ab6bfb83f4cc83b01368f70b8"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b0cc66ab6bfb83f4cc83b01368f70b8">ENABLE_NODE_ADDRESSING_TESTS</a> = true</td></tr>
-<tr class="separator:a9b0cc66ab6bfb83f4cc83b01368f70b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a882585ae22fba9f0cbcaa0a344b4a861" id="r_a882585ae22fba9f0cbcaa0a344b4a861"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a882585ae22fba9f0cbcaa0a344b4a861">ENABLE_BASIC_COMM_TESTS</a> = true</td></tr>
+<tr class="separator:a882585ae22fba9f0cbcaa0a344b4a861"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47083612ee2e4bdcce0ed24b63c029bd" id="r_a47083612ee2e4bdcce0ed24b63c029bd"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a47083612ee2e4bdcce0ed24b63c029bd">ENABLE_NODE_ADDRESS_TESTS</a> = true</td></tr>
 <tr class="separator:a47083612ee2e4bdcce0ed24b63c029bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97a8ccca2c3e71c12dbfa9a9027b08e7" id="r_a97a8ccca2c3e71c12dbfa9a9027b08e7"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a97a8ccca2c3e71c12dbfa9a9027b08e7">ENABLE_SEND_DELAY_TESTS</a> = true</td></tr>
 <tr class="separator:a97a8ccca2c3e71c12dbfa9a9027b08e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab441e82e7badc80a7d32e15d5f9d3dbf" id="r_ab441e82e7badc80a7d32e15d5f9d3dbf"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab441e82e7badc80a7d32e15d5f9d3dbf">ENABLE_MULTI_NODE_COORDINATION_TESTS</a> = true</td></tr>
-<tr class="separator:ab441e82e7badc80a7d32e15d5f9d3dbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9557a3af436dca83c9aba80d29adda7" id="r_ae9557a3af436dca83c9aba80d29adda7"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae9557a3af436dca83c9aba80d29adda7">TEST_NODE_COUNT</a> = 2</td></tr>
+<tr class="memitem:a76c29de1b8c6ad360aa84fc460b45e5e" id="r_a76c29de1b8c6ad360aa84fc460b45e5e"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a76c29de1b8c6ad360aa84fc460b45e5e">ENABLE_MOTOR_CONTROL_TESTS</a> = true</td></tr>
+<tr class="separator:a76c29de1b8c6ad360aa84fc460b45e5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9557a3af436dca83c9aba80d29adda7" id="r_ae9557a3af436dca83c9aba80d29adda7"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae9557a3af436dca83c9aba80d29adda7">TEST_NODE_COUNT</a> = 1</td></tr>
+<tr class="memdesc:ae9557a3af436dca83c9aba80d29adda7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of TMC51x0 nodes on the UART bus. Set to 1 for single-driver setups.  <br /></td></tr>
 <tr class="separator:ae9557a3af436dca83c9aba80d29adda7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83d0ba1eda12d12b516f53b6f3d7bf15" id="r_a83d0ba1eda12d12b516f53b6f3d7bf15"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a83d0ba1eda12d12b516f53b6f3d7bf15">TEST_IRUN</a> = 20</td></tr>
-<tr class="separator:a83d0ba1eda12d12b516f53b6f3d7bf15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43f36d608ddb89bbbc098f546646a914" id="r_a43f36d608ddb89bbbc098f546646a914"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a43f36d608ddb89bbbc098f546646a914">TEST_IHOLD</a> = 10</td></tr>
-<tr class="separator:a43f36d608ddb89bbbc098f546646a914"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca2e55a43fbb2e21649216d80ec402f0" id="r_aca2e55a43fbb2e21649216d80ec402f0"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aca2e55a43fbb2e21649216d80ec402f0">TEST_GLOBAL_SCALER</a> = 32</td></tr>
-<tr class="separator:aca2e55a43fbb2e21649216d80ec402f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41fcf4530de550ff6f72008fcded08cc" id="r_a41fcf4530de550ff6f72008fcded08cc"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41fcf4530de550ff6f72008fcded08cc">TEST_TOFF</a> = 5</td></tr>
-<tr class="separator:a41fcf4530de550ff6f72008fcded08cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4ac48c833f5c615fa07b1f87dacd8a5" id="r_ab4ac48c833f5c615fa07b1f87dacd8a5"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacetmc51x0.html#a06908f208ee192aff6a8e8f0346bd8c4">tmc51x0::MicrostepResolution</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4ac48c833f5c615fa07b1f87dacd8a5">TEST_MRES</a> = <a class="el" href="namespacetmc51x0.html#a06908f208ee192aff6a8e8f0346bd8c4af6a5e029c66401ac3bb0d52f2f29353e">tmc51x0::MicrostepResolution::MRES_256</a></td></tr>
-<tr class="separator:ab4ac48c833f5c615fa07b1f87dacd8a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9412a6c6f9f256a359de36af126af92" id="r_ab9412a6c6f9f256a359de36af126af92"><td class="memItemLeft" align="right" valign="top">static constexpr uart_port_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab9412a6c6f9f256a359de36af126af92">UART_PORT</a> = UART_NUM_1</td></tr>
+<tr class="memdesc:ab9412a6c6f9f256a359de36af126af92"><td class="mdescLeft">&#160;</td><td class="mdescRight">UART port (avoid UART_NUM_0 which is typically used for the USB console)  <br /></td></tr>
+<tr class="separator:ab9412a6c6f9f256a359de36af126af92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcbea3caec4843f30be3e9dda6bb50e9" id="r_adcbea3caec4843f30be3e9dda6bb50e9"><td class="memItemLeft" align="right" valign="top">static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adcbea3caec4843f30be3e9dda6bb50e9">UART_BAUD</a> = 115200</td></tr>
+<tr class="memdesc:adcbea3caec4843f30be3e9dda6bb50e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">UART baud rate &ndash; TMC5160 auto-detects from sync frame.  <br /></td></tr>
+<tr class="separator:adcbea3caec4843f30be3e9dda6bb50e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c088a419ad467e0e0213135320a1bee" id="r_a7c088a419ad467e0e0213135320a1bee"><td class="memItemLeft" align="right" valign="top">static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7c088a419ad467e0e0213135320a1bee">UART_TX_PIN</a> = 17</td></tr>
+<tr class="memdesc:a7c088a419ad467e0e0213135320a1bee"><td class="mdescLeft">&#160;</td><td class="mdescRight">UART pin configuration.  <br /></td></tr>
+<tr class="separator:a7c088a419ad467e0e0213135320a1bee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e2d6cf0c25c28eeae046102c051ef13" id="r_a6e2d6cf0c25c28eeae046102c051ef13"><td class="memItemLeft" align="right" valign="top">static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6e2d6cf0c25c28eeae046102c051ef13">UART_RX_PIN</a> = 16</td></tr>
+<tr class="separator:a6e2d6cf0c25c28eeae046102c051ef13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8c3956fac9ec57e187defc75fd1ad4e" id="r_ab8c3956fac9ec57e187defc75fd1ad4e"><td class="memItemLeft" align="right" valign="top">static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab8c3956fac9ec57e187defc75fd1ad4e">EN_PIN</a> = 11</td></tr>
+<tr class="separator:ab8c3956fac9ec57e187defc75fd1ad4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f1e89f6e3a0be599511d4a8cc389305" id="r_a3f1e89f6e3a0be599511d4a8cc389305"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0">tmc51x0_test_config::TestRigType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f1e89f6e3a0be599511d4a8cc389305">SELECTED_TEST_RIG</a></td></tr>
+<tr class="memdesc:a3f1e89f6e3a0be599511d4a8cc389305"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test rig selection for motor configuration.  <br /></td></tr>
+<tr class="separator:a3f1e89f6e3a0be599511d4a8cc389305"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Comprehensive UART Multi-Node testing suite for TMC51x0 (MULTI-MOTOR) </p>
-<p>⚠️ MULTI-MOTOR HARDWARE REQUIRED ⚠️ This test suite requires multiple TMC51x0 drivers connected in a UART network. DO NOT run these tests on a single-motor setup.</p>
-<p>This file contains comprehensive testing for TMC51x0 UART multi-node features:</p><ul>
-<li>UART node addressing</li>
-<li>UART node address configuration</li>
+<div class="textblock"><p>Comprehensive UART communication testing suite for TMC51x0. </p>
+<p>Tests UART single-wire communication with 1 or more TMC51x0 drivers. Set TEST_NODE_COUNT to match your hardware (default: 1).</p>
+<p>Features tested:</p><ul>
+<li>UART interface initialization and basic register access</li>
+<li>Node address configuration (NODECONF register)</li>
 <li>Send delay configuration</li>
-<li>Multi-node coordination</li>
-<li>NAI/NAO pin management</li>
+<li>Multi-node coordination (when TEST_NODE_COUNT &gt; 1)</li>
 </ul>
 <p>Hardware Requirements:</p><ul>
 <li>ESP32 development board</li>
-<li>2+ TMC51x0 stepper motor drivers (connected via UART with NAI/NAO daisy chain)</li>
-<li>Stepper motors connected to each TMC51x0</li>
-<li>UART connection: All chips share TXD/RXD</li>
-<li>NAI/NAO pins for addressing: First chip NAI to GND, chain NAO→NAI</li>
+<li>1+ TMC51x0 stepper motor drivers in UART mode (SD_MODE=LOW, SPI_MODE=LOW)</li>
+<li>UART wiring: ESP32 TX -&gt; TMC5160 SWN, ESP32 RX &lt;- TMC5160 SWP</li>
+<li>For multi-node: NAI/NAO daisy chain (first chip NAI to GND)</li>
 </ul>
 <p>Pin Configuration (modify as needed):</p><ul>
-<li>UART: TX=17, RX=16, TXEN=4 (optional, for RS485 transceiver)</li>
-<li>NAI/NAO: GPIO pins for controlling addressing</li>
-<li>Control: EN=2, DIR=4, STEP=15 (can be shared or separate per chip)</li>
-<li>Mode pins: SD_MODE=0 (GND), SPI_MODE=0 (GND) for UART mode</li>
+<li>UART TX: GPIO 17</li>
+<li>UART RX: GPIO 16</li>
+<li>EN: GPIO 11</li>
 </ul>
 <dl class="section author"><dt>Author</dt><dd>Nebiyu Tadesse </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2025 </dd></dl>
@@ -201,13 +215,13 @@ Variables</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="uart__multi__node__comprehensive__test_8cpp_a630544a7f0a2cc40d8a7fefab7e2fe70_cgraph.svg" width="788" height="379"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="uart__multi__node__comprehensive__test_8cpp_a630544a7f0a2cc40d8a7fefab7e2fe70_cgraph.svg" width="798" height="378"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a5540756c4425759d8d7f9a1a3cd1d8e9" name="a5540756c4425759d8d7f9a1a3cd1d8e9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5540756c4425759d8d7f9a1a3cd1d8e9">&#9670;&#160;</a></span>test_multi_node_coordination()</h2>
+<a id="a68672c7d56331e3b3fb341fd1b61896d" name="a68672c7d56331e3b3fb341fd1b61896d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68672c7d56331e3b3fb341fd1b61896d">&#9670;&#160;</a></span>create_uart_drivers()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -216,7 +230,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool test_multi_node_coordination </td>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="structUartTestHandle.html">UartTestHandle</a> &gt; create_uart_drivers </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
@@ -229,13 +243,12 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Test multi-node coordination via UART. </p>
-<dl class="section return"><dt>Returns</dt><dd>true if test passed, false otherwise </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>This test requires UART interface implementation </dd></dl>
+<p>Create UART interface and driver instances. </p>
+<p>Creates one <a class="el" href="classEsp32UART.html" title="ESP32 UART implementation of TMC51x0 communication interface.">Esp32UART</a> interface shared by all drivers, and one TMC51x0 instance per node. Each driver is assigned node address 0 initially (sequential programming would assign unique addresses). </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="uart__multi__node__comprehensive__test_8cpp_a5540756c4425759d8d7f9a1a3cd1d8e9_icgraph.svg" width="360" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="uart__multi__node__comprehensive__test_8cpp_a68672c7d56331e3b3fb341fd1b61896d_icgraph.svg" width="571" height="200"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -263,13 +276,93 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Test send delay configuration for UART multi-node. </p>
-<dl class="section return"><dt>Returns</dt><dd>true if test passed, false otherwise </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>This test requires UART interface implementation </dd></dl>
+<p>Test send delay configuration. </p>
+<p>SENDDELAY (NODECONF bits 11:8) controls the number of bit-times the TMC5160 waits before replying to a read request. For multi-node systems, this must be &gt;= 2 to avoid bus contention. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="uart__multi__node__comprehensive__test_8cpp_a6ee4f2081608954899837256fa107c7e_cgraph.svg" width="427" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="uart__multi__node__comprehensive__test_8cpp_a6ee4f2081608954899837256fa107c7e_icgraph.svg" width="366" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ae7d6a88afbea00b65d07f2f16489ee09" name="ae7d6a88afbea00b65d07f2f16489ee09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7d6a88afbea00b65d07f2f16489ee09">&#9670;&#160;</a></span>test_uart_basic_communication()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool test_uart_basic_communication </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Verify basic UART register read/write communication. </p>
+<p>Reads the IOIN register (0x04) which contains chip version and pin states. A successful read confirms the UART link, baud rate detection, and CRC are all working. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="uart__multi__node__comprehensive__test_8cpp_ae7d6a88afbea00b65d07f2f16489ee09_cgraph.svg" width="436" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="uart__multi__node__comprehensive__test_8cpp_ae7d6a88afbea00b65d07f2f16489ee09_icgraph.svg" width="375" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ae310b1c5cb8c9a802578592d44b66126" name="ae310b1c5cb8c9a802578592d44b66126"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae310b1c5cb8c9a802578592d44b66126">&#9670;&#160;</a></span>test_uart_motor_control()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool test_uart_motor_control </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Test motor control operations over UART. </p>
+<p>Initializes the driver, configures ramp parameters, enables the motor, commands a small move, and polls for completion. This proves the full driver API works over UART, not just register access. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="uart__multi__node__comprehensive__test_8cpp_ae310b1c5cb8c9a802578592d44b66126_cgraph.svg" width="386" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="uart__multi__node__comprehensive__test_8cpp_ae310b1c5cb8c9a802578592d44b66126_icgraph.svg" width="324" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -297,9 +390,13 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Test UART node address configuration. </p>
-<dl class="section return"><dt>Returns</dt><dd>true if test passed, false otherwise </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>This test requires UART interface implementation </dd></dl>
+<p>Test UART node address configuration via NODECONF register. </p>
+<p>Writes a new node address via ConfigureUartNodeAddress(), then verifies the driver tracks it by checking GetUartNodeAddress(). Since NODECONF is write-only, we verify by reading IOIN on the new address to confirm the chip responds. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="uart__multi__node__comprehensive__test_8cpp_a3d51614a9462c934ba45b4fc950fa559_cgraph.svg" width="384" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -308,8 +405,9 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="af0d6b8c92d7be7f167aaecfa615f0f1a" name="af0d6b8c92d7be7f167aaecfa615f0f1a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af0d6b8c92d7be7f167aaecfa615f0f1a">&#9670;&#160;</a></span>test_uart_node_addressing()</h2>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="ab8c3956fac9ec57e187defc75fd1ad4e" name="ab8c3956fac9ec57e187defc75fd1ad4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8c3956fac9ec57e187defc75fd1ad4e">&#9670;&#160;</a></span>EN_PIN</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -318,33 +416,20 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool test_uart_node_addressing </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td></td>
+          <td class="memname">constexpr int EN_PIN = 11</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Test UART node addressing functionality. </p>
-<dl class="section return"><dt>Returns</dt><dd>true if test passed, false otherwise </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>This test requires UART interface implementation </dd></dl>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="uart__multi__node__comprehensive__test_8cpp_af0d6b8c92d7be7f167aaecfa615f0f1a_icgraph.svg" width="343" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
 </div>
 </div>
-<h2 class="groupheader">Variable Documentation</h2>
-<a id="ab441e82e7badc80a7d32e15d5f9d3dbf" name="ab441e82e7badc80a7d32e15d5f9d3dbf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab441e82e7badc80a7d32e15d5f9d3dbf">&#9670;&#160;</a></span>ENABLE_MULTI_NODE_COORDINATION_TESTS</h2>
+<a id="a882585ae22fba9f0cbcaa0a344b4a861" name="a882585ae22fba9f0cbcaa0a344b4a861"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a882585ae22fba9f0cbcaa0a344b4a861">&#9670;&#160;</a></span>ENABLE_BASIC_COMM_TESTS</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -353,7 +438,29 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ENABLE_MULTI_NODE_COORDINATION_TESTS = true</td>
+          <td class="memname">constexpr bool ENABLE_BASIC_COMM_TESTS = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a76c29de1b8c6ad360aa84fc460b45e5e" name="a76c29de1b8c6ad360aa84fc460b45e5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76c29de1b8c6ad360aa84fc460b45e5e">&#9670;&#160;</a></span>ENABLE_MOTOR_CONTROL_TESTS</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool ENABLE_MOTOR_CONTROL_TESTS = true</td>
         </tr>
       </table>
   </td>
@@ -376,28 +483,6 @@ Here is the caller graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname">constexpr bool ENABLE_NODE_ADDRESS_TESTS = true</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a9b0cc66ab6bfb83f4cc83b01368f70b8" name="a9b0cc66ab6bfb83f4cc83b01368f70b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b0cc66ab6bfb83f4cc83b01368f70b8">&#9670;&#160;</a></span>ENABLE_NODE_ADDRESSING_TESTS</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr bool ENABLE_NODE_ADDRESSING_TESTS = true</td>
         </tr>
       </table>
   </td>
@@ -453,6 +538,33 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a3f1e89f6e3a0be599511d4a8cc389305" name="a3f1e89f6e3a0be599511d4a8cc389305"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f1e89f6e3a0be599511d4a8cc389305">&#9670;&#160;</a></span>SELECTED_TEST_RIG</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0">tmc51x0_test_config::TestRigType</a> SELECTED_TEST_RIG</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">    <a class="code hl_enumvalue" href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0a81d3a109e3d88b343cd45c32f41dd824">tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER</a></div>
+<div class="ttc" id="anamespacetmc51x0__test__config_html_abbe03fa70b2e9f4f6cc025761f518df0a81d3a109e3d88b343cd45c32f41dd824"><div class="ttname"><a href="namespacetmc51x0__test__config.html#abbe03fa70b2e9f4f6cc025761f518df0a81d3a109e3d88b343cd45c32f41dd824">tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER</a></div><div class="ttdeci">@ TEST_RIG_CORE_DRIVER</div><div class="ttdoc">Core driver test rig (17HS4401S motor, TMC51x0 EVAL board, reference switches, encoder)</div></div>
+</div><!-- fragment -->
+<p>Test rig selection for motor configuration. </p>
+
+</div>
+</div>
 <a id="a5a85b9c772bbeb480b209a3e6ea92b4c" name="a5a85b9c772bbeb480b209a3e6ea92b4c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5a85b9c772bbeb480b209a3e6ea92b4c">&#9670;&#160;</a></span>TAG</h2>
 
@@ -475,94 +587,6 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="aca2e55a43fbb2e21649216d80ec402f0" name="aca2e55a43fbb2e21649216d80ec402f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca2e55a43fbb2e21649216d80ec402f0">&#9670;&#160;</a></span>TEST_GLOBAL_SCALER</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr uint8_t TEST_GLOBAL_SCALER = 32</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a43f36d608ddb89bbbc098f546646a914" name="a43f36d608ddb89bbbc098f546646a914"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a43f36d608ddb89bbbc098f546646a914">&#9670;&#160;</a></span>TEST_IHOLD</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr uint8_t TEST_IHOLD = 10</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a83d0ba1eda12d12b516f53b6f3d7bf15" name="a83d0ba1eda12d12b516f53b6f3d7bf15"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a83d0ba1eda12d12b516f53b6f3d7bf15">&#9670;&#160;</a></span>TEST_IRUN</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr uint8_t TEST_IRUN = 20</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ab4ac48c833f5c615fa07b1f87dacd8a5" name="ab4ac48c833f5c615fa07b1f87dacd8a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4ac48c833f5c615fa07b1f87dacd8a5">&#9670;&#160;</a></span>TEST_MRES</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="namespacetmc51x0.html#a06908f208ee192aff6a8e8f0346bd8c4">tmc51x0::MicrostepResolution</a> TEST_MRES = <a class="el" href="namespacetmc51x0.html#a06908f208ee192aff6a8e8f0346bd8c4af6a5e029c66401ac3bb0d52f2f29353e">tmc51x0::MicrostepResolution::MRES_256</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="ae9557a3af436dca83c9aba80d29adda7" name="ae9557a3af436dca83c9aba80d29adda7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae9557a3af436dca83c9aba80d29adda7">&#9670;&#160;</a></span>TEST_NODE_COUNT</h2>
 
@@ -573,7 +597,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t TEST_NODE_COUNT = 2</td>
+          <td class="memname">constexpr uint8_t TEST_NODE_COUNT = 1</td>
         </tr>
       </table>
   </td>
@@ -583,10 +607,12 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>Number of TMC51x0 nodes on the UART bus. Set to 1 for single-driver setups. </p>
+
 </div>
 </div>
-<a id="a41fcf4530de550ff6f72008fcded08cc" name="a41fcf4530de550ff6f72008fcded08cc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a41fcf4530de550ff6f72008fcded08cc">&#9670;&#160;</a></span>TEST_TOFF</h2>
+<a id="adcbea3caec4843f30be3e9dda6bb50e9" name="adcbea3caec4843f30be3e9dda6bb50e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adcbea3caec4843f30be3e9dda6bb50e9">&#9670;&#160;</a></span>UART_BAUD</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -595,7 +621,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t TEST_TOFF = 5</td>
+          <td class="memname">constexpr uint32_t UART_BAUD = 115200</td>
         </tr>
       </table>
   </td>
@@ -604,6 +630,78 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>UART baud rate &ndash; TMC5160 auto-detects from sync frame. </p>
+
+</div>
+</div>
+<a id="ab9412a6c6f9f256a359de36af126af92" name="ab9412a6c6f9f256a359de36af126af92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9412a6c6f9f256a359de36af126af92">&#9670;&#160;</a></span>UART_PORT</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uart_port_t UART_PORT = UART_NUM_1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>UART port (avoid UART_NUM_0 which is typically used for the USB console) </p>
+
+</div>
+</div>
+<a id="a6e2d6cf0c25c28eeae046102c051ef13" name="a6e2d6cf0c25c28eeae046102c051ef13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e2d6cf0c25c28eeae046102c051ef13">&#9670;&#160;</a></span>UART_RX_PIN</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int UART_RX_PIN = 16</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7c088a419ad467e0e0213135320a1bee" name="a7c088a419ad467e0e0213135320a1bee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c088a419ad467e0e0213135320a1bee">&#9670;&#160;</a></span>UART_TX_PIN</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int UART_TX_PIN = 17</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>UART pin configuration. </p>
 
 </div>
 </div>

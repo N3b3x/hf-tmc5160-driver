@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Comprehensive SPI Daisy Chain testing suite for TMC51x0 (MULTI&#45;MOTOR)">
+<g id="a_Node000001"><a xlink:title="Comprehensive SPI Daisy Chain testing suite for TMC51x0.">
 <polygon fill="#999999" stroke="#666666" points="1270.91,-382 1096.91,-382 1096.91,-352 1270.91,-352 1270.91,-382"/>
 <text text-anchor="start" x="1104.91" y="-370" font-family="Helvetica,sans-Serif" font-size="10.00">spi_daisy_chain_comprehensive</text>
 <text text-anchor="middle" x="1183.91" y="-359" font-family="Helvetica,sans-Serif" font-size="10.00">_test.cpp</text>

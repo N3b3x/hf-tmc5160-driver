@@ -15,7 +15,7 @@ var searchData=
   ['phase_5fa_12',['phase_a',['../uniontmc51x0_1_1OFFSET__READ__Register.html#aa82c19106d4d89d843e745254a229e14',1,'tmc51x0::OFFSET_READ_Register']]],
   ['phase_5fb_13',['phase_b',['../uniontmc51x0_1_1OFFSET__READ__Register.html#a7e7c3a358c53d2f89d2e349c82b12dcd',1,'tmc51x0::OFFSET_READ_Register']]],
   ['pi_14',['PI',['../namespacetmc51x0_1_1MathConstants.html#a0ff92ff0ce1a04a8e74a707251a24e62',1,'tmc51x0::MathConstants']]],
-  ['pin_5fmapping_5f_15',['pin_mapping_',['../classEsp32SPI.html#a13a97f1e317116fbe4ad7c5f6f55881f',1,'Esp32SPI']]],
+  ['pin_5fmapping_5f_15',['pin_mapping_',['../classEsp32SPI.html#a13a97f1e317116fbe4ad7c5f6f55881f',1,'Esp32SPI::pin_mapping_'],['../classEsp32UART.html#ad7f57402a973223a84b1ded486ec0e5b',1,'Esp32UART::pin_mapping_']]],
   ['platform_5ftype_16',['platform_type',['../structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__CORE__DRIVER_01_4.html#a1651c81eb8ef7cb4fe09ae8658d9e0fb',1,'tmc51x0_test_config::TestRigConfig&lt; TestRigType::TEST_RIG_CORE_DRIVER &gt;::platform_type'],['../structtmc51x0__test__config_1_1TestRigConfig_3_01TestRigType_1_1TEST__RIG__FATIGUE_01_4.html#af2a809607c52c8ca2bb4547c02ee0fac',1,'tmc51x0_test_config::TestRigConfig&lt; TestRigType::TEST_RIG_FATIGUE &gt;::platform_type']]],
   ['pol_5fa_17',['pol_A',['../uniontmc51x0_1_1ENCMODE__Register.html#acfcb67a20facb00f8b4998cc02b47eeb',1,'tmc51x0::ENCMODE_Register']]],
   ['pol_5fb_18',['pol_B',['../uniontmc51x0_1_1ENCMODE__Register.html#a82c56c9f117638981dc20f2f85d6b2cb',1,'tmc51x0::ENCMODE_Register']]],

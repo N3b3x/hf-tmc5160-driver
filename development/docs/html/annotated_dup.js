@@ -98,6 +98,8 @@ var annotated_dup =
     [ "Esp32SPI", "classEsp32SPI.html", "classEsp32SPI" ],
     [ "Esp32SpiPinConfig", "structEsp32SpiPinConfig.html", "structEsp32SpiPinConfig" ],
     [ "Esp32TmcMutex", "classEsp32TmcMutex.html", "classEsp32TmcMutex" ],
+    [ "Esp32UART", "classEsp32UART.html", "classEsp32UART" ],
+    [ "Esp32UartPinConfig", "structEsp32UartPinConfig.html", "structEsp32UartPinConfig" ],
     [ "EspNowHeader", "structEspNowHeader.html", "structEspNowHeader" ],
     [ "EspNowPacket", "structEspNowPacket.html", "structEspNowPacket" ],
     [ "OptionParser", "classOptionParser.html", "classOptionParser" ],
@@ -117,5 +119,6 @@ var annotated_dup =
     [ "TestUnitSettings", "structTestUnitSettings.html", "structTestUnitSettings" ],
     [ "TmcMutexGuard", "classTmcMutexGuard.html", "classTmcMutexGuard" ],
     [ "UartCommandParser", "classUartCommandParser.html", "classUartCommandParser" ],
+    [ "UartTestHandle", "structUartTestHandle.html", "structUartTestHandle" ],
     [ "UISettings", "structUISettings.html", "structUISettings" ]
 ];
