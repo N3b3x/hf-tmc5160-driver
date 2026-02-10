@@ -1,3 +1,12 @@
+---
+layout: default
+title: "Driver Configuration Guide"
+description: "Compile-time configuration hierarchy for the TMC51x0 driver on ESP32"
+nav_order: 3
+parent: "ESP32 Examples"
+permalink: /docs/esp32-examples/driver-configuration/
+---
+
 # Driver Configuration Guide
 
 ## Overview

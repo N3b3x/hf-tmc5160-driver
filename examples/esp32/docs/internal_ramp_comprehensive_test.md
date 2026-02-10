@@ -1,3 +1,12 @@
+---
+layout: default
+title: "Internal Ramp Comprehensive Test"
+description: "Comprehensive test suite covering all TMC51x0 driver features in SPI internal ramp mode"
+nav_order: 4
+parent: "ESP32 Examples"
+permalink: /docs/esp32-examples/internal-ramp-comprehensive-test/
+---
+
 # Internal Ramp Comprehensive Test
 
 ## Overview

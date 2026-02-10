@@ -1,3 +1,12 @@
+---
+layout: default
+title: "Back-and-Forth Motion Example"
+description: "Simple back-and-forth positioning motion using the TMC5160 internal ramp generator"
+nav_order: 5
+parent: "ESP32 Examples"
+permalink: /docs/esp32-examples/back-and-forth-motion/
+---
+
 # Internal Ramp Sinusoidal Motion Example
 
 ## Overview

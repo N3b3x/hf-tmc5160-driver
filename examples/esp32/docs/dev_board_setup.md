@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "🛠️ Dev Board Setup"
+title: "Dev Board Setup"
 description: "Hardware configuration and pinout for the TMC5160 development board"
-nav_order: 4
-parent: "📚 Documentation"
-permalink: /docs/dev_board_setup/
+nav_order: 1
+parent: "ESP32 Examples"
+permalink: /docs/esp32-examples/dev-board-setup/
 ---
 
 # Development Board Setup

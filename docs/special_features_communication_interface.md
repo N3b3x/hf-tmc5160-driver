@@ -1,3 +1,12 @@
+---
+layout: default
+title: "Communication Interface"
+description: "Low-level SPI and UART communication interface details for the TMC51x0 driver"
+nav_order: 14
+parent: "📚 Documentation"
+permalink: /docs/communication-interface/
+---
+
 # Communication Interface
 
 The TMC51x0 driver (TMC5130 & TMC5160) provides a flexible and robust communication interface layer that supports both **SPI** (Serial Peripheral Interface) and **UART** (Single Wire Interface) protocols. This abstraction allows the core driver logic to remain platform-agnostic while ensuring strict compliance with the TMC51x0 datasheet specifications.

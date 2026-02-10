@@ -1,279 +1,193 @@
-# UART Multi-Node Comprehensive Test
+---
+layout: default
+title: "UART Communication Test"
+description: "UART single-wire communication testing for TMC51x0 (single and multi-node)"
+nav_order: 7
+parent: "ESP32 Examples"
+permalink: /docs/esp32-examples/uart-communication-test/
+---
+
+# UART Communication Test Suite
 
 ## Overview
 
-The `uart_multi_node_comprehensive_test.cpp` provides comprehensive testing for TMC5160 UART multi-node features including node addressing, NODECONF node address configuration, send delay configuration, and multi-node coordination.
+The `uart_multi_node_comprehensive_test.cpp` tests TMC51x0 UART single-wire communication with 1 or more drivers. It exercises the full communication stack -- from raw register access through motor control -- over UART instead of SPI.
 
 ## Purpose
 
-This test suite is ideal for:
-- Validating UART multi-node configuration
-- Testing node addressing
-- Verifying node address assignment
-- Testing send delay configuration
-- Validating multi-node coordination
-
-## ⚠️ Important Warning
-
-**MULTI-MOTOR HARDWARE REQUIRED**
-
-This test suite requires **multiple TMC51x0 driver (TMC5130 & TMC5160)s** connected in a UART network. **DO NOT run these tests on a single-motor setup.**
+This test suite validates:
+- ESP32 UART interface initialization and baud rate sync with the TMC5160
+- Register read/write communication (IOIN, GCONF)
+- Node address configuration (NODECONF register)
+- Send delay configuration for multi-node systems
+- Full motor control (ramp, enable, positioning) over UART
 
 ## Test Categories
 
-### 1. Node Addressing Tests
+### 1. Basic UART Communication
 
-Tests UART node addressing:
-- Node address configuration
-- NAI/NAO pin management
-- Address assignment
-- Address verification
+Initializes the driver, reads IOIN (chip version) and GCONF to verify the UART link, CRC, and frame structure all work.
 
-### 2. Node Address (NODECONF) Tests
+**What it proves:** The `Esp32UART` class correctly implements `UartSend()` / `UartReceive()`, the TMC5160 auto-detects the baud rate from the sync frame, and CRC8 checksums are valid in both directions.
 
-Tests NODECONF node address configuration:
-- Node address setting
-- Address reading
-- Address verification
+### 2. Node Address Configuration
 
-### 3. Send Delay Tests
+Writes a new address (e.g. 42) via `ConfigureUartNodeAddress()`, then reads IOIN on that address to confirm the chip responds. Restores address 0 afterward.
 
-Tests send delay configuration:
-- Send delay setting
-- Delay timing
-- Delay verification
+**What it proves:** The NODECONF register write works, and the driver correctly tracks the address in software so subsequent reads use the new address.
 
-### 4. Multi-Node Coordination Tests
+### 3. Send Delay Configuration
 
-Tests multi-node coordination:
-- Simultaneous node control
-- Coordinated operations
-- Multi-node status reading
+Iterates through SENDDELAY values (0, 1, 2, 4, 8) and reads IOIN after each to verify communication still works. SENDDELAY controls how many bit-times the TMC5160 waits before replying.
 
-## Hardware Requirements
+**What it proves:** The receive timeout in `Esp32UART::UartReceive()` handles varying reply delays correctly. For multi-node systems, SENDDELAY >= 2 is required.
 
-- ESP32 development board
-- **2+ TMC5160 stepper motor drivers** (connected via UART)
-- Stepper motors connected to each TMC5160
-- UART connection: All chips share TXD/RXD
-- NAI/NAO pins for addressing: First chip NAI to GND, chain NAO→NAI
-- Mode pins: SD_MODE=0 (GND), SPI_MODE=0 (GND) for UART mode
+### 4. Motor Control via UART
 
-## UART Multi-Node Wiring
+Initializes ramp parameters, enables the motor, commands a 45-degree move, and polls `IsTargetReached()` until the motor arrives. This proves the full driver API works over UART.
 
-### UART Connection
+**What it proves:** All driver subsystems (motorControl, rampControl) function correctly over UART, not just raw register access.
 
-All chips share UART signals:
-- **TXD**: Shared transmit (MCU TX → all chips RX)
-- **RXD**: Shared receive (MCU RX ← all chips TX)
-- **TXEN**: Optional, for RS485 transceiver
+## Hardware Configuration
 
-### NAI/NAO Addressing Chain
-
-NAI/NAO pins form a daisy chain for addressing:
-- **Chip 1**: NAI → GND (address 0)
-- **Chip 1 NAO** → **Chip 2 NAI** (address 1)
-- **Chip 2 NAO** → **Chip 3 NAI** (address 2)
-- And so on...
-
-### Example Wiring (2 Nodes)
+### Single-Driver Setup (default: `TEST_NODE_COUNT = 1`)
 
 ```
-MCU          Chip 1          Chip 2
-TXD ──────── RXD ──────────── RXD
-RXD ──────── TXD ──────────── TXD
-GND ──────── NAI
-             NAO ──────────── NAI
+ESP32                TMC5160
+GPIO 17 (TX) ------> SWN (pin 26 / DIAG0_SWN)
+GPIO 16 (RX) <------ SWP (pin 27 / DIAG1_SWP)
+GPIO 11      ------> DRV_ENN (enable)
+GND          ------> SD_MODE (pin 21) -- LOW for UART mode
+GND          ------> SPI_MODE (pin 22) -- LOW for UART mode
 ```
 
-### Example Wiring (3 Nodes)
+### Multi-Driver UART Bus
+
+All chips share the same TX/RX lines. NAI/NAO pins form an addressing chain:
 
 ```
-MCU          Chip 1          Chip 2          Chip 3
-TXD ──────── RXD ──────────── RXD ──────────── RXD
-RXD ──────── TXD ──────────── TXD ──────────── TXD
-GND ──────── NAI
-             NAO ──────────── NAI
-                              NAO ──────────── NAI
+ESP32          Chip 1                Chip 2
+TX  ---------- SWN ------------------- SWN
+RX  ---------- SWP ------------------- SWP
+GND ---------- NAI (SDI_CFG1)
+               NAO (SDO_CFG0) -------- NAI (SDI_CFG1)
 ```
 
 ## Pin Configuration
 
-Default pin configuration:
+Default pins (edit in the source file):
 
-- **UART**: TX=17, RX=16, TXEN=4 (optional, for RS485)
-- **NAI/NAO**: GPIO pins for addressing (configured via code)
-- **Control**: EN, DIR, STEP (can be shared or separate)
-- **Mode Pins**: SD_MODE=0 (GND), SPI_MODE=0 (GND) for UART mode
+| Signal | GPIO | Description |
+|--------|------|-------------|
+| UART TX | 17 | ESP32 TX -> TMC5160 SWN |
+| UART RX | 16 | ESP32 RX <- TMC5160 SWP |
+| EN | 11 | Motor enable (active LOW) |
+| SD_MODE | GND | Must be LOW for UART mode |
+| SPI_MODE | GND | Must be LOW for UART mode |
 
 ## Test Configuration
 
-Tests can be enabled/disabled:
+Adjust these constants in the source file:
 
 ```cpp
-static constexpr bool ENABLE_NODE_ADDRESSING_TESTS = true;
+static constexpr uint8_t TEST_NODE_COUNT = 1;   // Number of TMC nodes on the bus
+static constexpr uart_port_t UART_PORT = UART_NUM_1;
+static constexpr uint32_t UART_BAUD = 115200;   // TMC5160 auto-detects
+static constexpr int UART_TX_PIN = 17;
+static constexpr int UART_RX_PIN = 16;
+static constexpr int EN_PIN      = 11;
+```
+
+Test sections can be individually enabled/disabled:
+
+```cpp
+static constexpr bool ENABLE_BASIC_COMM_TESTS = true;
 static constexpr bool ENABLE_NODE_ADDRESS_TESTS = true;
 static constexpr bool ENABLE_SEND_DELAY_TESTS = true;
-static constexpr bool ENABLE_MULTI_NODE_COORDINATION_TESTS = true;
+static constexpr bool ENABLE_MOTOR_CONTROL_TESTS = true;
 ```
-
-**Note**: The UART multi-node test currently uses placeholder implementations. The test functions log warnings that UART interface implementation is required and return true. Actual UART communication and multi-node logic would need to be added (e.g., following a UART daisy chain example pattern).
-
-### Node Count Configuration
-
-Set the number of nodes:
-
-```cpp
-static constexpr uint8_t TEST_NODE_COUNT = 2; // Number of nodes
-```
-
-## UART Multi-Node Operation
-
-### Node Addressing
-
-Each node in the UART network has:
-- **Hardware Address**: Determined by NAI/NAO chain position (0, 1, 2, ...)
-- **Node Address (NODECONF.NODEADDR)**: Software-configurable node address (typically set during sequential programming)
-
-### Communication Protocol
-
-UART multi-node uses:
-- **Broadcast**: Address 0xFF (all nodes respond)
-- **Specific Address**: Address 0-254 (only matching node responds)
-- **Send Delay**: Delay between transmissions for proper addressing
-
-### Sequential Programming
-
-For initial configuration, use sequential programming:
-- Configure nodes one at a time
-- Use NAI/NAO pins to select node
-- Set NODECONF node address and other parameters
-
-## Detailed Test Descriptions
-
-### Node Addressing Tests
-
-#### Test: Node Address Configuration
-- **Purpose**: Verify node addresses can be configured
-- **Steps**:
-  1. Configure NAI/NAO pins
-  2. Set node addresses
-  3. Verify addresses assigned correctly
-- **Expected**: Node addresses configured correctly
-
-#### Test: Address Verification
-- **Purpose**: Verify addresses are correct
-- **Steps**:
-  1. Read address from each node
-  2. Verify addresses match expected
-  3. Test addressing works
-- **Expected**: Addresses verified correctly
-
-### Node Address (NODECONF) Tests
-
-#### Test: NODECONF Node Address Configuration
-- **Purpose**: Verify NODECONF node addresses can be set
-- **Steps**:
-  1. Set node address for each node (NODECONF.NODEADDR)
-  2. Read back addresses
-  3. Verify addresses match
-- **Expected**: Node addresses set correctly
-
-### Send Delay Tests
-
-#### Test: Send Delay Configuration
-- **Purpose**: Verify send delay can be configured
-- **Steps**:
-  1. Set send delay
-  2. Verify delay configured
-  3. Test delay timing
-- **Expected**: Send delay configured correctly
-
-### Multi-Node Coordination Tests
-
-#### Test: Simultaneous Node Control
-- **Purpose**: Verify multiple nodes can be controlled
-- **Steps**:
-  1. Send commands to multiple nodes
-  2. Verify all nodes respond
-  3. Check node independence
-- **Expected**: All nodes controlled independently
 
 ## Code Structure
 
-The test file defines four test functions (`test_uart_node_addressing`, `test_uart_node_address_configuration`, `test_send_delay_configuration`, `test_multi_node_coordination`) that are currently placeholders. Each logs a warning that UART interface implementation is required and returns true.
+### `Esp32UART` Communication Interface
 
-A complete UART multi-node implementation would need:
-- An `Esp32UART` (or equivalent) communication interface
-- NAI/NAO pin control for sequential programming
-- Node address configuration (NODECONF.NODEADDR)
-- Send delay configuration for proper addressing
+Defined in `test_config/esp32_tmc51x0_bus.hpp`. Inherits from `tmc51x0::UartCommInterface<Esp32UART>` (CRTP) and implements:
 
-See the library's UART/multi-node documentation for the intended API patterns.
+| Method | Description |
+|--------|-------------|
+| `Initialize()` | Configures ESP-IDF UART driver, sets pins, flushes stale data |
+| `UartSend()` | Writes frame bytes, waits for TX FIFO drain, flushes echo |
+| `UartReceive()` | Reads reply bytes with 100 ms timeout |
+| `GpioSet()` / `GpioRead()` | Same pin abstraction as `Esp32SPI` |
+| `DelayMs()` / `DelayUs()` | FreeRTOS and ROM delays |
+
+### Test Flow
+
+1. `create_uart_drivers()` -- Creates `Esp32UART` + N driver instances
+2. Each test initializes the driver with `DriverConfig` from the test rig config
+3. Tests exercise register access, node addressing, or motor control
+4. Results reported via the test framework
 
 ## Expected Behavior
 
-### Test Execution
-
-1. **Initialization**: UART interface and multi-node setup
-2. **Addressing Tests**: Node addressing configuration
-3. **Node Address Tests**: NODECONF node address configuration
-4. **Send Delay Tests**: Send delay configuration
-5. **Coordination Tests**: Multi-node coordination
-6. **Summary**: Test results displayed
-
-### Typical Output
+### Typical Output (single node)
 
 ```
-I (1234) UART_MultiNode_Test: ╔══════════════════════════════════════════════════════════════════════════════╗
-I (1235) UART_MultiNode_Test: ║        UART Multi-Node Comprehensive Test Suite                              ║
-I (1236) UART_MultiNode_Test: ╚══════════════════════════════════════════════════════════════════════════════╝
-I (1237) UART_MultiNode_Test: ⚠️ MULTI-MOTOR HARDWARE REQUIRED
-I (1238) UART_MultiNode_Test: [PASS] Node Addressing: Node addresses configured
-I (1239) UART_MultiNode_Test: [PASS] Node Address: Node addresses set correctly
-...
+I UART_MultiNode_Test: ==============================================================
+I UART_MultiNode_Test:   ESP32 TMC51x0 UART Communication Test Suite
+I UART_MultiNode_Test: ==============================================================
+I UART_MultiNode_Test: Node count: 1 | UART port: 1 | Baud: 115200 | TX=17 RX=16
+
+I UART_MultiNode_Test: Driver 0: Initialized successfully
+I UART_MultiNode_Test: Driver 0: GCONF = 0x00000004
+I UART_MultiNode_Test: Driver 0: IOIN = 0x30XXXXXX (chip version: 0x30)
+I UART_MultiNode_Test: [PASS] Basic UART Communication
+
+I UART_MultiNode_Test: Node address updated to 42 (send delay: 2)
+I UART_MultiNode_Test: Successfully read IOIN on address 42
+I UART_MultiNode_Test: [PASS] Node Address Configuration
+
+I UART_MultiNode_Test: SENDDELAY=0: read OK
+I UART_MultiNode_Test: SENDDELAY=2: read OK
+I UART_MultiNode_Test: SENDDELAY=8: read OK
+I UART_MultiNode_Test: [PASS] Send Delay Configuration
+
+I UART_MultiNode_Test: Driver 0: Moving to 45.0 degrees...
+I UART_MultiNode_Test: All 1 driver(s) reached target position
+I UART_MultiNode_Test: [PASS] Motor Control via UART
 ```
 
 ## Troubleshooting
 
-### Nodes Not Responding
+### No Response from TMC5160
 
-**Symptoms**: Can't communicate with nodes
+| Check | Fix |
+|-------|-----|
+| Mode pins | SD_MODE and SPI_MODE must both be LOW (GND) |
+| TX/RX wiring | TX -> SWN (pin 26), RX <- SWP (pin 27) |
+| Baud rate | Try 9600 or 57600 if 115200 doesn't work |
+| Power | VM supply must be present for UART to work |
+| UART port | Avoid `UART_NUM_0` (console); use `UART_NUM_1` or `UART_NUM_2` |
 
-**Solutions**:
-1. Verify UART wiring (TXD/RXD shared correctly)
-2. Check baud rate matches all nodes
-3. Verify mode pins (SD_MODE=0, SPI_MODE=0)
-4. Check NAI/NAO addressing chain
-5. Verify node addresses (NODECONF.NODEADDR) are set correctly
+### CRC Errors or Garbled Data
 
-### Wrong Node Responding
+- Check for loose connections on TX/RX
+- Ensure no other device is driving the UART lines
+- Reduce baud rate (TMC5160 minimum is ~9000 baud at 20 MHz clock)
 
-**Symptoms**: Commands go to wrong node
+### Motor Doesn't Move
 
-**Solutions**:
-1. Verify NAI/NAO addressing chain
-2. Check node addresses match expected
-3. Verify send delay is configured
-4. Check for addressing conflicts
-
-### Addressing Not Working
-
-**Symptoms**: Can't address individual nodes
-
-**Solutions**:
-1. Verify NAI/NAO pin configuration
-2. Check addressing chain wiring
-3. Verify node addresses are unique
-4. Check send delay timing
-5. Test with broadcast address first
+- Verify EN pin is wired and motor supply (VM) is present
+- Check IRUN/IHOLD settings match your sense resistors
+- Read DRV_STATUS for fault flags (`drv_err`, `uv_cp`, `ot`)
 
 ## Related Documentation
 
-- [SPI Daisy Chain Test](spi_daisy_chain_comprehensive_test.md) - SPI multi-motor setup
-- [Special Features: Multi-Chip](../../../docs/special_features_multi_chip.md) - Detailed multi-node guide
-- [Special Features: Communication Interface](../../../docs/special_features_communication_interface.md) - UART protocol details
+- [SPI Daisy Chain Test](spi_daisy_chain_comprehensive_test.md) -- SPI multi-motor equivalent
+- [Multi-Chip Communication](../../../docs/special_features_multi_chip.md) -- Detailed UART/SPI daisy chain guide
+- [Communication Interface](../../../docs/special_features_communication_interface.md) -- UART protocol details
+- [Platform Integration](../../../docs/platform_integration.md) -- Implementing `Esp32UART`
 
 ---
 
-**Navigation:** [← Previous: SPI Daisy Chain Test](spi_daisy_chain_comprehensive_test.md) | [Index](index.md)
+**Navigation:** [<- SPI Daisy Chain Test](spi_daisy_chain_comprehensive_test.md) | [Back to Index](index.md)

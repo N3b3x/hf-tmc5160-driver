@@ -906,3 +906,307 @@ private:
     return true;
   }
 };
+
+// ============================================================================
+// ESP32 UART Communication Interface
+// ============================================================================
+
+/**
+ * @brief ESP32 UART pin configuration structure
+ *
+ * Groups UART bus pins and TMC51x0 control pins into one structure.
+ */
+struct Esp32UartPinConfig {
+  int uart_tx{-1};   ///< UART TX pin (ESP32 TX -> TMC5160 SWN/SWPN)
+  int uart_rx{-1};   ///< UART RX pin (ESP32 RX <- TMC5160 SWP/SWIOP)
+
+  /// TMC51x0 control pins (EN, DIAG0, DIAG1, etc.)
+  tmc51x0::TMC51x0PinConfig tmc51x0_pins;
+
+  Esp32UartPinConfig() = default;
+
+  Esp32UartPinConfig(int tx, int rx, int en, int dir = -1, int step = -1) noexcept
+      : uart_tx(tx), uart_rx(rx), tmc51x0_pins(en, dir, step) {}
+
+  Esp32UartPinConfig(int tx, int rx,
+                     const tmc51x0::TMC51x0PinConfig& tmc_pins) noexcept
+      : uart_tx(tx), uart_rx(rx), tmc51x0_pins(tmc_pins) {}
+};
+
+/**
+ * @brief ESP32 UART implementation of TMC51x0 communication interface
+ *
+ * Provides UART single-wire communication for the TMC51x0 using the ESP-IDF
+ * UART driver. Supports single-node and multi-node (daisy-chain) operation.
+ *
+ * The TMC5160 uses a single-wire UART interface on pins:
+ * - SWN/SWPN (pin 26/DIAG0): UART input (active low)
+ * - SWP/SWIOP (pin 27/DIAG1): UART output
+ *
+ * For multi-node systems, NAI/NAO pins (SDI_CFG1 / SDO_CFG0) form an
+ * addressing chain. See the TMC5160 datasheet section 5.4.
+ *
+ * @note SD_MODE and SPI_MODE must both be LOW (GND) for UART operation.
+ */
+class Esp32UART : public tmc51x0::UartCommInterface<Esp32UART> {
+public:
+  /**
+   * @brief Construct ESP32 UART communication interface
+   * @param uart_num UART port number (UART_NUM_1 or UART_NUM_2; avoid UART_NUM_0 used for console)
+   * @param pin_config Complete pin configuration
+   * @param baud_rate UART baud rate (default 115200; TMC5160 auto-detects from sync frame)
+   * @param active_levels Pin active level configuration
+   */
+  Esp32UART(uart_port_t uart_num, const Esp32UartPinConfig& pin_config,
+            uint32_t baud_rate = 115200,
+            const tmc51x0::PinActiveLevels& active_levels = tmc51x0::PinActiveLevels{}) noexcept
+      : UartCommInterface(),
+        active_levels_(active_levels),
+        uart_num_(uart_num),
+        tx_pin_(static_cast<gpio_num_t>(pin_config.uart_tx)),
+        rx_pin_(static_cast<gpio_num_t>(pin_config.uart_rx)),
+        en_pin_(static_cast<gpio_num_t>(pin_config.tmc51x0_pins.en_pin)),
+        baud_rate_(baud_rate),
+        initialized_(false) {
+    constexpr gpio_num_t UNMAPPED = static_cast<gpio_num_t>(-1);
+    for (size_t i = 0; i < sizeof(pin_mapping_) / sizeof(pin_mapping_[0]); ++i) {
+      pin_mapping_[i] = UNMAPPED;
+    }
+    ApplyPinConfig(pin_config.tmc51x0_pins);
+  }
+
+  ~Esp32UART() noexcept { Deinitialize(); }
+
+  // -- Pin config helpers (same pattern as Esp32SPI) -------------------------
+
+  bool ApplyPinConfig(const tmc51x0::TMC51x0PinConfig& pc) noexcept {
+    constexpr gpio_num_t UNMAPPED = static_cast<gpio_num_t>(-1);
+    if (pc.en_pin != -1) SetPinMapping(tmc51x0::TMC51x0CtrlPin::EN, static_cast<gpio_num_t>(pc.en_pin));
+
+    gpio_num_t dir_gpio = UNMAPPED;
+    if (pc.dir_pin != -1) dir_gpio = static_cast<gpio_num_t>(pc.dir_pin);
+    else if (pc.ref_right_pin != -1) dir_gpio = static_cast<gpio_num_t>(pc.ref_right_pin);
+    if (dir_gpio != UNMAPPED) {
+      SetPinMapping(tmc51x0::TMC51x0CtrlPin::DIR, dir_gpio);
+      SetPinMapping(tmc51x0::TMC51x0CtrlPin::REFR_DIR, dir_gpio);
+    }
+
+    gpio_num_t step_gpio = UNMAPPED;
+    if (pc.step_pin != -1) step_gpio = static_cast<gpio_num_t>(pc.step_pin);
+    else if (pc.ref_left_pin != -1) step_gpio = static_cast<gpio_num_t>(pc.ref_left_pin);
+    if (step_gpio != UNMAPPED) {
+      SetPinMapping(tmc51x0::TMC51x0CtrlPin::STEP, step_gpio);
+      SetPinMapping(tmc51x0::TMC51x0CtrlPin::REFL_STEP, step_gpio);
+    }
+
+    if (pc.diag0_pin != -1) SetPinMapping(tmc51x0::TMC51x0CtrlPin::DIAG0, static_cast<gpio_num_t>(pc.diag0_pin));
+    if (pc.diag1_pin != -1) SetPinMapping(tmc51x0::TMC51x0CtrlPin::DIAG1, static_cast<gpio_num_t>(pc.diag1_pin));
+    if (pc.clk_pin != -1) SetPinMapping(tmc51x0::TMC51x0CtrlPin::CLK, static_cast<gpio_num_t>(pc.clk_pin));
+    return true;
+  }
+
+  bool SetPinMapping(tmc51x0::TMC51x0CtrlPin pin, gpio_num_t gpio_pin) noexcept {
+    size_t idx = static_cast<size_t>(pin);
+    if (idx >= sizeof(pin_mapping_) / sizeof(pin_mapping_[0])) return false;
+    pin_mapping_[idx] = gpio_pin;
+
+    constexpr gpio_num_t UNMAPPED = static_cast<gpio_num_t>(-1);
+    if (gpio_pin != UNMAPPED) {
+      if (pin == tmc51x0::TMC51x0CtrlPin::DIAG0 || pin == tmc51x0::TMC51x0CtrlPin::DIAG1) {
+        gpio_set_direction(gpio_pin, GPIO_MODE_INPUT);
+        gpio_set_pull_mode(gpio_pin, GPIO_PULLUP_ONLY);
+      } else if (pin == tmc51x0::TMC51x0CtrlPin::REFL_STEP || pin == tmc51x0::TMC51x0CtrlPin::REFR_DIR) {
+        gpio_set_direction(gpio_pin, GPIO_MODE_INPUT);
+        gpio_set_pull_mode(gpio_pin, GPIO_PULLUP_ONLY);
+        active_levels_.SetActiveLevel(pin, false);
+      } else {
+        gpio_set_direction(gpio_pin, GPIO_MODE_OUTPUT);
+      }
+    }
+    return true;
+  }
+
+  [[nodiscard]] gpio_num_t GetPinMapping(tmc51x0::TMC51x0CtrlPin pin) const noexcept {
+    size_t idx = static_cast<size_t>(pin);
+    constexpr gpio_num_t UNMAPPED = static_cast<gpio_num_t>(-1);
+    if (idx >= sizeof(pin_mapping_) / sizeof(pin_mapping_[0])) return UNMAPPED;
+    return pin_mapping_[idx];
+  }
+
+  // -- Initialization --------------------------------------------------------
+
+  tmc51x0::Result<void> Initialize() noexcept {
+    if (initialized_) return tmc51x0::Result<void>();
+
+    // Configure EN pin
+    constexpr gpio_num_t UNMAPPED = static_cast<gpio_num_t>(-1);
+    if (en_pin_ != UNMAPPED) {
+      gpio_set_direction(en_pin_, GPIO_MODE_OUTPUT);
+      GpioSet(tmc51x0::TMC51x0CtrlPin::EN, tmc51x0::GpioSignal::INACTIVE);
+    }
+
+    // Configure UART peripheral
+    uart_config_t uart_config = {};
+    uart_config.baud_rate = static_cast<int>(baud_rate_);
+    uart_config.data_bits = UART_DATA_8_BITS;
+    uart_config.parity = UART_PARITY_DISABLE;
+    uart_config.stop_bits = UART_STOP_BITS_1;
+    uart_config.flow_ctrl = UART_HW_FLOWCTRL_DISABLE;
+    uart_config.source_clk = UART_SCLK_DEFAULT;
+
+    esp_err_t ret = uart_param_config(uart_num_, &uart_config);
+    if (ret != ESP_OK) {
+      ESP_LOGE(BUS_TAG, "UART param config failed: %s", esp_err_to_name(ret));
+      return tmc51x0::Result<void>(tmc51x0::ErrorCode::COMM_ERROR);
+    }
+
+    ret = uart_set_pin(uart_num_, tx_pin_, rx_pin_, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE);
+    if (ret != ESP_OK) {
+      ESP_LOGE(BUS_TAG, "UART set pin failed: %s", esp_err_to_name(ret));
+      return tmc51x0::Result<void>(tmc51x0::ErrorCode::COMM_ERROR);
+    }
+
+    constexpr int kRxBufSize = 256;
+    constexpr int kTxBufSize = 0; // TX uses blocking write
+    ret = uart_driver_install(uart_num_, kRxBufSize, kTxBufSize, 0, nullptr, 0);
+    if (ret != ESP_OK) {
+      ESP_LOGE(BUS_TAG, "UART driver install failed: %s", esp_err_to_name(ret));
+      return tmc51x0::Result<void>(tmc51x0::ErrorCode::COMM_ERROR);
+    }
+
+    // Flush any stale data
+    uart_flush_input(uart_num_);
+
+    initialized_ = true;
+    ESP_LOGI(BUS_TAG, "UART interface initialized (port %d, baud %u, TX=%d, RX=%d)",
+             uart_num_, baud_rate_, static_cast<int>(tx_pin_), static_cast<int>(rx_pin_));
+    return tmc51x0::Result<void>();
+  }
+
+  tmc51x0::Result<void> Deinitialize() noexcept {
+    if (!initialized_) return tmc51x0::Result<void>();
+    uart_driver_delete(uart_num_);
+    initialized_ = false;
+    return tmc51x0::Result<void>();
+  }
+
+  // -- UART transport (called by UartCommInterface base) ---------------------
+
+  tmc51x0::Result<void> UartSend(const uint8_t* data, size_t length) noexcept {
+    if (!initialized_) return tmc51x0::Result<void>(tmc51x0::ErrorCode::NOT_INITIALIZED);
+
+    // Flush RX buffer to discard any echo or stale bytes
+    uart_flush_input(uart_num_);
+
+    int written = uart_write_bytes(uart_num_, data, length);
+    if (written < 0 || static_cast<size_t>(written) != length) {
+      ESP_LOGE(BUS_TAG, "UART send failed: wrote %d/%zu bytes", written, length);
+      return tmc51x0::Result<void>(tmc51x0::ErrorCode::COMM_ERROR);
+    }
+    // Wait for TX FIFO to drain
+    esp_err_t ret = uart_wait_tx_done(uart_num_, pdMS_TO_TICKS(50));
+    if (ret != ESP_OK) {
+      ESP_LOGW(BUS_TAG, "UART TX drain timeout");
+    }
+
+    // On single-wire setups the TMC5160 echoes our TX back on RX.
+    // Flush those echo bytes so UartReceive() sees only the reply.
+    vTaskDelay(pdMS_TO_TICKS(2));
+    uart_flush_input(uart_num_);
+
+    return tmc51x0::Result<void>();
+  }
+
+  tmc51x0::Result<void> UartReceive(uint8_t* data, size_t length) noexcept {
+    if (!initialized_) return tmc51x0::Result<void>(tmc51x0::ErrorCode::NOT_INITIALIZED);
+
+    // TMC5160 reply comes after SENDDELAY bit-times.  At 115200 baud that is
+    // ~70 us per bit time; with SENDDELAY=8 that's ~0.6 ms.  We use a generous
+    // 100 ms timeout to cover slow baud rates and long send delays.
+    constexpr TickType_t kTimeoutTicks = pdMS_TO_TICKS(100);
+
+    int received = uart_read_bytes(uart_num_, data, length, kTimeoutTicks);
+    if (received < 0 || static_cast<size_t>(received) != length) {
+      ESP_LOGE(BUS_TAG, "UART receive failed: got %d/%zu bytes", received, length);
+      return tmc51x0::Result<void>(tmc51x0::ErrorCode::COMM_ERROR);
+    }
+    return tmc51x0::Result<void>();
+  }
+
+  // -- NAI/NAO pin control (for sequential programming) ----------------------
+
+  tmc51x0::Result<void> SetNaiPin(bool active) noexcept {
+    // NAI is on SDI_CFG1 (pin 15) in UART mode -- not always wired to ESP32.
+    // If not mapped, this is a no-op (single-node systems don't need it).
+    return tmc51x0::Result<void>();
+  }
+
+  tmc51x0::Result<bool> GetNaoPin() noexcept {
+    // NAO is on SDO_CFG0 (pin 16) in UART mode -- not always wired to ESP32.
+    return tmc51x0::Result<bool>(false);
+  }
+
+  // -- GPIO (same interface as Esp32SPI) -------------------------------------
+
+  tmc51x0::CommMode GetMode() const noexcept { return tmc51x0::CommMode::UART; }
+
+  tmc51x0::Result<void> GpioSet(tmc51x0::TMC51x0CtrlPin pin, tmc51x0::GpioSignal signal) noexcept {
+    if (pin == tmc51x0::TMC51x0CtrlPin::DIAG0 || pin == tmc51x0::TMC51x0CtrlPin::DIAG1) {
+      return tmc51x0::Result<void>(tmc51x0::ErrorCode::INVALID_VALUE);
+    }
+    gpio_num_t gpio = GetPinMapping(pin);
+    constexpr gpio_num_t UNMAPPED = static_cast<gpio_num_t>(-1);
+    if (gpio == UNMAPPED) return tmc51x0::Result<void>(tmc51x0::ErrorCode::INVALID_VALUE);
+
+    bool level = (signal == tmc51x0::GpioSignal::ACTIVE)
+                     ? active_levels_.GetActiveLevel(pin)
+                     : !active_levels_.GetActiveLevel(pin);
+    gpio_set_level(gpio, level ? 1 : 0);
+    return tmc51x0::Result<void>();
+  }
+
+  tmc51x0::Result<tmc51x0::GpioSignal> GpioRead(tmc51x0::TMC51x0CtrlPin pin) noexcept {
+    gpio_num_t gpio = GetPinMapping(pin);
+    constexpr gpio_num_t UNMAPPED = static_cast<gpio_num_t>(-1);
+    if (gpio == UNMAPPED) return tmc51x0::Result<tmc51x0::GpioSignal>(tmc51x0::ErrorCode::INVALID_VALUE);
+
+    int level = gpio_get_level(gpio);
+    bool active_level = active_levels_.GetActiveLevel(pin);
+    tmc51x0::GpioSignal sig = ((level != 0) == active_level)
+                                  ? tmc51x0::GpioSignal::ACTIVE
+                                  : tmc51x0::GpioSignal::INACTIVE;
+    return tmc51x0::Result<tmc51x0::GpioSignal>(sig);
+  }
+
+  void DebugLog(int level, const char* tag, const char* format, va_list args) noexcept {
+    esp_log_level_t esp_level;
+    switch (level) {
+      case 0: esp_level = ESP_LOG_ERROR; break;
+      case 1: esp_level = ESP_LOG_WARN;  break;
+      case 2: esp_level = ESP_LOG_INFO;  break;
+      case 3: esp_level = ESP_LOG_DEBUG; break;
+      default: esp_level = ESP_LOG_VERBOSE; break;
+    }
+    char msg[512];
+    va_list args_copy;
+    va_copy(args_copy, args);
+    vsnprintf(msg, sizeof(msg), format, args_copy);
+    va_end(args_copy);
+    size_t len = strlen(msg);
+    while (len > 0 && (msg[len - 1] == '\n' || msg[len - 1] == '\r')) { msg[--len] = '\0'; }
+    ESP_LOG_LEVEL(esp_level, tag, "%s", msg);
+  }
+
+  void DelayMs(uint32_t ms) noexcept { vTaskDelay(pdMS_TO_TICKS(ms)); }
+  void DelayUs(uint32_t us) noexcept { esp_rom_delay_us(us); }
+
+private:
+  tmc51x0::PinActiveLevels active_levels_;
+  uart_port_t uart_num_;
+  gpio_num_t tx_pin_;
+  gpio_num_t rx_pin_;
+  gpio_num_t en_pin_;
+  uint32_t baud_rate_;
+  bool initialized_;
+  gpio_num_t pin_mapping_[16]{};
+};

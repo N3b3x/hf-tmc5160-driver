@@ -1,3 +1,12 @@
+---
+layout: default
+title: "SPI Daisy Chain Test"
+description: "Comprehensive testing for TMC5160 SPI daisy chain setup and multi-motor coordination"
+nav_order: 6
+parent: "ESP32 Examples"
+permalink: /docs/esp32-examples/spi-daisy-chain-test/
+---
+
 # SPI Daisy Chain Comprehensive Test
 
 ## Overview
@@ -13,11 +22,11 @@ This test suite is ideal for:
 - Testing coordinated multi-motor motion
 - Validating chain length configuration
 
-## ⚠️ Important Warning
+## Hardware Configuration
 
-**MULTI-MOTOR HARDWARE REQUIRED**
+The test defaults to `TEST_CHAIN_LENGTH = 2` (two drivers daisy-chained). If you only have **one** driver, set `TEST_CHAIN_LENGTH = 1` in the source file -- the driver and test framework handle single-driver operation just fine. The daisy chain position is simply 0 with a chain length of 1, which is equivalent to standard SPI communication.
 
-This test suite requires **multiple TMC51x0 driver (TMC5130 & TMC5160)s** connected in a SPI daisy chain. **DO NOT run these tests on a single-motor setup.**
+> **Single-driver users:** Change `TEST_CHAIN_LENGTH` to 1 and the test will initialize and exercise one driver. No special wiring is needed beyond normal SPI connections.
 
 ## Test Categories
 
@@ -48,10 +57,10 @@ Tests coordinated multi-motor operation:
 ## Hardware Requirements
 
 - ESP32 development board
-- **2+ TMC5160 stepper motor drivers** (daisy-chained via SPI)
+- **1+ TMC5160 stepper motor drivers** (single SPI or daisy-chained)
 - Stepper motors connected to each TMC5160
-- SPI daisy chain wiring (see below)
 - Chip must be in **SPI_INTERNAL_RAMP mode** (SPI_MODE=HIGH, SD_MODE=LOW)
+- For **multi-driver** setups: SPI daisy chain wiring (see below)
 
 ## Daisy Chain Wiring
 
@@ -224,7 +233,7 @@ Chain length is set via `TEST_CHAIN_LENGTH` (default: 2).
 I (1234) SPI_DaisyChain_Test: ╔══════════════════════════════════════════════════════════════════════════════╗
 I (1235) SPI_DaisyChain_Test: ║          SPI Daisy Chain Comprehensive Test Suite                            ║
 I (1236) SPI_DaisyChain_Test: ╚══════════════════════════════════════════════════════════════════════════════╝
-I (1237) SPI_DaisyChain_Test: ⚠️ MULTI-MOTOR HARDWARE REQUIRED
+I (1237) SPI_DaisyChain_Test: Chain length: 2 driver(s) -- change TEST_CHAIN_LENGTH to match your hardware
 I (1238) SPI_DaisyChain_Test: [PASS] Chain Length Configuration: Chain length set to 2
 I (1239) SPI_DaisyChain_Test: [PASS] Driver Initialization: All drivers initialized
 ...

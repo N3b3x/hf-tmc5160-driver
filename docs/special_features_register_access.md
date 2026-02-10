@@ -1,3 +1,12 @@
+---
+layout: default
+title: "Register Access"
+description: "Direct register read/write and initialization flow for TMC51x0 drivers"
+nav_order: 16
+parent: "📚 Documentation"
+permalink: /docs/register-access/
+---
+
 # TMC51x0 Register Access and Configuration Guide
 
 This guide provides a comprehensive overview of the TMC51x0 (TMC5130 & TMC5160) registers, their access permissions, and recommended configuration strategies. It is based on the verified driver implementation and the TMC51x0 datasheet.

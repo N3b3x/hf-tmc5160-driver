@@ -1,3 +1,13 @@
+---
+layout: default
+title: "ESP32 Examples"
+description: "Comprehensive documentation for all ESP32 examples and test suites for the TMC51x0 driver"
+nav_order: 20
+parent: "📚 Documentation"
+has_children: true
+permalink: /docs/esp32-examples/
+---
+
 # ESP32 Examples and Tests Documentation
 
 This directory contains comprehensive documentation for all ESP32 examples and test suites for the TMC5160 stepper motor driver library.

@@ -3,7 +3,7 @@ layout: default
 title: "Quick Start"
 description: "Get up and running with the TMC51x0 driver (TMC5130 & TMC5160) in minutes"
 nav_order: 2
-parent: "Documentation"
+parent: "📚 Documentation"
 permalink: /docs/quickstart/
 ---
 

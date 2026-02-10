@@ -1,3 +1,12 @@
+---
+layout: default
+title: "Motor Configuration"
+description: "Motor configurations available for ESP32 examples and how to select them"
+nav_order: 2
+parent: "ESP32 Examples"
+permalink: /docs/esp32-examples/motor-configuration/
+---
+
 # Motor Configuration Guide
 
 This guide explains the motor configurations available for ESP32 examples and tests, and how to select them.

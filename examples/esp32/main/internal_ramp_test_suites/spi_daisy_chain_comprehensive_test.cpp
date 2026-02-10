@@ -1,10 +1,10 @@
 /**
  * @file spi_daisy_chain_comprehensive_test.cpp
- * @brief Comprehensive SPI Daisy Chain testing suite for TMC51x0 (MULTI-MOTOR)
+ * @brief Comprehensive SPI Daisy Chain testing suite for TMC51x0
  *
- * ⚠️ MULTI-MOTOR HARDWARE REQUIRED ⚠️
- * This test suite requires multiple TMC51x0 drivers connected in a SPI daisy chain.
- * DO NOT run these tests on a single-motor setup.
+ * Supports 1 or more TMC51x0 drivers. Set TEST_CHAIN_LENGTH to match your
+ * hardware (default: 2). With TEST_CHAIN_LENGTH=1, standard single-driver
+ * SPI operation is tested (position 0, chain length 1).
  *
  * This file contains comprehensive testing for TMC51x0 SPI daisy chain features:
  * - SPI daisy chain setup and configuration
@@ -390,7 +390,7 @@ extern "C" void app_main(void) {
   ESP_LOGI(TAG, "║         ESP32 TMC51x0 SPI DAISY CHAIN COMPREHENSIVE TEST SUITE               ║");
   ESP_LOGI(TAG, "║                         HardFOC TMC51x0 Driver Tests                         ║");
   ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
-  ESP_LOGW(TAG, "⚠️  MULTI-MOTOR HARDWARE REQUIRED - DO NOT RUN ON SINGLE-MOTOR SETUP ⚠️");
+  ESP_LOGI(TAG, "Chain length: %u driver(s) -- change TEST_CHAIN_LENGTH to match your hardware", TEST_CHAIN_LENGTH);
   
   vTaskDelay(pdMS_TO_TICKS(1000));
   

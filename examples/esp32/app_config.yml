@@ -33,7 +33,7 @@ apps:
   spi_daisy_chain_comprehensive_test:
     description: >
       Comprehensive SPI daisy chain testing suite - SPI daisy chain setup,
-      position management, multi-motor coordination (MULTI-MOTOR HARDWARE REQUIRED)
+      position management, multi-motor coordination (set TEST_CHAIN_LENGTH to match your hardware)
     source_file: "internal_ramp_test_suites/spi_daisy_chain_comprehensive_test.cpp"
     category: "testing"
     idf_versions: ["release/v5.5"]
@@ -43,9 +43,9 @@ apps:
 
   uart_multi_node_comprehensive_test:
     description: >
-      Comprehensive UART multi-node testing suite - UART node addressing,
-      NODECONF node address configuration, send delay, multi-node coordination
-      (MULTI-MOTOR HARDWARE REQUIRED)
+      UART communication test suite - basic register access, node addressing,
+      send delay configuration, and motor control over UART single-wire interface
+      (set TEST_NODE_COUNT to match your hardware, default: 1)
     source_file: "internal_ramp_test_suites/uart_multi_node_comprehensive_test.cpp"
     category: "testing"
     idf_versions: ["release/v5.5"]

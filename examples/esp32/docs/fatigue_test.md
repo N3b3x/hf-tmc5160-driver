@@ -1,3 +1,12 @@
+---
+layout: default
+title: "Fatigue Test (ESP-NOW)"
+description: "ESP-NOW controlled fatigue testing with bounds finding and point-to-point motion"
+nav_order: 8
+parent: "ESP32 Examples"
+permalink: /docs/esp32-examples/fatigue-test/
+---
+
 # Fatigue Testing: ESP-NOW Controlled Back-and-Forth Motion Between Bounds
 
 ## Overview

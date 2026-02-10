@@ -1,3 +1,12 @@
+---
+layout: default
+title: "GPIO Pin Configuration"
+description: "Pin mapping, active levels, and mode pin setup for TMC51x0 control pins"
+nav_order: 15
+parent: "📚 Documentation"
+permalink: /docs/gpio-pin-configuration/
+---
+
 # GPIO Pin Configuration Guide
 
 ## Overview
