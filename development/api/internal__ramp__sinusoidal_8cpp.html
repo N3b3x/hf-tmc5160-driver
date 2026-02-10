@@ -102,7 +102,7 @@ $(function(){initNavTree('internal__ramp__sinusoidal_8cpp.html',''); initResizab
 </div><!--header-->
 <div class="contents">
 
-<p>Sinusoidal motion pattern example for TMC51x0 stepper motor driver.  
+<p>Back-and-forth motion example for TMC51x0 stepper motor driver.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="tmc51x0_8hpp_source.html">tmc51x0.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="esp32__tmc51x0__bus_8hpp_source.html">test_config/esp32_tmc51x0_bus.hpp</a>&quot;</code><br />
@@ -137,9 +137,9 @@ Variables</h2></td></tr>
 <tr class="separator:a5a85b9c772bbeb480b209a3e6ea92b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Sinusoidal motion pattern example for TMC51x0 stepper motor driver. </p>
-<p>This example demonstrates sinusoidal motion control using the TMC51x0's internal ramp generator. The motor velocity varies in a sinusoidal pattern using velocity mode control.</p>
-<p>MOTOR SELECTION: Motor selection is done via a static constexpr variable at the top of this file. See esp32_tmc51x0_bus_config.hpp for detailed motor specifications and selection guide.</p>
+<div class="textblock"><p>Back-and-forth motion example for TMC51x0 stepper motor driver. </p>
+<p>This example demonstrates simple back-and-forth motion using the TMC51x0's internal ramp generator in positioning mode. The motor moves between two positions repeatedly (configurable travel distance in degrees).</p>
+<p>TEST RIG SELECTION: Use SELECTED_TEST_RIG at the top of this file (TEST_RIG_FATIGUE or TEST_RIG_CORE_DRIVER). See <a class="el" href="esp32__tmc51x0__test__config_8hpp.html" title="ESP32 GPIO pin configuration and compile-time configuration for TMC51x0 driver (TMC5130 &amp; TMC5160)">esp32_tmc51x0_test_config.hpp</a> for motor, board, and platform specifications.</p>
 <p>Hardware Requirements:</p><ul>
 <li>ESP32 development board</li>
 <li>TMC51x0 stepper motor driver</li>

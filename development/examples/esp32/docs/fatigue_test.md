@@ -1,68 +1,127 @@
-# Fatigue Testing: Back-and-Forth Motion Between Bounds
+# Fatigue Testing: ESP-NOW Controlled Back-and-Forth Motion Between Bounds
 
 ## Overview
 
-These examples provide comprehensive fatigue testing platforms that perform back-and-forth oscillatory motion between detected bounds. They're designed for cable/strain relief fatigue testing and other applications requiring controlled repetitive motion.
+The current fatigue test implementation is the **`fatigue_test_espnow_unit`** example under `main/fatigue_test_espnow/`.
+It implements a **two-device system**:
 
-**Two variants available:**
-- `fatigue_test_stallguard.cpp` - Uses StallGuard2 for sensorless bounds detection and stall detection
-- `fatigue_test_encoder.cpp` - Uses encoder position monitoring for bounds detection (more reliable when encoder is available)
+- **Fatigue Test Unit (this project)**:
+  - Drives the TMC51x0 (TMC5160) stepper driver
+  - Performs bounds finding (StallGuard2 or encoder-based)
+  - Runs the back-and-forth fatigue motion between safe bounds
+  - Communicates over ESP-NOW and UART for control and diagnostics
+- **Remote GUI Controller (M5Dial)**:
+  - Provides the user interface (touch + encoder)
+  - Sends configuration and commands over ESP-NOW
+  - Displays live status from the fatigue test unit
+
+For detailed architecture and protocol information, see the docs under `main/fatigue_test_espnow/docs/`:
+
+- `README.md` – High-level ESP-NOW system overview
+- `PAIRING_PROTOCOL.md` – Secure pairing and HMAC authentication
+- `BOUNDS_CACHING.md` – Bounds cache and de‑energize behavior
+
+Legacy single-board UART-only examples (`fatigue_test_stallguard.cpp`, `fatigue_test_encoder.cpp`) have been **replaced** by `fatigue_test_espnow_unit`.
 
 ## Purpose
 
-This example is ideal for:
-- **Fatigue Testing**: Long-duration oscillatory motion testing
-- **Cable/Strain Relief Testing**: Testing flexible components under repeated motion
-- **Sensorless Homing**: Finding motor limits without physical endstops
-- **Precise Motion Control**: Frequency-tuned positioning with dwell times
-- **Real-Time Parameter Adjustment**: UART command interface for live tuning
+This system is ideal for:
 
-## Key Features
+- **Fatigue / endurance testing** of cables, flexures, and mechanical joints
+- **Back-and-forth oscillatory motion** between mechanically detected bounds
+- **Safe, repeatable motion** with StallGuard2 or encoder-based bounds detection
+- **Remote operation** from a GUI board (M5Dial) via ESP-NOW
+- **Fast re-start workflows** using a bounds cache and motor de-energize timer
 
-### 1. Smart Bounds Finding
+## Key Features (Fatigue Test Unit)
 
-- **Sensorless Homing**: Uses StallGuard2 (stallguard variant) or encoder position monitoring (encoder variant) to detect mechanical stops
-- **360° Safety Limit**: **CRITICAL SAFETY FEATURE** - Motor will never rotate more than 360° from start position during bounds finding, preventing cable damage or mechanical system overload
-- **Unbounded Detection**: Automatically detects if motor can rotate 360° without stalling
-- **Default Range**: If unbounded, defaults to -175° to +175° range
-- **SpreadCycle Mode**: Automatically switches to SpreadCycle for StallGuard2 (stallguard variant only), then back to StealthChop
+### 1. Smart Bounds Finding with Safety Limits
 
-### 2. Frequency-Tuned Motion
+- **Dual method support**:
+  - StallGuard2-based sensorless bounds detection (`g_use_stallguard = true`)
+  - Encoder-based bounds detection (`g_use_stallguard = false`)
+- **Safety travel limits**:
+  - Bounds search is constrained by a maximum travel span
+  - If travel exceeds this span, or a TMC fault/reset is detected, bounds finding aborts and reports an error
+- **Fault- and mode-aware**:
+  - Monitors `GSTAT` (reset, UV_CP, DRV_ERR) during bounds finding
+  - Aborts if the driver falls back to StealthChop while StallGuard2 is expected
 
-- **Dynamic Trajectory Calculation**: Automatically calculates VMAX and AMAX based on:
-  - Target frequency (Hz)
-  - Travel distance between bounds
-  - Dwell times at bounds
-- **Position Mode Control**: Uses TMC5160 positioning mode for precise control
-- **Trapezoidal Profile**: 1/3 accel, 1/3 constant velocity, 1/3 decel for smooth motion
-- **No Center Dwell in Trajectory**: Trajectory calculation explicitly excludes center dwell for frequency tuning (continuous motion through center)
-- **Note**: Center dwell state exists in code for backward compatibility but is not used in trajectory calculations
+### 2. Home Offset and Oscillation Range
 
-### 3. UART Command Interface
+After successful bounds finding:
 
-Real-time parameter adjustment via serial commands:
-- Set frequency
-- Set dwell times
-- Set bounds
-- Set cycle count
-- Start/stop/reset motion
-- Status queries
+- Computes the geometric center between min and max mechanical bounds
+- Applies a **configurable center offset** to avoid stopping on a full-step detent:
+  - `BOUNDS_FINDING_CENTER_OFFSET_DEG` in `main/fatigue_test_espnow/main.cpp`
+  - Default: small move toward the negative (min) direction after homing
+- Tightens the oscillation range inside the mechanical limits:
+  - `OSCILLATION_EDGE_BACKOFF_DEG` defines how far inside the mechanical bounds the fatigue motion runs
 
-### 4. Cycle Tracking
+### 3. Frequency-Tuned Point-to-Point Motion
 
-- Accurate cycle counting (one cycle = min → max → min)
-- Target cycle count support
-- Automatic stop at center when target reached
+The `FatigueTest::FatigueTestMotion` class manages point-to-point motion between the configured bounds:
 
-## Hardware Requirements
+- Uses TMC internal ramp **positioning mode** (`RampMode::POSITIONING`)
+- **Trapezoidal motion profile**:
+  - 1/3 accel, 1/3 constant velocity, 1/3 decel for smooth motion
+- Parameters are driven from configuration (`g_settings.test_unit`):
+  - Max velocity in RPM (`oscillation_vmax_rpm`)
+  - Acceleration / deceleration in rev/s² (`oscillation_amax_rev_s2`)
+  - Target cycle count (`cycle_amount`)
+  - Local bounds around center
+- Uses both `IsTargetReached()` and `IsStandstill()` before redefining zero or marking a move complete
 
-- ESP32 development board
-- TMC5160 stepper motor driver board
+### 4. Bounds Cache and De-Energize Timer
+
+The `BoundsCache` namespace in `main.cpp` implements a time-based cache:
+
+- **Bounds validity window**:
+  - Default `DEFAULT_VALIDITY_MINUTES = 2` (configurable)
+  - While valid, START commands can skip new bounds finding and reuse cached bounds
+- **Motor de-energize timer**:
+  - After bounds finding, the motor stays energized during the validity window
+  - A timer de-energizes the motor after the window expires to prevent heating
+- **Status reporting**:
+  - `GetBoundsValidFlag_()` exposes cache state to the GUI (1 = valid, 0 = expired)
+
+### 5. ESP-NOW Communication with GUI Board
+
+Communication is defined in `espnow_protocol.hpp` and handled by `espnow_receiver.cpp`:
+
+- **Message types** (examples):
+  - Configuration updates (bounds, velocity, acceleration, cycles, cache time)
+  - Control commands: START, STOP, PAUSE, RESUME, BOUNDS_FIND, RESET
+  - Status updates: internal state, bounds valid flag, cycle counts, fault info
+- **Pairing and security**:
+  - Uses a shared HMAC-based pairing secret (injected via `secrets.local.yml` or `--secret`)
+  - Pairing protocol is documented in `fatigue_test_espnow/docs/PAIRING_PROTOCOL.md`
+- **FreeRTOS task separation**:
+  - `espnow_command_task` – receives and enqueues commands
+  - `motion_control_task` – applies motion settings and runs the state machine
+  - `status_update_task` – periodically sends status to the GUI controller
+  - `bounds_finding_task` – performs bounds finding in a dedicated task
+
+### 6. UART Console (Optional Local Control)
+
+The fatigue test unit also exposes a UART console (typically over USB serial) for:
+
+- Debug logging (TMC status, bounds finding progress, motion state)
+- Manual commands for development (pairing, bounds finding, starting/stopping motion)
+- Diagnostics when ESP-NOW or the GUI board is unavailable
+
+Command names and options mirror the ESP-NOW protocol where possible. See `fatigue_test_espnow/docs/README.md` for the full list.
+
+## Hardware Requirements (Fatigue Test Unit)
+
+- ESP32-C6 (or other supported target configured in `app_config.yml`)
+- TMC5160 (or TMC51x0) stepper driver evaluation board
 - Stepper motor (see [Motor Configuration Guide](motor_configuration.md))
-- SPI connection between ESP32 and TMC5160
-- Mechanical stops at both ends (optional - handles unbounded)
-- UART debug port (typically UART_NUM_0 for USB serial)
-- Power supply: 12-36V DC (ensure adequate current capacity)
+- SPI connection between ESP32 and TMC51x0
+- Optional encoder (for encoder-based bounds finding)
+- Mechanical stops (for bounded mode)
+- USB-serial connection (UART console)
+- Power supply: 12–36 V DC with adequate current capacity
 
 ## Pin Configuration
 
@@ -77,18 +136,24 @@ Default pin configuration (from `esp32_tmc51x0_test_config.hpp`):
 
 ## Test Rig Selection
 
-Test rig selection is done via a `static constexpr` variable at the top of the file:
+Test rig selection is done via a `static constexpr` at the top of `main/fatigue_test_espnow/main.cpp`:
 
 ```cpp
-static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG = 
+static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG =
     tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE;
 ```
 
-Available test rigs:
-- **TEST_RIG_FATIGUE** (default for these examples): Applied Motion 5034-369 NEMA 34 motor, TMC51x0 EVAL board, reference switches, encoder
+Main rigs:
+
+- **TEST_RIG_FATIGUE** (default): Applied Motion 5034-369 NEMA 34 motor, TMC51x0 EVAL board, reference switches, encoder
 - **TEST_RIG_CORE_DRIVER**: 17HS4401S motor (geared or direct), TMC51x0 EVAL board, reference switches, encoder
 
-The test rig selection automatically configures motor, board, and platform settings. See [Motor Configuration Guide](motor_configuration.md) for detailed specifications.
+The test rig automatically configures:
+
+- Motor electrical parameters (current, sense resistors, microsteps)
+- Chopper / StealthChop settings
+- Encoder and reference switch wiring
+- SPI clock and platform options
 
 ## How It Works
 

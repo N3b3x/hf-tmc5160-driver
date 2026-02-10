@@ -114,7 +114,7 @@ if constexpr (SELECTED_MOTOR == tmc51x0_test_config::MotorType::MOTOR_17HS4401S_
 } else if constexpr (SELECTED_MOTOR == tmc51x0_test_config::MotorType::MOTOR_17HS4401S_DIRECT) {
     tmc51x0_test_config::ConfigureDriverFromMotor_17HS4401S_Direct(cfg);
 } else if constexpr (SELECTED_MOTOR == tmc51x0_test_config::MotorType::MOTOR_APPLIED_MOTION_5034) {
-    tmc51x0_test_config::ConfigureDriverFromMotor_AppliedMotion_5034_369(cfg);
+    tmc51x0_test_config::ConfigureDriverFromMotor_AppliedMotion_5034(cfg);
 }
 
 // 2. Apply board configuration (sense resistor, supply voltage, MOSFETs, etc.)

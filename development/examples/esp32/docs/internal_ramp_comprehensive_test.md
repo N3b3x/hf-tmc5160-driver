@@ -91,23 +91,22 @@ Default pin configuration (from `esp32_tmc51x0_test_config.hpp`):
 
 ## Motor Selection
 
-Uses `MotorConfig_17HS4401S` (gearbox) by default. Motor selection can be modified at the top of the file:
+Uses unified test rig selection (`SELECTED_TEST_RIG`) which automatically configures motor, board, and platform. Default is `TEST_RIG_CORE_DRIVER` (17HS4401S gearbox):
 
 ```cpp
-static constexpr tmc51x0_test_config::MotorType SELECTED_MOTOR = 
-    tmc51x0_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
+static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG = 
+    tmc51x0_test_config::TestRigType::TEST_RIG_CORE_DRIVER;
 ```
 
-Available options:
-- `MOTOR_17HS4401S_GEARBOX` (default): 17HS4401S with 5.18:1 planetary gearbox
-- `MOTOR_17HS4401S_DIRECT`: 17HS4401S direct drive (no gearbox)
-- `MOTOR_APPLIED_MOTION_5034`: Applied Motion 5034-369 NEMA 34 (high torque)
+Available test rigs:
+- `TEST_RIG_CORE_DRIVER` (default): 17HS4401S with 5.18:1 gearbox, TMC51x0 EVAL board, reference switches, encoder
+- `TEST_RIG_FATIGUE`: Applied Motion 5034-369 NEMA 34, TMC51x0 EVAL board, reference switches, encoder
 
 See [Motor Configuration Guide](motor_configuration.md) for detailed specifications.
 
 ## Platform Configuration
 
-The test uses `PLATFORM_TEST_RIG` configuration which includes:
+The test uses `PLATFORM_CORE_DRIVER_TEST_RIG` (via `TEST_RIG_CORE_DRIVER`) which includes:
 - Reference switches (endstops) with proper configuration
 - AS5047U encoder support
 - Mechanical system configuration (gearbox)
@@ -187,9 +186,9 @@ static constexpr bool ENABLE_LATCHED_POSITION_TESTS = true;
 
 ### Running Tests
 
-1. **Build the test**: `idf.py build`
-2. **Flash to ESP32**: `idf.py flash`
-3. **Monitor output**: `idf.py monitor`
+1. **Build the test**: `./scripts/build_app.sh internal_ramp_comprehensive_test Debug` or `idf.py build`
+2. **Flash to ESP32**: `./scripts/flash_app.sh --port /dev/ttyACM0 flash internal_ramp_comprehensive_test Debug` or `idf.py flash`
+3. **Monitor output**: `idf.py monitor` or `./scripts/flash_app.sh flash_monitor internal_ramp_comprehensive_test Debug`
 
 ### Test Output Format
 
@@ -232,7 +231,7 @@ The test also includes a feature compatibility section at the end:
 
 ```
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║                    FEATURE COMPATIBILITY NOTES                                 ║
+║                    FEATURE COMPATIBILITY NOTES                               ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
 
 Features that can be used together:
@@ -458,7 +457,6 @@ Then add to the appropriate test section in `app_main()`.
 
 ## Related Documentation
 
-- [Encoder Comprehensive Test](encoder_comprehensive_test.md) - Encoder-specific testing (separate test suite)
 - [Motor Configuration Guide](motor_configuration.md) - Motor selection and configuration
 - [Driver Configuration Guide](driver_configuration_guide.md) - Driver setup details
 - [Dev Board Setup](dev_board_setup.md) - Hardware setup instructions

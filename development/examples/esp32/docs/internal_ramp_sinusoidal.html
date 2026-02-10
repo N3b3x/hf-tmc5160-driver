@@ -15,7 +15,7 @@
   
 
     
-    .site-nav > ul.nav-list:first-child > li:not(:nth-child(18)) > a,
+    .site-nav > ul.nav-list:first-child > li:not(:nth-child(16)) > a,
     .site-nav > ul.nav-list:first-child > li > ul > li a {
       background-image: none;
     }
@@ -25,12 +25,12 @@
       background-image: none;
     }
 
-    .site-nav > ul.nav-list:first-child > li:nth-child(18) > a {
+    .site-nav > ul.nav-list:first-child > li:nth-child(16) > a {
       font-weight: 600;
       text-decoration: none;
-    }.site-nav > ul.nav-list:first-child > li:nth-child(18) > button svg {
+    }.site-nav > ul.nav-list:first-child > li:nth-child(16) > button svg {
       transform: rotate(-90deg);
-    }.site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(18) > ul.nav-list {
+    }.site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(16) > ul.nav-list {
       display: block;
     }
   </style>
@@ -50,9 +50,9 @@
 
 
   <!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>Sinusoidal Motion Example | HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development</title>
+<title>Internal Ramp Sinusoidal Motion Example | HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development</title>
 <meta name="generator" content="Jekyll v3.10.0" />
-<meta property="og:title" content="Sinusoidal Motion Example" />
+<meta property="og:title" content="Internal Ramp Sinusoidal Motion Example" />
 <meta name="author" content="N3b3x" />
 <meta property="og:locale" content="en" />
 <meta name="description" content="Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver (TMC5130 and TMC5160) with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support" />
@@ -62,9 +62,9 @@
 <meta property="og:site_name" content="HardFOC TMC51x0 Driver (TMC5130 and TMC5160) - development" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Sinusoidal Motion Example" />
+<meta property="twitter:title" content="Internal Ramp Sinusoidal Motion Example" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"N3b3x","url":"https://github.com/n3b3x"},"description":"Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver (TMC5130 and TMC5160) with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support","headline":"Sinusoidal Motion Example","url":"https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32/docs/internal_ramp_sinusoidal.html"}</script>
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"N3b3x","url":"https://github.com/n3b3x"},"description":"Hardware-Agnostic TMC51x0 Stepper Motor Controller Driver (TMC5130 and TMC5160) with advanced features including stealthChop, spreadCycle, StallGuard2, and encoder support","headline":"Internal Ramp Sinusoidal Motion Example","url":"https://n3b3x.github.io/hf-tmc5160-driver/development/examples/esp32/docs/internal_ramp_sinusoidal.html"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -170,17 +170,15 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
       </button><a href="/hf-tmc5160-driver/development/" class="nav-list-link">HardFOC TMC51x0 Driver (TMC5130 & TMC5160)</a><ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="📚 Documentation submenu" aria-expanded="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
-      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/dev_board_setup/" class="nav-list-link">🛠️ Dev Board Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/" class="nav-list-link">🔗 Multi-Chip Communication</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/tmc5130_support/" class="nav-list-link">🔧 TMC5130 Support</a></li></ul></li></ul></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/BOUNDS_CACHING.html" class="nav-list-link">Bounds Finding Cache System</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_communication_interface.html" class="nav-list-link">Communication Interface</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/driver_configuration_guide.html" class="nav-list-link">Driver Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/PROTOCOL.html" class="nav-list-link">ESP-NOW Protocol Specification</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/PAIRING_PROTOCOL.html" class="nav-list-link">ESP-NOW Secure Pairing Protocol</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/" class="nav-list-link">ESP32 Examples and Tests Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/CODING_STANDARDS.html" class="nav-list-link">Embedded Systems Coding Standards</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/" class="nav-list-link">Fatigue Test ESP-NOW System Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/ARCHITECTURE.html" class="nav-list-link">Fatigue Test ESP-NOW Unit - Architecture Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/" class="nav-list-link">Fatigue Test with ESP-NOW Communication</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/fatigue_test.html" class="nav-list-link">Fatigue Testing: Back-and-Forth Motion Between Bounds</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/gpio_pin_configuration.html" class="nav-list-link">GPIO Pin Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/HARDWARE_SETUP.html" class="nav-list-link">Hardware Setup Guide - Fatigue Test ESP-NOW Unit</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/internal_ramp_comprehensive_test.html" class="nav-list-link">Internal Ramp Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/motor_configuration.html" class="nav-list-link">Motor Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/spi_daisy_chain_comprehensive_test.html" class="nav-list-link">SPI Daisy Chain Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/internal_ramp_sinusoidal.html" class="nav-list-link">Sinusoidal Motion Example</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/" class="nav-list-link">TMC5160 Driver - ESP32 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_register_access.html" class="nav-list-link">TMC51x0 Register Access and Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/uart_multi_node_comprehensive_test.html" class="nav-list-link">UART Multi-Node Comprehensive Test</a></li></ul>
+      </button><a href="/hf-tmc5160-driver/development/docs/" class="nav-list-link">📚 Documentation</a><ul class="nav-list"><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/installation/" class="nav-list-link">🛠️ Installation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/quickstart/" class="nav-list-link">⚡ Quick Start</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/hardware_setup/" class="nav-list-link">🔌 Hardware Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/dev_board_setup/" class="nav-list-link">🛠️ Dev Board Setup</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/platform_integration/" class="nav-list-link">🔧 Platform Integration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/configuration/" class="nav-list-link">⚙️ Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/api_reference/" class="nav-list-link">📖 API Reference</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/examples/" class="nav-list-link">💡 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/troubleshooting/" class="nav-list-link">🐛 Troubleshooting</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_unit_conversions/" class="nav-list-link">📐 Unit Conversions</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_motor_setup/" class="nav-list-link">⚙️ Motor Setup from Specifications</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_sensorless_homing/" class="nav-list-link">🏠 Sensorless Homing</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_advanced_configuration/" class="nav-list-link">🔧 Advanced Configuration</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/" class="nav-list-link">🔗 Multi-Chip Communication</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/tmc5130_support/" class="nav-list-link">🔧 TMC5130 Support</a></li></ul></li></ul></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/BOUNDS_CACHING.html" class="nav-list-link">Bounds Finding Cache System</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_communication_interface.html" class="nav-list-link">Communication Interface</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/driver_configuration_guide.html" class="nav-list-link">Driver Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/PROTOCOL.html" class="nav-list-link">ESP-NOW Protocol Specification</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/PAIRING_PROTOCOL.html" class="nav-list-link">ESP-NOW Secure Pairing Protocol</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/" class="nav-list-link">ESP32 Examples and Tests Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/CODING_STANDARDS.html" class="nav-list-link">Embedded Systems Coding Standards</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/" class="nav-list-link">Fatigue Test ESP-NOW System Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/ARCHITECTURE.html" class="nav-list-link">Fatigue Test ESP-NOW Unit - Architecture Documentation</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/" class="nav-list-link">Fatigue Test with ESP-NOW Communication</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/fatigue_test.html" class="nav-list-link">Fatigue Testing: ESP-NOW Controlled Back-and-Forth Motion Between Bounds</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/gpio_pin_configuration.html" class="nav-list-link">GPIO Pin Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/main/fatigue_test_espnow/docs/HARDWARE_SETUP.html" class="nav-list-link">Hardware Setup Guide - Fatigue Test ESP-NOW Unit</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/internal_ramp_comprehensive_test.html" class="nav-list-link">Internal Ramp Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/internal_ramp_sinusoidal.html" class="nav-list-link">Internal Ramp Sinusoidal Motion Example</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/motor_configuration.html" class="nav-list-link">Motor Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/spi_daisy_chain_comprehensive_test.html" class="nav-list-link">SPI Daisy Chain Comprehensive Test</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/" class="nav-list-link">TMC5160 Driver - ESP32 Examples</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/docs/special_features_register_access.html" class="nav-list-link">TMC51x0 Register Access and Configuration Guide</a></li><li class="nav-list-item"><a href="/hf-tmc5160-driver/development/examples/esp32/docs/uart_multi_node_comprehensive_test.html" class="nav-list-link">UART Multi-Node Comprehensive Test</a></li></ul>
   
 </nav>
 
 
-<div class="d-md-block d-none">
+<div class="d-md-block d-none site-footer">
   
   
-    <div class="site-footer">
-      This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
-    </div>
+    This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
   
   </div>
 </header>
@@ -251,10 +249,10 @@
       <div id="main-content" class="main-content">
         <main>
           
-            <h1 id="sinusoidal-motion-example">
+            <h1 id="internal-ramp-sinusoidal-motion-example">
   
   
-    <a href="#sinusoidal-motion-example" class="anchor-heading" aria-labelledby="sinusoidal-motion-example"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Sinusoidal Motion Example
+    <a href="#internal-ramp-sinusoidal-motion-example" class="anchor-heading" aria-labelledby="internal-ramp-sinusoidal-motion-example"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Internal Ramp Sinusoidal Motion Example
   
   
 </h1>
@@ -268,7 +266,7 @@
 </h2>
     
 
-<p>The <code class="language-plaintext highlighter-rouge">internal_ramp_sinusoidal.cpp</code> example demonstrates simple back-and-forth motion using the TMC5160’s internal ramp generator in positioning mode. The motor moves between two positions repeatedly, creating a continuous oscillating motion pattern.</p>
+<p>The <code class="language-plaintext highlighter-rouge">internal_ramp_sinusoidal.cpp</code> example demonstrates simple back-and-forth motion using the TMC5160’s internal ramp generator in positioning mode. The motor moves between two positions repeatedly, creating a continuous oscillating motion pattern. Motion parameters are specified in degrees.</p>
 <h2 id="purpose">
   
   
@@ -297,8 +295,8 @@
 
 <ul>
   <li><strong>Positioning Mode Control</strong>: Uses TMC5160’s internal ramp generator in positioning mode</li>
-  <li><strong>Back-and-Forth Motion</strong>: Continuous oscillation between two positions</li>
-  <li><strong>Motor Selection</strong>: Supports all three motor configurations (geared, direct, Applied Motion)</li>
+  <li><strong>Back-and-Forth Motion</strong>: Continuous oscillation between two positions (configurable travel distance in degrees)</li>
+  <li><strong>Test Rig Selection</strong>: Configurable via <code class="language-plaintext highlighter-rouge">SELECTED_TEST_RIG</code> (<code class="language-plaintext highlighter-rouge">TEST_RIG_FATIGUE</code> default, or <code class="language-plaintext highlighter-rouge">TEST_RIG_CORE_DRIVER</code>)</li>
   <li><strong>Comprehensive Diagnostics</strong>: Extensive logging of motor status, StealthChop calibration, and diagnostics</li>
   <li><strong>Cycle Counting</strong>: Tracks completed back-and-forth cycles</li>
   <li><strong>Real-Time Monitoring</strong>: Periodic diagnostic output showing position, velocity, and status</li>
@@ -338,31 +336,30 @@
   <li><strong>Diagnostics</strong>: DIAG0=23, DIAG1=15</li>
   <li><strong>SPI Clock</strong>: 1 MHz (this example uses 1 MHz, config default is 500 kHz)</li>
 </ul>
-<h2 id="motor-selection">
+<h2 id="motor--test-rig-selection">
   
   
-    <a href="#motor-selection" class="anchor-heading" aria-labelledby="motor-selection"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Motor Selection
+    <a href="#motor--test-rig-selection" class="anchor-heading" aria-labelledby="motor--test-rig-selection"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Motor / Test Rig Selection
   
   
 </h2>
     
 
-<p>Motor selection is done via a <code class="language-plaintext highlighter-rouge">static constexpr</code> variable at the top of the file. This example uses the legacy motor selection method:</p>
+<p>Motor and platform are selected via unified test rig selection at the top of the file:</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
-</pre></td><td class="rouge-code"><pre><span class="k">static</span> <span class="k">constexpr</span> <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">MotorType</span> <span class="n">SELECTED_MOTOR</span> <span class="o">=</span> 
-    <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">MotorType</span><span class="o">::</span><span class="n">MOTOR_17HS4401S_GEARBOX</span><span class="p">;</span>
+</pre></td><td class="rouge-code"><pre><span class="k">static</span> <span class="k">constexpr</span> <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">TestRigType</span> <span class="n">SELECTED_TEST_RIG</span> <span class="o">=</span> 
+    <span class="n">tmc51x0_test_config</span><span class="o">::</span><span class="n">TestRigType</span><span class="o">::</span><span class="n">TEST_RIG_FATIGUE</span><span class="p">;</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 
 <p>Available options:</p>
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">MOTOR_17HS4401S_GEARBOX</code> (default) - 17HS4401S with 5.18:1 gearbox</li>
-  <li><code class="language-plaintext highlighter-rouge">MOTOR_17HS4401S_DIRECT</code> - 17HS4401S direct drive</li>
-  <li><code class="language-plaintext highlighter-rouge">MOTOR_APPLIED_MOTION_5034</code> - Applied Motion 5034-369 NEMA 34</li>
+  <li><code class="language-plaintext highlighter-rouge">TEST_RIG_FATIGUE</code> (default) - Applied Motion 5034-369 NEMA 34, sinusoidal/back-and-forth testing</li>
+  <li><code class="language-plaintext highlighter-rouge">TEST_RIG_CORE_DRIVER</code> - 17HS4401S with 5.18:1 gearbox, core driver test rig</li>
 </ul>
 
-<p><strong>Note</strong>: Newer examples use test rig selection (<code class="language-plaintext highlighter-rouge">SELECTED_TEST_RIG</code>) which automatically configures motor, board, and platform. See <a href="/hf-tmc5160-driver/development/examples/esp32/docs/motor_configuration.html">Motor Configuration Guide</a> for detailed specifications and test rig selection.</p>
+<p>See <a href="/hf-tmc5160-driver/development/examples/esp32/docs/motor_configuration.html">Motor Configuration Guide</a> for detailed specifications.</p>
 <h2 id="how-it-works">
   
   
@@ -420,12 +417,12 @@
 </h3>
     
 
-<p>Default motion parameters (for geared motor):</p>
+<p>Default motion parameters (from <code class="language-plaintext highlighter-rouge">BackAndForthMotion</code> class):</p>
 <ul>
-  <li><strong>Travel Distance</strong>: 1 full output revolution each direction (~265,216 microsteps)</li>
-  <li><strong>Max Velocity</strong>: ~0.5 RPS output (~132,608 steps/s)</li>
-  <li><strong>Acceleration</strong>: Automatically calculated for smooth motion</li>
-  <li><strong>Cycles</strong>: Infinite (configurable)</li>
+  <li><strong>Travel Distance</strong>: 180° each direction (configurable via <code class="language-plaintext highlighter-rouge">Config()</code>)</li>
+  <li><strong>Max Velocity</strong>: 30 RPM (configurable)</li>
+  <li><strong>Acceleration</strong>: 1 rev/s² (configurable)</li>
+  <li><strong>Cycles</strong>: Infinite (-1) or limited (configurable via <code class="language-plaintext highlighter-rouge">max_cycles</code>)</li>
 </ul>
 <h2 id="expected-behavior">
   
@@ -684,19 +681,11 @@
 3
 4
 5
-6
-7
-8
-9
-</pre></td><td class="rouge-code"><pre><span class="c1">// Travel distance: 1 full output revolution each direction</span>
-<span class="kt">float</span> <span class="n">output_steps_per_rev</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">output_full_steps</span><span class="p">)</span> <span class="o">*</span> <span class="mf">256.0</span><span class="n">f</span><span class="p">;</span>
-<span class="kt">int32_t</span> <span class="n">travel_distance</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">output_steps_per_rev</span> <span class="o">*</span> <span class="mf">1.0</span><span class="n">f</span><span class="p">);</span>
+</pre></td><td class="rouge-code"><pre><span class="c1">// Travel distance in degrees each direction</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">Config</span><span class="p">(</span><span class="n">max_vel_rpm</span><span class="p">,</span> <span class="n">accel_rev_s2</span><span class="p">,</span> <span class="n">travel_dist_deg</span><span class="p">,</span> <span class="n">max_cycles</span><span class="p">);</span>
 
-<span class="c1">// Max velocity: ~0.5 RPS output</span>
-<span class="kt">float</span> <span class="n">max_velocity</span> <span class="o">=</span> <span class="n">output_steps_per_rev</span> <span class="o">*</span> <span class="mf">0.5</span><span class="n">f</span><span class="p">;</span>
-
-<span class="c1">// Acceleration: reach max velocity in ~0.2 seconds</span>
-<span class="kt">float</span> <span class="n">acceleration</span> <span class="o">=</span> <span class="n">max_velocity</span> <span class="o">*</span> <span class="mf">5.0</span><span class="n">f</span><span class="p">;</span>
+<span class="c1">// Example: 180° travel, 30 RPM, 1 rev/s² accel, infinite cycles</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">Config</span><span class="p">(</span><span class="mf">30.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">1.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">180.0</span><span class="n">f</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 <h3 id="changing-cycle-count">
   
@@ -707,12 +696,12 @@
 </h3>
     
 
-<p>Set maximum cycles in motion configuration:</p>
+<p>Set maximum cycles in motion configuration (pass as fourth parameter to <code class="language-plaintext highlighter-rouge">Config()</code>):</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 </pre></td><td class="rouge-code"><pre><span class="kt">int</span> <span class="n">max_cycles</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="c1">// Run for 10 cycles then stop</span>
-<span class="n">motion</span><span class="p">.</span><span class="n">Config</span><span class="p">(</span><span class="n">max_velocity</span><span class="p">,</span> <span class="n">acceleration</span><span class="p">,</span> <span class="n">travel_distance</span><span class="p">,</span> <span class="n">max_cycles</span><span class="p">);</span>
+<span class="n">motion</span><span class="p">.</span><span class="n">Config</span><span class="p">(</span><span class="n">max_vel_rpm</span><span class="p">,</span> <span class="n">accel_rev_s2</span><span class="p">,</span> <span class="n">travel_dist_deg</span><span class="p">,</span> <span class="n">max_cycles</span><span class="p">);</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 <h3 id="adjusting-diagnostic-frequency">
   
@@ -745,7 +734,7 @@
 
 <ul>
   <li><a href="/hf-tmc5160-driver/development/examples/esp32/docs/motor_configuration.html">Motor Configuration Guide</a> - Motor selection and specifications</li>
-  <li><a href="/hf-tmc5160-driver/development/examples/esp32/docs/fatigue_test.html">Fatigue Testing Examples</a> - Back-and-forth oscillatory motion for fatigue testing</li>
+  <li><a href="/hf-tmc5160-driver/development/examples/esp32/docs/fatigue_test.html">Fatigue Testing</a> - Point-to-point back-and-forth motion between bounds with ESP-NOW control</li>
   <li><a href="/hf-tmc5160-driver/development/examples/esp32/docs/internal_ramp_comprehensive_test.html">Internal Ramp Comprehensive Test</a> - Comprehensive ramp control and positioning testing</li>
 </ul>
 <h2 id="example-output">
@@ -818,12 +807,10 @@ I (1248) Sinusoidal:   ✓ Motor IS moving: position changed by 12543 steps in 1
 
 
 
-  <div class="d-md-none">
+  <div class="d-md-none mt-4 fs-2">
     
     
-      <div class="mt-4 fs-2">
-        This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
-      </div>
+      This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
     
   </div>
 </footer>

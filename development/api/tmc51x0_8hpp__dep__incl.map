@@ -6,7 +6,7 @@
 <area shape="poly" id="edge7_Node000001_Node000004" title=" " alt="" coords="814,24,671,30,501,41,352,58,300,68,273,81,260,100,255,124,257,166,252,167,250,123,256,98,270,77,299,63,351,52,500,35,671,25,814,19"/>
 <area shape="rect" id="Node000005" href="$internal__ramp__comprehensive__test_8cpp.html" title="Comprehensive internal ramp test suite for TMC51x0 (single motor)" alt="" coords="283,79,503,119"/>
 <area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="814,33,503,82,502,77,813,27"/>
-<area shape="rect" id="Node000006" href="$internal__ramp__sinusoidal_8cpp.html" title="Sinusoidal motion pattern example for TMC51x0 stepper motor driver." alt="" coords="527,86,741,111"/>
+<area shape="rect" id="Node000006" href="$internal__ramp__sinusoidal_8cpp.html" title="Back&#45;and&#45;forth motion example for TMC51x0 stepper motor driver." alt="" coords="527,86,741,111"/>
 <area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="833,37,671,89,669,83,831,32"/>
 <area shape="rect" id="Node000007" href="$spi__daisy__chain__comprehensive__test_8cpp.html" title="Comprehensive SPI Daisy Chain testing suite for TMC51x0 (MULTI&#45;MOTOR)" alt="" coords="765,79,997,119"/>
 <area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="883,44,883,79,878,79,878,44"/>

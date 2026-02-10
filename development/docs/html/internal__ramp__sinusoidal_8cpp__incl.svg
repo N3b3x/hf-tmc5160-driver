@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Sinusoidal motion pattern example for TMC51x0 stepper motor driver.">
+<g id="a_Node000001"><a xlink:title="Back&#45;and&#45;forth motion example for TMC51x0 stepper motor driver.">
 <polygon fill="#999999" stroke="#666666" points="1471.57,-371 1311.57,-371 1311.57,-352 1471.57,-352 1471.57,-371"/>
 <text text-anchor="middle" x="1391.57" y="-359" font-family="Helvetica,sans-Serif" font-size="10.00">internal_ramp_sinusoidal.cpp</text>
 </a>

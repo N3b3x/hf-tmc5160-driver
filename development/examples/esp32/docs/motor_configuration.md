@@ -196,7 +196,7 @@ The project uses two test rigs, each with a specific motor, board, and platform 
    - Board: TMC51x0 Evaluation Kit (BOARD_TMC51x0_EVAL)
    - Platform: Fatigue Test Rig (PLATFORM_FATIGUE_TEST_RIG)
    - Features: Reference switches, encoder (AS5047U), direct drive (NEMA 34)
-   - Used for: Bounds finding and sinusoidal motion testing
+   - Used for: Bounds finding and point-to-point fatigue motion (fatigue_test_espnow_unit, internal_ramp_sinusoidal)
 
 ---
 
@@ -250,7 +250,7 @@ The project uses two test rigs, each with a specific motor, board, and platform 
 
 ## See Also
 
-- [esp32_tmc51x0_test_config.hpp](../../main/test_config/esp32_tmc51x0_test_config.hpp) - Full configuration definitions
-- [Internal Ramp Sinusoidal Example](internal_ramp_sinusoidal.md) - Example using motor selection
-- [Fatigue Testing Examples](fatigue_test.md) - Examples using test rig selection for back-and-forth motion with safety limits
+- [esp32_tmc51x0_test_config.hpp](../main/test_config/esp32_tmc51x0_test_config.hpp) - Full configuration definitions
+- [Internal Ramp Sinusoidal Example](internal_ramp_sinusoidal.md) - Example using test rig selection
+- [Fatigue Testing](fatigue_test.md) - Point-to-point motion between bounds with ESP-NOW control and bounds finding
 

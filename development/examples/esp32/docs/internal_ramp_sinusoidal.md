@@ -1,8 +1,8 @@
-# Sinusoidal Motion Example
+# Internal Ramp Sinusoidal Motion Example
 
 ## Overview
 
-The `internal_ramp_sinusoidal.cpp` example demonstrates simple back-and-forth motion using the TMC5160's internal ramp generator in positioning mode. The motor moves between two positions repeatedly, creating a continuous oscillating motion pattern.
+The `internal_ramp_sinusoidal.cpp` example demonstrates simple back-and-forth motion using the TMC5160's internal ramp generator in positioning mode. The motor moves between two positions repeatedly, creating a continuous oscillating motion pattern. Motion parameters are specified in degrees.
 
 ## Purpose
 
@@ -16,8 +16,8 @@ This example is ideal for:
 ## Key Features
 
 - **Positioning Mode Control**: Uses TMC5160's internal ramp generator in positioning mode
-- **Back-and-Forth Motion**: Continuous oscillation between two positions
-- **Motor Selection**: Supports all three motor configurations (geared, direct, Applied Motion)
+- **Back-and-Forth Motion**: Continuous oscillation between two positions (configurable travel distance in degrees)
+- **Test Rig Selection**: Configurable via `SELECTED_TEST_RIG` (`TEST_RIG_FATIGUE` default, or `TEST_RIG_CORE_DRIVER`)
 - **Comprehensive Diagnostics**: Extensive logging of motor status, StealthChop calibration, and diagnostics
 - **Cycle Counting**: Tracks completed back-and-forth cycles
 - **Real-Time Monitoring**: Periodic diagnostic output showing position, velocity, and status
@@ -41,21 +41,20 @@ Default pin configuration (from `esp32_tmc51x0_test_config.hpp`):
 - **Diagnostics**: DIAG0=23, DIAG1=15
 - **SPI Clock**: 1 MHz (this example uses 1 MHz, config default is 500 kHz)
 
-## Motor Selection
+## Motor / Test Rig Selection
 
-Motor selection is done via a `static constexpr` variable at the top of the file. This example uses the legacy motor selection method:
+Motor and platform are selected via unified test rig selection at the top of the file:
 
 ```cpp
-static constexpr tmc51x0_test_config::MotorType SELECTED_MOTOR = 
-    tmc51x0_test_config::MotorType::MOTOR_17HS4401S_GEARBOX;
+static constexpr tmc51x0_test_config::TestRigType SELECTED_TEST_RIG = 
+    tmc51x0_test_config::TestRigType::TEST_RIG_FATIGUE;
 ```
 
 Available options:
-- `MOTOR_17HS4401S_GEARBOX` (default) - 17HS4401S with 5.18:1 gearbox
-- `MOTOR_17HS4401S_DIRECT` - 17HS4401S direct drive
-- `MOTOR_APPLIED_MOTION_5034` - Applied Motion 5034-369 NEMA 34
+- `TEST_RIG_FATIGUE` (default) - Applied Motion 5034-369 NEMA 34, sinusoidal/back-and-forth testing
+- `TEST_RIG_CORE_DRIVER` - 17HS4401S with 5.18:1 gearbox, core driver test rig
 
-**Note**: Newer examples use test rig selection (`SELECTED_TEST_RIG`) which automatically configures motor, board, and platform. See [Motor Configuration Guide](motor_configuration.md) for detailed specifications and test rig selection.
+See [Motor Configuration Guide](motor_configuration.md) for detailed specifications.
 
 ## How It Works
 
@@ -82,11 +81,11 @@ The `BackAndForthMotion` class manages the motion:
 
 ### Motion Parameters
 
-Default motion parameters (for geared motor):
-- **Travel Distance**: 1 full output revolution each direction (~265,216 microsteps)
-- **Max Velocity**: ~0.5 RPS output (~132,608 steps/s)
-- **Acceleration**: Automatically calculated for smooth motion
-- **Cycles**: Infinite (configurable)
+Default motion parameters (from `BackAndForthMotion` class):
+- **Travel Distance**: 180° each direction (configurable via `Config()`)
+- **Max Velocity**: 30 RPM (configurable)
+- **Acceleration**: 1 rev/s² (configurable)
+- **Cycles**: Infinite (-1) or limited (configurable via `max_cycles`)
 
 ## Expected Behavior
 
@@ -210,24 +209,20 @@ The example provides extensive diagnostic information:
 Edit the motion configuration in `app_main()`:
 
 ```cpp
-// Travel distance: 1 full output revolution each direction
-float output_steps_per_rev = static_cast<float>(output_full_steps) * 256.0f;
-int32_t travel_distance = static_cast<int32_t>(output_steps_per_rev * 1.0f);
+// Travel distance in degrees each direction
+motion.Config(max_vel_rpm, accel_rev_s2, travel_dist_deg, max_cycles);
 
-// Max velocity: ~0.5 RPS output
-float max_velocity = output_steps_per_rev * 0.5f;
-
-// Acceleration: reach max velocity in ~0.2 seconds
-float acceleration = max_velocity * 5.0f;
+// Example: 180° travel, 30 RPM, 1 rev/s² accel, infinite cycles
+motion.Config(30.0f, 1.0f, 180.0f, -1);
 ```
 
 ### Changing Cycle Count
 
-Set maximum cycles in motion configuration:
+Set maximum cycles in motion configuration (pass as fourth parameter to `Config()`):
 
 ```cpp
 int max_cycles = 10; // Run for 10 cycles then stop
-motion.Config(max_velocity, acceleration, travel_distance, max_cycles);
+motion.Config(max_vel_rpm, accel_rev_s2, travel_dist_deg, max_cycles);
 ```
 
 ### Adjusting Diagnostic Frequency
@@ -244,7 +239,7 @@ if (current_time - last_diag_time >= 500) {
 ## Related Documentation
 
 - [Motor Configuration Guide](motor_configuration.md) - Motor selection and specifications
-- [Fatigue Testing Examples](fatigue_test.md) - Back-and-forth oscillatory motion for fatigue testing
+- [Fatigue Testing](fatigue_test.md) - Point-to-point back-and-forth motion between bounds with ESP-NOW control
 - [Internal Ramp Comprehensive Test](internal_ramp_comprehensive_test.md) - Comprehensive ramp control and positioning testing
 
 ## Example Output
