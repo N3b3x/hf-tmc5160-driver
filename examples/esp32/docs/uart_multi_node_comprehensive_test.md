@@ -274,3 +274,6 @@ I (1239) UART_MultiNode_Test: [PASS] Node Address: Node addresses set correctly
 - [Special Features: Multi-Chip](../../../docs/special_features_multi_chip.md) - Detailed multi-node guide
 - [Special Features: Communication Interface](../../../docs/special_features_communication_interface.md) - UART protocol details
 
+---
+
+**Navigation:** [← Previous: SPI Daisy Chain Test](spi_daisy_chain_comprehensive_test.md) | [Index](index.md)

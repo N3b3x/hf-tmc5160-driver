@@ -254,3 +254,6 @@ The project uses two test rigs, each with a specific motor, board, and platform 
 - [Internal Ramp Sinusoidal Example](internal_ramp_sinusoidal.md) - Example using test rig selection
 - [Fatigue Testing](fatigue_test.md) - Point-to-point motion between bounds with ESP-NOW control and bounds finding
 
+---
+
+**Navigation:** [← Previous: Dev Board Setup](dev_board_setup.md) | [Index](index.md) | [Next: Driver Configuration Guide →](driver_configuration_guide.md)

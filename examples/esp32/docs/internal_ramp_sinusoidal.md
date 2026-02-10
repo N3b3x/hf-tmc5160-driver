@@ -262,3 +262,6 @@ I (1247) Sinusoidal: Diagnostics: VACTUAL=13245.2 steps/s, XACTUAL=12543
 I (1248) Sinusoidal:   ✓ Motor IS moving: position changed by 12543 steps in 1000 ms
 ```
 
+---
+
+**Navigation:** [← Previous: Driver Configuration Guide](driver_configuration_guide.md) | [Index](index.md) | [Next: Fatigue Testing →](fatigue_test.md)

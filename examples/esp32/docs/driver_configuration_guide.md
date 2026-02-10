@@ -267,3 +267,6 @@ ConfigureDriverFromMotor_17HS4401S_Gearbox(cfg);
 - Verify platform configuration matches your hardware setup
 - Check that platform-specific features are configured via driver methods, not just in DriverConfig
 
+---
+
+**Navigation:** [← Previous: Motor Configuration](motor_configuration.md) | [Index](index.md) | [Next: Internal Ramp Sinusoidal →](internal_ramp_sinusoidal.md)

@@ -88,3 +88,7 @@ If you see this error immediately upon enabling the driver:
 ### Massive Current Draw at Startup
 1.  **Wiring**: Verify Motor Phase resistance.
 2.  **StealthChop**: Disable StealthChop (`en_pwm_mode=0`) to avoid the calibration current surge.
+
+---
+
+**Navigation:** [← Previous: Index](index.md) | [Index](index.md) | [Next: Motor Configuration →](motor_configuration.md)

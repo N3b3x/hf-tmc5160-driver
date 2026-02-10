@@ -90,3 +90,6 @@ For issues or questions:
 3. Check hardware connections and power supply
 4. Verify motor configuration matches your hardware
 
+---
+
+**Navigation:** [Index](index.md) | [Next: Dev Board Setup →](dev_board_setup.md)
