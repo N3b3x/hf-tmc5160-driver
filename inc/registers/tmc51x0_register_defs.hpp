@@ -2,6 +2,34 @@
  * @file tmc51x0_register_defs.hpp
  * @brief X-MACRO definitions for TMC51x0 registers (TMC5130 & TMC5160)
  * @copyright Copyright (c) 2024-2025 HardFOC. All rights reserved.
+ * 
+ * This file uses the X-MACRO pattern to define all TMC51x0 registers with their
+ * addresses, access types, and metadata. This allows generating multiple data
+ * structures from a single source of truth. Supports both TMC5130 and TMC5160
+ * chips.
+ *
+ * Usage follows TMC9660 pattern:
+ *   #define X(addr, name, access, category, desc) ...
+ *   REGISTER_LIST(X)
+ *   #undef X
+ *
+ * Access types:
+ *   - R: Read-only
+ *   - W: Write-only
+ *   - RW: Read-Write
+ *   - RWC: Read-Write with clear behavior (some bits cleared on read/write)
+ *
+ * Categories:
+ *   - CONFIG: Configuration registers
+ *   - STATUS: Status/result registers
+ *   - MOTION: Motion control registers
+ *   - CURRENT: Current control registers
+ *   - CHOPPER: Chopper configuration
+ *   - ENCODER: Encoder registers
+ *   - MICROSTEP: Microstep lookup table
+ *   - PROTECTION: Protection and safety
+ *   - OTP: One-time programmable memory
+ *   - IO: Input/Output pins
  */
 #pragma once
 #include <cstdint>
