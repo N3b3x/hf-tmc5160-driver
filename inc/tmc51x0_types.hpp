@@ -1,17 +1,9 @@
 /**
  * @file tmc51x0_types.hpp
  * @brief Type definitions and enumerations for TMC51x0 stepper motor driver (TMC5130 & TMC5160)
- *
- * This file contains all type definitions, enumerations, and structures
- * used by the TMC51x0 driver library. Supports both TMC5130 and TMC5160 chips.
- *
- * @defgroup TMC51X0_Types Type Definitions
- * @brief Enums, structs, and type definitions
+ * @copyright Copyright (c) 2024-2025 HardFOC. All rights reserved.
  */
-
-#ifndef TMC51X0_TYPES_HPP
-#define TMC51X0_TYPES_HPP
-
+#pragma once
 #include <cstdint>
 #include "registers/tmc51x0_registers.hpp"
 
@@ -2951,5 +2943,3 @@ struct HomingSettingsCache {
 };
 
 } // namespace tmc51x0
-
-#endif // TMC51X0_TYPES_HPP

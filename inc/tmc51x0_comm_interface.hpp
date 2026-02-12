@@ -1,8 +1,9 @@
 /**
  * @file tmc51x0_comm_interface.hpp
- * @brief Communication interfaces for TMC51x0 stepper motor driver (TMC5130 &
- * TMC5160) using SPI and UART
- *
+ * @brief Communication interfaces for TMC51x0 stepper motor driver 
+ * using SPI and UART
+ * @copyright Copyright (c) 2024-2025 HardFOC. All rights reserved.
+ * 
  * This file provides comprehensive communication interfaces for the TMC51x0
  * motor driver, supporting both SPI and UART protocols with register read/write
  * operations. It includes GPIO control interfaces and board-agnostic pin
@@ -106,10 +107,7 @@
  * - Default: 8 bit times
  * - Multi-node systems: Set SENDDELAY to min. 2 for all nodes
  */
-
-#ifndef TMC51X0_COMM_INTERFACE_HPP
-#define TMC51X0_COMM_INTERFACE_HPP
-
+#pragma once
 #include <algorithm>
 #include <array>
 #include <cstdarg>
@@ -3141,5 +3139,3 @@ public:
 };
 
 } // namespace tmc51x0
-
-#endif // TMC51X0_COMM_INTERFACE_HPP

@@ -1,20 +1,9 @@
 /**
  * @file tmc51x0_multi_node.hpp
  * @brief High-level multi-node manager for multiple TMC51x0 drivers on UART
- * (TMC5130 & TMC5160)
- *
- * This file provides a TMC51x0MultiNode class that manages multiple TMC51x0
- * drivers on a single UART bus using sequential addressing with NAI/NAO pins.
- * It handles proper device creation, sequential programming, and supports
- * dynamic addition/removal of devices. Supports both TMC5130 and TMC5160 chips.
- *
- * @defgroup TMC51X0_MultiNode Multi-Node Management
- * @brief High-level UART multi-node management
+ * @copyright Copyright (c) 2024-2025 HardFOC. All rights reserved.
  */
-
-#ifndef TMC51X0_MULTI_NODE_HPP
-#define TMC51X0_MULTI_NODE_HPP
-
+#pragma once
 #include <array>
 #include <cstdint>
 #include <optional>
@@ -479,5 +468,3 @@ private:
 };
 
 } // namespace tmc51x0
-
-#endif // TMC51X0_MULTI_NODE_HPP

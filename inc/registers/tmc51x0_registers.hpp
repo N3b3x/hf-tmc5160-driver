@@ -1,20 +1,9 @@
 /**
  * @file tmc51x0_registers.hpp
  * @brief Register definitions and bitfield structures for TMC51x0 stepper motor
- * driver (TMC5130 & TMC5160)
- *
- * This file contains all register addresses, bit field definitions, and
- * register structures for the TMC51x0 stepper motor driver IC. All register
- * definitions are based on the TMC51x0 datasheet and cross-referenced with
- * archived driver implementations. Supports both TMC5130 and TMC5160 chips.
- *
- * @defgroup TMC51X0_Registers Register Definitions
- * @brief Register addresses and bitfield structures
+ * @copyright Copyright (c) 2024-2025 HardFOC. All rights reserved.
  */
-
-#ifndef TMC51X0_REGISTERS_HPP
-#define TMC51X0_REGISTERS_HPP
-
+#pragma once
 #include "tmc51x0_register_defs.hpp"
 #include <cstdint>
 
@@ -1042,5 +1031,3 @@ union PWM_AUTO_Register {
 };
 
 } // namespace tmc51x0
-
-#endif // TMC51X0_REGISTERS_HPP

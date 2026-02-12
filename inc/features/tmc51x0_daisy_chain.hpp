@@ -1,20 +1,9 @@
 /**
  * @file tmc51x0_daisy_chain.hpp
  * @brief High-level daisy-chain manager for multiple TMC51x0 drivers (TMC5130 &
- * TMC5160)
- *
- * This file provides a TMC51x0DaisyChain class that manages multiple TMC51x0
- * drivers on a single SPI bus using daisy-chaining. It handles proper device
- * creation, chain length configuration, and supports dynamic addition/removal
- * of devices. Supports both TMC5130 and TMC5160 chips.
- *
- * @defgroup TMC51X0_DaisyChain Daisy-Chain Management
- * @brief High-level daisy-chain management
+ * @copyright Copyright (c) 2024-2025 HardFOC. All rights reserved.
  */
-
-#ifndef TMC51X0_DAISY_CHAIN_HPP
-#define TMC51X0_DAISY_CHAIN_HPP
-
+#pragma once
 #include <array>
 #include <cstdint>
 #include <optional>
@@ -373,5 +362,3 @@ private:
 };
 
 } // namespace tmc51x0
-
-#endif // TMC51X0_DAISY_CHAIN_HPP

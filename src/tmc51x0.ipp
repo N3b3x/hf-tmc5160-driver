@@ -1,12 +1,8 @@
 /**
- * @file tmc51x0.cpp
+ * @file tmc51x0.ipp
  * @brief Implementation of TMC51x0 driver methods (TMC5130 & TMC5160)
- *
- * This file contains the template implementation of all TMC51x0 driver methods.
- * It is included by tmc51x0.hpp to provide header-only template instantiation.
- * Supports both TMC5130 and TMC5160 chips.
+ * @copyright Copyright (c) 2024-2025 HardFOC. All rights reserved.
  */
-
 #ifndef TMC51X0_IMPL
 #define TMC51X0_IMPL
 

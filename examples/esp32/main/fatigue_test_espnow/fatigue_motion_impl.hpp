@@ -8,9 +8,7 @@
  * This file is included by fatigue_motion.hpp to provide header-only implementation.
  */
 
-#ifndef FATIGUE_MOTION_IMPL
-#define FATIGUE_MOTION_IMPL
-
+#pragma once
 // When included from header, use conditional include; when compiled directly, include header
 #ifdef FATIGUE_MOTION_HEADER_INCLUDED
 // Already included from header - the class definition is available in the current context
@@ -807,5 +805,3 @@ FatigueTestMotion::Status FatigueTestMotion::GetStatus() const noexcept {
 #ifndef FATIGUE_MOTION_HEADER_INCLUDED
 } // namespace FatigueTest
 #endif
-
-#endif // FATIGUE_MOTION_IMPL

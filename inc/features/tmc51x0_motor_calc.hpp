@@ -1,18 +1,9 @@
 /**
  * @file tmc51x0_motor_calc.hpp
  * @brief Motor current calculation functions for TMC51x0 (TMC5130 & TMC5160)
- *
- * This file provides functions to automatically calculate IRUN, IHOLD, and GLOBAL_SCALER
- * based on motor specifications, sense resistor, and supply voltage using datasheet equations.
- * Supports both TMC5130 and TMC5160 chips.
- *
- * @defgroup TMC51X0_MotorCalc Motor Current Calculation
- * @brief Functions for calculating motor current settings
+ * @copyright Copyright (c) 2024-2025 HardFOC. All rights reserved.
  */
-
-#ifndef TMC51X0_MOTOR_CALC_HPP
-#define TMC51X0_MOTOR_CALC_HPP
-
+#pragma once
 #include "../tmc51x0_types.hpp"
 #include <algorithm>
 #include <array>
@@ -372,5 +363,3 @@ inline uint8_t CalculateShortDelay(uint8_t delay_us_x10) noexcept {
 }
 
 } // namespace tmc51x0
-
-#endif // TMC51X0_MOTOR_CALC_HPP

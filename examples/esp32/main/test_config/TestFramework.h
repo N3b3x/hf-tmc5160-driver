@@ -475,3 +475,50 @@ inline void print_test_section_footer(const char* tag, const char* section_name,
     }                                                                                              \
   } while (0)
 
+/**
+ * @brief Test section configuration template
+ *
+ * Copy this template to the top of your test file and customize:
+ *
+ * //=============================================================================
+ * // TEST SECTION CONFIGURATION
+ * //=============================================================================
+ * // Enable/disable specific test sections by setting to true or false
+ *
+ * // Basic functionality tests
+ * static constexpr bool ENABLE_BASIC_TESTS = true;
+ * static constexpr bool ENABLE_INITIALIZATION_TESTS = true;
+ * static constexpr bool ENABLE_CONFIGURATION_TESTS = true;
+ *
+ * // Core feature tests
+ * static constexpr bool ENABLE_CORE_FEATURE_TESTS = true;
+ * static constexpr bool ENABLE_OPERATION_TESTS = true;
+ * static constexpr bool ENABLE_ERROR_HANDLING_TESTS = true;
+ *
+ * // Advanced feature tests
+ * static constexpr bool ENABLE_ADVANCED_FEATURE_TESTS = true;
+ * static constexpr bool ENABLE_PERFORMANCE_TESTS = true;
+ * static constexpr bool ENABLE_EDGE_CASE_TESTS = true;
+ *
+ * // Specialized tests
+ * static constexpr bool ENABLE_SPECIALIZED_TESTS = true;
+ * static constexpr bool ENABLE_COMPATIBILITY_TESTS = true;
+ *
+ * //=============================================================================
+ * // TEST SECTION EXECUTION
+ * //=============================================================================
+ * // Use the macros below in your main function:
+ *
+ * RUN_TEST_SECTION_IF_ENABLED(ENABLE_BASIC_TESTS, "BASIC TESTS",
+ *   RUN_TEST_IN_TASK("test1", test_function1, 8192, 1);
+ *   flip_test_progress_indicator();
+ * );
+ *
+ * RUN_TEST_SECTION_IF_ENABLED_WITH_PATTERN(ENABLE_CORE_FEATURE_TESTS, "CORE FEATURE TESTS", 5,
+ *   RUN_TEST_IN_TASK("test2", test_function2, 8192, 1);
+ * );
+ *
+ * // GPIO14 test indicator is automatically initialized by the test framework
+ * // You can add flip_test_progress_indicator() calls between tests if desired
+ * // Example: flip_test_progress_indicator(); // Toggle GPIO14 after each test
+ */

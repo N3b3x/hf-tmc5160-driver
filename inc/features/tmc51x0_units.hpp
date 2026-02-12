@@ -1,18 +1,9 @@
 /**
  * @file tmc51x0_units.hpp
  * @brief Unit conversion functions for TMC51x0 driver (TMC5130 & TMC5160)
- *
- * This file provides free functions for converting between physical units
- * (millimeters, degrees, RPM) and internal driver units (steps, steps/s).
- * All functions are in the tmc51x0 namespace and follow PascalCase naming.
- *
- * @defgroup TMC51X0_Units Unit Conversions
- * @brief Functions for converting between physical and driver units
+ * @copyright Copyright (c) 2024-2025 HardFOC. All rights reserved.
  */
-
-#ifndef TMC51X0_UNITS_HPP
-#define TMC51X0_UNITS_HPP
-
+#pragma once
 #include <cmath>
 #include <cstdint>
 
@@ -197,5 +188,3 @@ constexpr float StepsToBeltTeeth(int32_t steps, float steps_per_rev,
 }
 
 } // namespace tmc51x0
-
-#endif // TMC51X0_UNITS_HPP

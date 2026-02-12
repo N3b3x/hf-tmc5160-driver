@@ -1,14 +1,9 @@
 /**
  * @file tmc51x0_result.hpp
  * @brief Result type for error handling in TMC51x0 driver
- *
- * Provides a Rust-inspired Result<T> type for explicit error handling,
- * replacing boolean return values with rich error information.
+ * @copyright Copyright (c) 2024-2025 HardFOC. All rights reserved.
  */
-
-#ifndef TMC51X0_RESULT_HPP
-#define TMC51X0_RESULT_HPP
-
+#pragma once
 #include <cstddef>
 #include <cstdint>
 #include <tuple>
@@ -351,5 +346,3 @@ template <> struct tuple_element<0, tmc51x0::Result<void>> {
   using type = tmc51x0::ErrorCode;
 };
 } // namespace std
-
-#endif // TMC51X0_RESULT_HPP

@@ -1,26 +1,9 @@
 /**
  * @file tmc51x0.hpp
  * @brief Main TMC51x0 stepper motor driver interface and subsystem classes
- * (TMC5130 & TMC5160)
- *
- * This file contains the primary TMC51x0 class and all its subsystem interfaces
- * for comprehensive stepper motor control functionality including ramp control,
- * motor configuration, encoder integration, diagnostics, and protection
- * systems. Supports both TMC5130 and TMC5160 chips with automatic detection.
- *
- * @defgroup TMC51X0_Core Core TMC51x0 Driver
- * @brief Main TMC51x0 driver class and core functionality
- *
- * @defgroup TMC51X0_Subsystems Subsystem Interfaces
- * @brief Specialized subsystem classes for different aspects of motor control
- *
- * @defgroup TMC51X0_Types Type Definitions
- * @brief Enums, structs, and type definitions used throughout the driver
+ * @copyright Copyright (c) 2024-2025 HardFOC. All rights reserved.
  */
-
-#ifndef TMC51X0_HPP
-#define TMC51X0_HPP
-
+#pragma once
 #include <cstdint>
 #include <string>
 
@@ -3302,8 +3285,6 @@ private:
 #define TMC51X0_HEADER_INCLUDED
 // NOLINTNEXTLINE(bugprone-suspicious-include) - Intentional: template
 // implementation file
-#include "../src/tmc51x0.cpp"
+#include "../src/tmc51x0.ipp"
 #undef TMC51X0_HEADER_INCLUDED
 #endif
-
-#endif // TMC51X0_HPP

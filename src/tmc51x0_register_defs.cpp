@@ -1,3 +1,9 @@
+/**
+ * @file tmc51x0_register_defs.cpp
+ * @brief Tmc51X0 Register Defs definitions
+ * @copyright Copyright (c) 2024-2025 HardFOC. All rights reserved.
+ */
+
 #include "../inc/registers/tmc51x0_register_defs.hpp"
 #include <cstddef>
 

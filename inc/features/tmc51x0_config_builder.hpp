@@ -1,6 +1,7 @@
 /**
  * @file tmc51x0_config_builder.hpp
  * @brief Fluent configuration builder for TMC51x0 driver
+ * @copyright Copyright (c) 2024-2025 HardFOC. All rights reserved.
  * 
  * Provides a fluent interface for building DriverConfig with:
  * - Units in milliamps, millivolts, milliohms, millihenries
@@ -67,10 +68,7 @@
  *     .Build();
  * @endcode
  */
-
-#ifndef TMC51X0_CONFIG_BUILDER_HPP
-#define TMC51X0_CONFIG_BUILDER_HPP
-
+#pragma once
 #include <cstdint>
 #include "../tmc51x0_types.hpp"
 
@@ -889,5 +887,3 @@ public:
 };
 
 } // namespace tmc51x0
-
-#endif // TMC51X0_CONFIG_BUILDER_HPP

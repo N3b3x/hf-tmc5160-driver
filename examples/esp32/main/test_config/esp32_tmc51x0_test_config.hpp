@@ -127,9 +127,7 @@
  * @date 2025
  */
 
-#ifndef ESP32_TMC51X0_TEST_CONFIG_HPP
-#define ESP32_TMC51X0_TEST_CONFIG_HPP
-
+#pragma once
 #include "driver/gpio.h"
 #include "tmc51x0_comm_interface.hpp"
 #include "features/tmc51x0_config_builder.hpp"  // For ConfigBuilder
@@ -2078,6 +2076,3 @@ namespace ConfigValidators {
 }
 
 } // namespace tmc51x0_test_config
-
-#endif // ESP32_TMC51X0_TEST_CONFIG_HPP
-
