@@ -1,5 +1,5 @@
 <map id="tmc51x0_registers.hpp" name="tmc51x0_registers.hpp">
-<area shape="rect" id="Node000001" title="Register definitions and bitfield structures for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)" alt="" coords="87,5,258,31"/>
+<area shape="rect" id="Node000001" title="Register definitions and bitfield structures for TMC51x0 stepper motor." alt="" coords="87,5,258,31"/>
 <area shape="rect" id="Node000002" href="$tmc51x0__register__defs_8hpp.html" title="X&#45;MACRO definitions for TMC51x0 registers (TMC5130 &amp; TMC5160)" alt="" coords="5,79,204,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,33,127,70,123,67,160,29"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="139,152,206,177"/>

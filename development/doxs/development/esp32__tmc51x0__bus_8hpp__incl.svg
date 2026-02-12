@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="tmc51x0__comm__interface_8hpp.html" target="_top" xlink:title="Communication interfaces for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160) using SPI and UART.">
+<g id="a_Node000002"><a xlink:href="tmc51x0__comm__interface_8hpp.html" target="_top" xlink:title="Communication interfaces for TMC51x0 stepper motor driver using SPI and UART.">
 <polygon fill="white" stroke="#666666" points="356,-129 191,-129 191,-110 356,-110 356,-129"/>
 <text text-anchor="middle" x="273.5" y="-117" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0_comm_interface.hpp</text>
 </a>

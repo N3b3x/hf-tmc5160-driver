@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Tmc51X0 Register Defs definitions.">
 <polygon fill="#999999" stroke="#666666" points="195,-140 46,-140 46,-121 195,-121 195,-140"/>
 <text text-anchor="middle" x="120.5" y="-128" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0_register_defs.cpp</text>
 </a>

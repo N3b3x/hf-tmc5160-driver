@@ -1,9 +1,26 @@
 var tmc51x0_8hpp =
 [
+    [ "tmc51x0::TMC51x0< CommType >", "classtmc51x0_1_1TMC51x0.html", "classtmc51x0_1_1TMC51x0" ],
     [ "tmc51x0::TMC51x0< CommType >::HardResetOptions", "structtmc51x0_1_1TMC51x0_1_1HardResetOptions.html", "structtmc51x0_1_1TMC51x0_1_1HardResetOptions" ],
     [ "tmc51x0::TMC51x0< CommType >::MotorCurrentDebugInfo", "structtmc51x0_1_1TMC51x0_1_1MotorCurrentDebugInfo.html", "structtmc51x0_1_1TMC51x0_1_1MotorCurrentDebugInfo" ],
+    [ "tmc51x0::TMC51x0< CommType >::RampControl", "structtmc51x0_1_1TMC51x0_1_1RampControl.html", "structtmc51x0_1_1TMC51x0_1_1RampControl" ],
+    [ "tmc51x0::TMC51x0< CommType >::Switches", "structtmc51x0_1_1TMC51x0_1_1Switches.html", "structtmc51x0_1_1TMC51x0_1_1Switches" ],
+    [ "tmc51x0::TMC51x0< CommType >::Events", "structtmc51x0_1_1TMC51x0_1_1Events.html", "structtmc51x0_1_1TMC51x0_1_1Events" ],
+    [ "tmc51x0::TMC51x0< CommType >::MotorControl", "structtmc51x0_1_1TMC51x0_1_1MotorControl.html", "structtmc51x0_1_1TMC51x0_1_1MotorControl" ],
+    [ "tmc51x0::TMC51x0< CommType >::Thresholds", "structtmc51x0_1_1TMC51x0_1_1Thresholds.html", "structtmc51x0_1_1TMC51x0_1_1Thresholds" ],
+    [ "tmc51x0::TMC51x0< CommType >::PowerStage", "structtmc51x0_1_1TMC51x0_1_1PowerStage.html", "structtmc51x0_1_1TMC51x0_1_1PowerStage" ],
+    [ "tmc51x0::TMC51x0< CommType >::Communication", "structtmc51x0_1_1TMC51x0_1_1Communication.html", "structtmc51x0_1_1TMC51x0_1_1Communication" ],
+    [ "tmc51x0::TMC51x0< CommType >::Io", "structtmc51x0_1_1TMC51x0_1_1Io.html", "structtmc51x0_1_1TMC51x0_1_1Io" ],
+    [ "tmc51x0::TMC51x0< CommType >::Encoder", "structtmc51x0_1_1TMC51x0_1_1Encoder.html", "structtmc51x0_1_1TMC51x0_1_1Encoder" ],
+    [ "tmc51x0::TMC51x0< CommType >::Status", "structtmc51x0_1_1TMC51x0_1_1Status.html", "structtmc51x0_1_1TMC51x0_1_1Status" ],
+    [ "tmc51x0::TMC51x0< CommType >::StallGuard", "structtmc51x0_1_1TMC51x0_1_1StallGuard.html", "structtmc51x0_1_1TMC51x0_1_1StallGuard" ],
+    [ "tmc51x0::TMC51x0< CommType >::Tuning", "structtmc51x0_1_1TMC51x0_1_1Tuning.html", "structtmc51x0_1_1TMC51x0_1_1Tuning" ],
+    [ "tmc51x0::TMC51x0< CommType >::Homing", "structtmc51x0_1_1TMC51x0_1_1Homing.html", "structtmc51x0_1_1TMC51x0_1_1Homing" ],
     [ "tmc51x0::TMC51x0< CommType >::Homing::BoundsResult", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult" ],
     [ "tmc51x0::TMC51x0< CommType >::Homing::HomeConfig", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig" ],
     [ "tmc51x0::TMC51x0< CommType >::Homing::BoundsOptions", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html", "structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions" ],
-    [ "tmc51x0::TMC51x0< CommType >::WriteOnlyRegisters", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters" ]
+    [ "tmc51x0::TMC51x0< CommType >::Printer", "structtmc51x0_1_1TMC51x0_1_1Printer.html", "structtmc51x0_1_1TMC51x0_1_1Printer" ],
+    [ "tmc51x0::TMC51x0< CommType >::UartConfig", "structtmc51x0_1_1TMC51x0_1_1UartConfig.html", "structtmc51x0_1_1TMC51x0_1_1UartConfig" ],
+    [ "tmc51x0::TMC51x0< CommType >::WriteOnlyRegisters", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters" ],
+    [ "TMC51X0_HEADER_INCLUDED", "tmc51x0_8hpp.html#a0af86be4595f72f72796cf56746e41fd", null ]
 ];

@@ -101,7 +101,7 @@ $(function(){initNavTree('structtmc51x0_1_1TMC51x0_1_1Homing.html',''); initResi
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="structtmc51x0_1_1TMC51x0_1_1Homing-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">tmc51x0::TMC51x0&lt; CommType &gt;::Homing Struct Reference<div class="ingroups"><a class="el" href="group__TMC51X0__Subsystems.html">Subsystem Interfaces</a></div></div></div>
+  <div class="headertitle"><div class="title">tmc51x0::TMC51x0&lt; CommType &gt;::Homing Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -158,18 +158,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3d79ab094024e3606734885187ae6ec7" id="r_a3d79ab094024e3606734885187ae6ec7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d79ab094024e3606734885187ae6ec7">PerformEncoderIndexHoming</a> (bool direction, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;opt, int32_t &amp;final_position, <a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a> should_cancel=nullptr) noexcept</td></tr>
 <tr class="memdesc:a3d79ab094024e3606734885187ae6ec7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform homing using encoder index pulse (N-channel) with latch_x_act.  <br /></td></tr>
 <tr class="separator:a3d79ab094024e3606734885187ae6ec7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5aff97457b88a61646f146bcf2c0abcd" id="r_a5aff97457b88a61646f146bcf2c0abcd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html">BoundsResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5aff97457b88a61646f146bcf2c0abcd">FindBoundsStallGuard</a> (const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;opt, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html">HomeConfig</a> &amp;home={}, <a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a> should_cancel=nullptr) noexcept</td></tr>
-<tr class="memdesc:a5aff97457b88a61646f146bcf2c0abcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find motion bounds using StallGuard2 (sensorless hard-stop detection).  <br /></td></tr>
-<tr class="separator:a5aff97457b88a61646f146bcf2c0abcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab49cd9865a358a18fb5e94e026ff7a1b" id="r_ab49cd9865a358a18fb5e94e026ff7a1b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html">BoundsResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab49cd9865a358a18fb5e94e026ff7a1b">FindBoundsEncoder</a> (const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;opt, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html">HomeConfig</a> &amp;home={}, <a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a> should_cancel=nullptr) noexcept</td></tr>
-<tr class="memdesc:ab49cd9865a358a18fb5e94e026ff7a1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find motion bounds using encoder feedback (detects "no further motion" via stalled encoder).  <br /></td></tr>
-<tr class="separator:ab49cd9865a358a18fb5e94e026ff7a1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3996b6e0a219e0874276ac7626fe60e5" id="r_a3996b6e0a219e0874276ac7626fe60e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html">BoundsResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3996b6e0a219e0874276ac7626fe60e5">FindBoundsSwitch</a> (const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;opt, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html">HomeConfig</a> &amp;home={}, <a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a> should_cancel=nullptr) noexcept</td></tr>
-<tr class="memdesc:a3996b6e0a219e0874276ac7626fe60e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find motion bounds using reference switches (REFL/REFR stop events).  <br /></td></tr>
-<tr class="separator:a3996b6e0a219e0874276ac7626fe60e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeef1b5af5be99b10b64bdf9fec56d661" id="r_aeef1b5af5be99b10b64bdf9fec56d661"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html">BoundsResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeef1b5af5be99b10b64bdf9fec56d661">FindBounds</a> (<a class="el" href="#af2c82a28cd0d66a8a680464e4ebfeb3a">BoundsMethod</a> method, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;opt, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html">HomeConfig</a> &amp;home={}, <a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a> should_cancel=nullptr) noexcept</td></tr>
-<tr class="memdesc:aeef1b5af5be99b10b64bdf9fec56d661"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispatch bounds finding by method.  <br /></td></tr>
-<tr class="separator:aeef1b5af5be99b10b64bdf9fec56d661"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a813699f97d05b993147a3e766a602555" id="r_a813699f97d05b993147a3e766a602555"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html">BoundsResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a813699f97d05b993147a3e766a602555">FindBoundsStallGuard</a> (const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;opt, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html">HomeConfig</a> &amp;home={}, <a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a> should_cancel=nullptr) noexcept</td></tr>
+<tr class="memdesc:a813699f97d05b993147a3e766a602555"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find motion bounds using StallGuard2 (sensorless hard-stop detection).  <br /></td></tr>
+<tr class="separator:a813699f97d05b993147a3e766a602555"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeee7aee9862225096663c55359a6bd70" id="r_aeee7aee9862225096663c55359a6bd70"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html">BoundsResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeee7aee9862225096663c55359a6bd70">FindBoundsEncoder</a> (const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;opt, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html">HomeConfig</a> &amp;home={}, <a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a> should_cancel=nullptr) noexcept</td></tr>
+<tr class="memdesc:aeee7aee9862225096663c55359a6bd70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find motion bounds using encoder feedback (detects "no further motion" via stalled encoder).  <br /></td></tr>
+<tr class="separator:aeee7aee9862225096663c55359a6bd70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5da5cfa6480a528dff850a2b0bae338d" id="r_a5da5cfa6480a528dff850a2b0bae338d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html">BoundsResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5da5cfa6480a528dff850a2b0bae338d">FindBoundsSwitch</a> (const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;opt, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html">HomeConfig</a> &amp;home={}, <a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a> should_cancel=nullptr) noexcept</td></tr>
+<tr class="memdesc:a5da5cfa6480a528dff850a2b0bae338d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find motion bounds using reference switches (REFL/REFR stop events).  <br /></td></tr>
+<tr class="separator:a5da5cfa6480a528dff850a2b0bae338d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f3b767cce1e547c940d581d2ca905e5" id="r_a9f3b767cce1e547c940d581d2ca905e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html">BoundsResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9f3b767cce1e547c940d581d2ca905e5">FindBounds</a> (<a class="el" href="#af2c82a28cd0d66a8a680464e4ebfeb3a">BoundsMethod</a> method, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;opt, const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1HomeConfig.html">HomeConfig</a> &amp;home={}, <a class="el" href="#aa01c97a661dc5004d9360acba2d6934c">CancelCallback</a> should_cancel=nullptr) noexcept</td></tr>
+<tr class="memdesc:a9f3b767cce1e547c940d581d2ca905e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispatch bounds finding by method.  <br /></td></tr>
+<tr class="separator:a9f3b767cce1e547c940d581d2ca905e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -408,8 +408,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="aeef1b5af5be99b10b64bdf9fec56d661" name="aeef1b5af5be99b10b64bdf9fec56d661"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeef1b5af5be99b10b64bdf9fec56d661">&#9670;&#160;</a></span>FindBounds()</h2>
+<a id="a9f3b767cce1e547c940d581d2ca905e5" name="a9f3b767cce1e547c940d581d2ca905e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f3b767cce1e547c940d581d2ca905e5">&#9670;&#160;</a></span>FindBounds()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -420,7 +420,7 @@ template&lt;typename CommType &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; typename <a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt;::Homing::BoundsResult &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Homing::FindBounds </td>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html">BoundsResult</a> &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Homing::FindBounds </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="#af2c82a28cd0d66a8a680464e4ebfeb3a">BoundsMethod</a></td>          <td class="paramname"><span class="paramname"><em>method</em>, </span></td>
         </tr>
@@ -449,9 +449,9 @@ template&lt;typename CommType &gt; </div>
 
 <p>Dispatch bounds finding by method. </p>
 <p>Convenience wrapper around:</p><ul>
-<li><code><a class="el" href="#a5aff97457b88a61646f146bcf2c0abcd" title="Find motion bounds using StallGuard2 (sensorless hard-stop detection).">FindBoundsStallGuard()</a></code> when <code>method == <a class="el" href="#af2c82a28cd0d66a8a680464e4ebfeb3aa12f4e38394a3014e25f1dc62c037c23f">BoundsMethod::StallGuard</a></code></li>
-<li><code><a class="el" href="#ab49cd9865a358a18fb5e94e026ff7a1b" title="Find motion bounds using encoder feedback (detects &quot;no further motion&quot; via stalled encoder).">FindBoundsEncoder()</a></code> when <code>method == <a class="el" href="#af2c82a28cd0d66a8a680464e4ebfeb3aa87d487f6f605eb96e61be67988e41e6d">BoundsMethod::Encoder</a></code></li>
-<li><code><a class="el" href="#a3996b6e0a219e0874276ac7626fe60e5" title="Find motion bounds using reference switches (REFL/REFR stop events).">FindBoundsSwitch()</a></code> when <code>method == <a class="el" href="#af2c82a28cd0d66a8a680464e4ebfeb3aabbc155fb2b111bf61c4f5ff892915e6b">BoundsMethod::Switch</a></code></li>
+<li><code><a class="el" href="#a813699f97d05b993147a3e766a602555" title="Find motion bounds using StallGuard2 (sensorless hard-stop detection).">FindBoundsStallGuard()</a></code> when <code>method == <a class="el" href="#af2c82a28cd0d66a8a680464e4ebfeb3aa12f4e38394a3014e25f1dc62c037c23f">BoundsMethod::StallGuard</a></code></li>
+<li><code><a class="el" href="#aeee7aee9862225096663c55359a6bd70" title="Find motion bounds using encoder feedback (detects &quot;no further motion&quot; via stalled encoder).">FindBoundsEncoder()</a></code> when <code>method == <a class="el" href="#af2c82a28cd0d66a8a680464e4ebfeb3aa87d487f6f605eb96e61be67988e41e6d">BoundsMethod::Encoder</a></code></li>
+<li><code><a class="el" href="#a5da5cfa6480a528dff850a2b0bae338d" title="Find motion bounds using reference switches (REFL/REFR stop events).">FindBoundsSwitch()</a></code> when <code>method == <a class="el" href="#af2c82a28cd0d66a8a680464e4ebfeb3aabbc155fb2b111bf61c4f5ff892915e6b">BoundsMethod::Switch</a></code></li>
 </ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -466,8 +466,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="ab49cd9865a358a18fb5e94e026ff7a1b" name="ab49cd9865a358a18fb5e94e026ff7a1b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab49cd9865a358a18fb5e94e026ff7a1b">&#9670;&#160;</a></span>FindBoundsEncoder()</h2>
+<a id="aeee7aee9862225096663c55359a6bd70" name="aeee7aee9862225096663c55359a6bd70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeee7aee9862225096663c55359a6bd70">&#9670;&#160;</a></span>FindBoundsEncoder()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -478,7 +478,7 @@ template&lt;typename CommType &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; typename <a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt;::Homing::BoundsResult &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Homing::FindBoundsEncoder </td>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html">BoundsResult</a> &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Homing::FindBoundsEncoder </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>opt</em>, </span></td>
         </tr>
@@ -528,8 +528,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="a5aff97457b88a61646f146bcf2c0abcd" name="a5aff97457b88a61646f146bcf2c0abcd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5aff97457b88a61646f146bcf2c0abcd">&#9670;&#160;</a></span>FindBoundsStallGuard()</h2>
+<a id="a813699f97d05b993147a3e766a602555" name="a813699f97d05b993147a3e766a602555"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a813699f97d05b993147a3e766a602555">&#9670;&#160;</a></span>FindBoundsStallGuard()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -540,7 +540,7 @@ template&lt;typename CommType &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; typename <a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt;::Homing::BoundsResult &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Homing::FindBoundsStallGuard </td>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html">BoundsResult</a> &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Homing::FindBoundsStallGuard </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>opt</em>, </span></td>
         </tr>
@@ -603,8 +603,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<a id="a3996b6e0a219e0874276ac7626fe60e5" name="a3996b6e0a219e0874276ac7626fe60e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3996b6e0a219e0874276ac7626fe60e5">&#9670;&#160;</a></span>FindBoundsSwitch()</h2>
+<a id="a5da5cfa6480a528dff850a2b0bae338d" name="a5da5cfa6480a528dff850a2b0bae338d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5da5cfa6480a528dff850a2b0bae338d">&#9670;&#160;</a></span>FindBoundsSwitch()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -615,7 +615,7 @@ template&lt;typename CommType &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; typename <a class="el" href="classtmc51x0_1_1TMC51x0.html">TMC51x0</a>&lt; CommType &gt;::Homing::BoundsResult &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Homing::FindBoundsSwitch </td>
+          <td class="memname"><a class="el" href="classtmc51x0_1_1Result.html">Result</a>&lt; <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsResult.html">BoundsResult</a> &gt; <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::Homing::FindBoundsSwitch </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structtmc51x0_1_1TMC51x0_1_1Homing_1_1BoundsOptions.html">BoundsOptions</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>opt</em>, </span></td>
         </tr>
@@ -936,9 +936,8 @@ template&lt;typename CommType &gt; </div>
 
 </div>
 </div>
-<hr/>The documentation for this struct was generated from the following files:<ul>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="tmc51x0_8hpp_source.html">tmc51x0.hpp</a></li>
-<li><a class="el" href="tmc51x0_8cpp.html">tmc51x0.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

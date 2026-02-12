@@ -113,7 +113,7 @@ idf_component_register(
 # Compiler Configuration
 # =============================================================================
 # Set C++ standard to C++17 (required for modern C++ features)
-target_compile_features(${COMPONENT_LIB} PRIVATE cxx_std_17)
+target_compile_features(${COMPONENT_LIB} PRIVATE cxx_std_20)
 
 # =============================================================================
 # Build Type Specific Compiler Flags

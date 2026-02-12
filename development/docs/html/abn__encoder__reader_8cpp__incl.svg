@@ -148,7 +148,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="tmc51x0__comm__interface_8hpp.html" target="_top" xlink:title="Communication interfaces for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160) using SPI and UART.">
+<g id="a_Node000004"><a xlink:href="tmc51x0__comm__interface_8hpp.html" target="_top" xlink:title="Communication interfaces for TMC51x0 stepper motor driver using SPI and UART.">
 <polygon fill="white" stroke="#666666" points="496.57,-184 331.57,-184 331.57,-165 496.57,-165 496.57,-184"/>
 <text text-anchor="middle" x="414.07" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">tmc51x0_comm_interface.hpp</text>
 </a>
@@ -626,7 +626,7 @@
 <!-- Node28 -->
 <g id="Node000028" class="node">
 <title>Node28</title>
-<g id="a_Node000028"><a xlink:href="tmc51x0__registers_8hpp.html" target="_top" xlink:title="Register definitions and bitfield structures for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">
+<g id="a_Node000028"><a xlink:href="tmc51x0__registers_8hpp.html" target="_top" xlink:title="Register definitions and bitfield structures for TMC51x0 stepper motor.">
 <polygon fill="white" stroke="#666666" points="184.07,-129 10.07,-129 10.07,-110 184.07,-110 184.07,-129"/>
 <text text-anchor="middle" x="97.07" y="-117" font-family="Helvetica,sans-Serif" font-size="10.00">registers/tmc51x0_registers.hpp</text>
 </a>

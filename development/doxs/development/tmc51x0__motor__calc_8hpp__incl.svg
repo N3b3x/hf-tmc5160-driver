@@ -110,7 +110,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="tmc51x0__registers_8hpp.html" target="_top" xlink:title="Register definitions and bitfield structures for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)">
+<g id="a_Node000004"><a xlink:href="tmc51x0__registers_8hpp.html" target="_top" xlink:title="Register definitions and bitfield structures for TMC51x0 stepper motor.">
 <polygon fill="white" stroke="#666666" points="206,-129 32,-129 32,-110 206,-110 206,-129"/>
 <text text-anchor="middle" x="119" y="-117" font-family="Helvetica,sans-Serif" font-size="10.00">registers/tmc51x0_registers.hpp</text>
 </a>

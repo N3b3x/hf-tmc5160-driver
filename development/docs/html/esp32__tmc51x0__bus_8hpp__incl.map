@@ -1,6 +1,6 @@
 <map id="esp32_tmc51x0_bus.hpp" name="esp32_tmc51x0_bus.hpp">
 <area shape="rect" id="Node000001" title="ESP32&#45;specific communication interfaces for TMC51x0 using SPI and UART (TMC5130 &amp; TMC51x0)" alt="" coords="941,5,1124,31"/>
-<area shape="rect" id="Node000002" href="$tmc51x0__comm__interface_8hpp.html" title="Communication interfaces for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160) using SPI and UART." alt="" coords="260,79,480,104"/>
+<area shape="rect" id="Node000002" href="$tmc51x0__comm__interface_8hpp.html" title="Communication interfaces for TMC51x0 stepper motor driver using SPI and UART." alt="" coords="260,79,480,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="942,32,490,80,490,75,941,26"/>
 <area shape="rect" id="Node000005" title=" " alt="" coords="5,152,76,177"/>
 <area shape="poly" id="edge22_Node000001_Node000005" title=" " alt="" coords="941,25,576,44,386,61,307,70,248,81,200,95,153,113,75,148,73,143,151,108,198,90,247,76,307,65,385,55,576,39,941,20"/>
