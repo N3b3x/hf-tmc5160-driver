@@ -28,8 +28,8 @@ var searchData=
   ['index_25',['index',['../structtmc51x0_1_1Diag1Config.html#a58b41e494ac7188d8a2fb8cee9a1a8bf',1,'tmc51x0::Diag1Config']]],
   ['inductance_5fmh_26',['INDUCTANCE_MH',['../structtmc51x0__test__config_1_1MotorConfig__17HS4401S.html#a0b24efc08aa23b26f39d66e97808cac1',1,'tmc51x0_test_config::MotorConfig_17HS4401S::INDUCTANCE_MH'],['../structtmc51x0__test__config_1_1MotorConfig__17HS4401S__Direct.html#abf752ecda6f036e8a4296be47fa9a418',1,'tmc51x0_test_config::MotorConfig_17HS4401S_Direct::INDUCTANCE_MH'],['../structtmc51x0__test__config_1_1MotorConfig__AppliedMotion__5034__369.html#afc745731044c76ba6236565b84da755a',1,'tmc51x0_test_config::MotorConfig_AppliedMotion_5034_369::INDUCTANCE_MH']]],
   ['info_27',['Info',['../namespacetmc51x0.html#a2080204610f0192a190d910abbe2869da4059b0251f66a18cb56f544728796875',1,'tmc51x0']]],
-  ['init_28',['init',['../namespaceEspNowReceiver.html#a7b5448c32668c4ce8c8b2e825fe523ee',1,'EspNowReceiver']]],
-  ['init_29',['Init',['../namespacePeerStore.html#ad5335ecd8ed029adc89e1a2c571a5dcb',1,'PeerStore::Init()'],['../namespaceBoundsCache.html#a471efef965016231bc4b531bc1c89161',1,'BoundsCache::Init()']]],
+  ['init_28',['Init',['../namespacePeerStore.html#ad5335ecd8ed029adc89e1a2c571a5dcb',1,'PeerStore::Init()'],['../namespaceBoundsCache.html#a471efef965016231bc4b531bc1c89161',1,'BoundsCache::Init()']]],
+  ['init_29',['init',['../namespaceEspNowReceiver.html#a7b5448c32668c4ce8c8b2e825fe523ee',1,'EspNowReceiver']]],
   ['init_5ftest_5fprogress_5findicator_30',['init_test_progress_indicator',['../TestFramework_8h.html#a3967179ac699a5b02ef9787b549409fe',1,'TestFramework.h']]],
   ['initialize_31',['Initialize',['../classtmc51x0_1_1TMC51x0.html#a97c3a1773a03aaeeb0882d2096f868d8',1,'tmc51x0::TMC51x0::Initialize()'],['../classEsp32SPI.html#a85d11c001a36b137e4d29ced49983d20',1,'Esp32SPI::Initialize()'],['../classEsp32UART.html#aa7fadc42d73e372a57c2300b9a599461',1,'Esp32UART::Initialize()']]],
   ['initializeall_32',['InitializeAll',['../classtmc51x0_1_1TMC51x0DaisyChain.html#aeca8664efcfc2b098f2dca8167cee3b9',1,'tmc51x0::TMC51x0DaisyChain::InitializeAll()'],['../classtmc51x0_1_1TMC51x0MultiNode.html#a3aa2902ad0ca0dd52f6984e6cd0cf6b8',1,'tmc51x0::TMC51x0MultiNode::InitializeAll()']]],
@@ -39,7 +39,7 @@ var searchData=
   ['installation_36',['🔧 Installation',['../index.html#autotoc_md59',1,'']]],
   ['integration_37',['🔄 Encoder Integration',['../index.html#autotoc_md46',1,'']]],
   ['interface_38',['Interface',['../classtmc51x0_1_1TMC51x0.html#autotoc_md10',1,'Communication Interface'],['../group__TMC51X0__GPIOControl.html',1,'GPIO Control Interface']]],
-  ['interfaces_39',['Interfaces',['../group__TMC51X0__CommInterface.html',1,'Communication Interfaces'],['../group__TMC51X0__Subsystems.html',1,'Subsystem Interfaces']]],
+  ['interfaces_39',['Communication Interfaces',['../group__TMC51X0__CommInterface.html',1,'']]],
   ['internal_5framp_5fcomprehensive_5ftest_2ecpp_40',['internal_ramp_comprehensive_test.cpp',['../internal__ramp__comprehensive__test_8cpp.html',1,'']]],
   ['internal_5framp_5fsinusoidal_2ecpp_41',['internal_ramp_sinusoidal.cpp',['../internal__ramp__sinusoidal_8cpp.html',1,'']]],
   ['internalstate_42',['InternalState',['../main_8cpp.html#aa041e16b2a09d6f2a5b8b74582790ed5',1,'main.cpp']]],
@@ -93,6 +93,6 @@ var searchData=
   ['isvalid_90',['IsValid',['../structtmc51x0_1_1UartFrame.html#ae17bddcde8c6a47a6bcef1e7518b3549',1,'tmc51x0::UartFrame']]],
   ['isvelocityreached_91',['IsVelocityReached',['../structtmc51x0_1_1TMC51x0_1_1RampControl.html#a9e1b5fabcc61b62882431de97c850b8d',1,'tmc51x0::TMC51x0::RampControl']]],
   ['iswrite_92',['IsWrite',['../structtmc51x0_1_1SpiCommand.html#afa83a73a78929cafba14fdeb3fd941a4',1,'tmc51x0::SpiCommand::IsWrite()'],['../structtmc51x0_1_1UartFrame.html#a1d0cb7e1c1f764cf7dfecddc531c17ac',1,'tmc51x0::UartFrame::IsWrite()']]],
-  ['iszeromac_93',['isZeroMac',['../espnow__receiver_8cpp.html#a38ae343ba91aa93458377b341e1d9e4a',1,'espnow_receiver.cpp']]],
-  ['iszeromac_94',['IsZeroMac',['../espnow__security_8hpp.html#a5404f39e50ea5a07bb38e958bfecd9d1',1,'espnow_security.hpp']]]
+  ['iszeromac_93',['IsZeroMac',['../espnow__security_8hpp.html#a5404f39e50ea5a07bb38e958bfecd9d1',1,'espnow_security.hpp']]],
+  ['iszeromac_94',['isZeroMac',['../espnow__receiver_8cpp.html#a38ae343ba91aa93458377b341e1d9e4a',1,'espnow_receiver.cpp']]]
 ];

@@ -1,9 +1,5 @@
 var namespacetmc51x0 =
 [
-    [ "anonymous_namespace{tmc51x0.cpp}", "namespacetmc51x0_1_1anonymous__namespace_02tmc51x0_8cpp_03.html", [
-      [ "ReduceCurrentForBounds", "namespacetmc51x0_1_1anonymous__namespace_02tmc51x0_8cpp_03.html#a318abe41261027e58937bce4a2756ef9", null ],
-      [ "RestoreCurrent", "namespacetmc51x0_1_1anonymous__namespace_02tmc51x0_8cpp_03.html#a4126c03af0af361cd473966eeb78cd0a", null ]
-    ] ],
     [ "ChipVersion", "namespacetmc51x0_1_1ChipVersion.html", [
       [ "TMC5130", "namespacetmc51x0_1_1ChipVersion.html#a5f3f2fc1e4d4a86a2d6ae8b752add859", null ],
       [ "TMC5160", "namespacetmc51x0_1_1ChipVersion.html#a59657011cede04bf230887b9d1bf42b9", null ]
@@ -12,22 +8,6 @@ var namespacetmc51x0 =
       [ "DEFAULT_F_CLK", "namespacetmc51x0_1_1ClockFreq.html#af020190f0c72ab945f4ac22350e6fa4a", null ],
       [ "MAX_F_CLK", "namespacetmc51x0_1_1ClockFreq.html#a3646764e23b0e26677311b320cb8d530", null ],
       [ "MIN_F_CLK", "namespacetmc51x0_1_1ClockFreq.html#a19ecaea87d80c60b18513b3c8364dde4", null ]
-    ] ],
-    [ "detail", "namespacetmc51x0_1_1detail.html", [
-      [ "AppendPadded", "namespacetmc51x0_1_1detail.html#a443b2edee4617c6cc74c128d524b7edb", null ],
-      [ "LogBoxBottom", "namespacetmc51x0_1_1detail.html#a975a6723c266a92c869dfec5de543b16", null ],
-      [ "LogBoxLine", "namespacetmc51x0_1_1detail.html#a833a4b389fcef9493fa5bd7aaf88ba48", null ],
-      [ "LogBoxRow", "namespacetmc51x0_1_1detail.html#ae493739f70a91419eece66dd1d958094", null ],
-      [ "LogBoxRowWrapped", "namespacetmc51x0_1_1detail.html#ac3de64d95185b08d40faab18e706ea8f", null ],
-      [ "LogBoxTop", "namespacetmc51x0_1_1detail.html#a7fbd9d5719c3c7ac393acfc49aa55132", null ],
-      [ "LogTableHeader", "namespacetmc51x0_1_1detail.html#ad1f4b7d44b55921d635447a9266de1b8", null ],
-      [ "LogTableRow", "namespacetmc51x0_1_1detail.html#afd95b88236a2c35527927fb24f042666", null ],
-      [ "LogTableSection", "namespacetmc51x0_1_1detail.html#a8c46bbcc44fe3dc439828d0786c43fb0", null ],
-      [ "LogTableSeparator", "namespacetmc51x0_1_1detail.html#a089bcd93942e19e55813e20b2f891293", null ],
-      [ "NextWrapChunk", "namespacetmc51x0_1_1detail.html#a042585aacefd87238f1c771567fd1647", null ],
-      [ "OnOffStyled", "namespacetmc51x0_1_1detail.html#a3fb371dd61ab27e467c1ca7557ab7b57", null ],
-      [ "TrueFalseStyled", "namespacetmc51x0_1_1detail.html#a6312aef422236f3477944818f3d71a05", null ],
-      [ "report_row_buf", "namespacetmc51x0_1_1detail.html#a0502e80a6ce8097c8c177e323bbb7c22", null ]
     ] ],
     [ "MathConstants", "namespacetmc51x0_1_1MathConstants.html", [
       [ "DEGREES_PER_REV", "namespacetmc51x0_1_1MathConstants.html#acb6742f022495d32d5335c6b5b67a97a", null ],
@@ -347,10 +327,8 @@ var namespacetmc51x0 =
     [ "CalculateS2VSLevel", "namespacetmc51x0.html#a735799ad1db46015a3121adbf1cec9ac", null ],
     [ "CalculateShortDelay", "namespacetmc51x0.html#a3da6e7a7011465219730793db49358e0", null ],
     [ "CalculateStealthChopLowerLimit", "namespacetmc51x0.html#ad149efd95c065a993dbdc5372239927c", null ],
-    [ "constrain", "namespacetmc51x0.html#a5fa3afe83ae033126d377aed702dddf6", null ],
     [ "DegreesToSteps", "namespacetmc51x0.html#aeb46c0090617c6181b568bdaf4415ae3", null ],
     [ "ErrorMessage", "namespacetmc51x0.html#a03326fea54f838942f2a8b4e1d1ed01f", null ],
-    [ "FindWorkingVelocityRange", "namespacetmc51x0.html#afaf6037a652c82c965a94e0433e13a7c", null ],
     [ "get", "namespacetmc51x0.html#ae5b364c363b276e92a44c5e3f2c0bd15", null ],
     [ "get", "namespacetmc51x0.html#a5d0c7c80a6e56655b3714e2e445395db", null ],
     [ "get", "namespacetmc51x0.html#ad4ed315f0b11099e0620e55cdf0b1038", null ],
@@ -361,15 +339,12 @@ var namespacetmc51x0 =
     [ "MicrostepsPerFullStep", "namespacetmc51x0.html#a60be1af970c350d5071ed3ba6a96c489", null ],
     [ "MmPerSecToStepsPerSec", "namespacetmc51x0.html#a75950339da8df172472557556f439628", null ],
     [ "MmToSteps", "namespacetmc51x0.html#a67bdb4d4ee51eb6afb6483731177af81", null ],
-    [ "round_to_int32", "namespacetmc51x0.html#ad6360e59e574521bae72c9b548eb29f0", null ],
-    [ "round_to_uint32_nonneg", "namespacetmc51x0.html#a4a7265cc09cba99affeeae51b6490348", null ],
     [ "RpmToStepsPerSec", "namespacetmc51x0.html#ab0c004bd8dcf257419def5c59d0081d0", null ],
     [ "StepsPerSecToMmPerSec", "namespacetmc51x0.html#a91a56ba72b7f94ffb0fdae43e67b982c", null ],
     [ "StepsPerSecToRpm", "namespacetmc51x0.html#a2efce2137159987bab555fafeb3dee9c", null ],
     [ "StepsToBeltTeeth", "namespacetmc51x0.html#a774504ccaf07160eba05e41574b8bb8f", null ],
     [ "StepsToDegrees", "namespacetmc51x0.html#aa654a36849533f2f559d3e113176bf35", null ],
     [ "StepsToMm", "namespacetmc51x0.html#a14a9cbf63a5eb7e330795cacdf8fadc3", null ],
-    [ "TestVelocityWithSGT", "namespacetmc51x0.html#adff0626464f4c508695b55c6490023be", null ],
     [ "ToString", "namespacetmc51x0.html#ab651cf153e7df9b12cd02c075e721a62", null ],
     [ "ToString", "namespacetmc51x0.html#a53b45b9929e8676895feec279f636a92", null ],
     [ "ToString", "namespacetmc51x0.html#ad7c9cd8e87838faf750c8d0674e8443e", null ],

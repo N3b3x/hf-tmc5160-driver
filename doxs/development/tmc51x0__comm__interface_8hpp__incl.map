@@ -1,5 +1,5 @@
 <map id="tmc51x0_comm_interface.hpp" name="tmc51x0_comm_interface.hpp">
-<area shape="rect" id="Node000001" title="Communication interfaces for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160) using SPI and UART." alt="" coords="157,5,377,31"/>
+<area shape="rect" id="Node000001" title="Communication interfaces for TMC51x0 stepper motor driver using SPI and UART." alt="" coords="157,5,377,31"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,79,91,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="232,33,97,77,96,72,231,28"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="115,79,171,104"/>

@@ -16,7 +16,7 @@
 <area shape="poly" id="edge44_Node000001_Node000030" title=" " alt="" coords="810,22,1013,40,1133,55,1252,76,1267,80,1266,85,1251,81,1132,60,1013,45,810,27"/>
 <area shape="poly" id="edge23_Node000005_Node000002" title=" " alt="" coords="866,198,559,221,170,257,169,252,559,216,866,192"/>
 <area shape="poly" id="edge25_Node000005_Node000003" title=" " alt="" coords="866,199,618,222,312,257,311,252,618,217,866,194"/>
-<area shape="rect" id="Node000006" href="$tmc51x0__comm__interface_8hpp.html" title="Communication interfaces for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160) using SPI and UART." alt="" coords="1583,255,1803,280"/>
+<area shape="rect" id="Node000006" href="$tmc51x0__comm__interface_8hpp.html" title="Communication interfaces for TMC51x0 stepper motor driver using SPI and UART." alt="" coords="1583,255,1803,280"/>
 <area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="1067,196,1574,251,1573,256,1066,201"/>
 <area shape="rect" id="Node000009" title=" " alt="" coords="1080,328,1151,353"/>
 <area shape="poly" id="edge26_Node000005_Node000009" title=" " alt="" coords="988,205,1037,253,1097,316,1093,319,1033,257,984,209"/>
@@ -67,7 +67,7 @@
 <area shape="rect" id="Node000027" href="$tmc51x0__types_8hpp.html" title="Type definitions and enumerations for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)" alt="" coords="1827,255,1990,280"/>
 <area shape="poly" id="edge36_Node000026_Node000027" title=" " alt="" coords="1911,207,1911,241,1906,241,1906,207"/>
 <area shape="poly" id="edge37_Node000027_Node000010" title=" " alt="" coords="1860,283,1818,300,1799,313,1783,330,1765,361,1755,397,1750,432,1750,461,1744,461,1745,431,1750,396,1760,359,1779,326,1795,309,1815,296,1858,278"/>
-<area shape="rect" id="Node000028" href="$tmc51x0__registers_8hpp.html" title="Register definitions and bitfield structures for TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)" alt="" coords="1793,328,2025,353"/>
+<area shape="rect" id="Node000028" href="$tmc51x0__registers_8hpp.html" title="Register definitions and bitfield structures for TMC51x0 stepper motor." alt="" coords="1793,328,2025,353"/>
 <area shape="poly" id="edge38_Node000027_Node000028" title=" " alt="" coords="1911,280,1911,314,1906,314,1906,280"/>
 <area shape="poly" id="edge41_Node000028_Node000010" title=" " alt="" coords="1892,356,1826,403,1795,435,1768,466,1764,462,1791,431,1823,399,1889,351"/>
 <area shape="rect" id="Node000029" href="$tmc51x0__register__defs_8hpp.html" title="X&#45;MACRO definitions for TMC51x0 registers (TMC5130 &amp; TMC5160)" alt="" coords="1836,401,2035,427"/>
