@@ -1,5 +1,5 @@
-warning: ignoring unsupported tag 'PAGE_OUTLINE_PANEL' at line 1719, file /tmp/doxyfile.QmKqOU
-warning: Tag 'DOT_TRANSPARENT' at line 2742 of file '/tmp/doxyfile.QmKqOU' has become obsolete.
+warning: ignoring unsupported tag 'PAGE_OUTLINE_PANEL' at line 1719, file /tmp/doxyfile.Iao3vk
+warning: Tag 'DOT_TRANSPARENT' at line 2742 of file '/tmp/doxyfile.Iao3vk' has become obsolete.
          To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
 Doxygen version used: 1.10.0 (ebc57c6dd303a980bd19dd74b8b61c8f3f5180ca)
 Searching for include files...
@@ -424,6 +424,8 @@ Ge/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test
   parameter 'tag'
 /home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/examples/esp32/main/test_config/TestFramework.h:321: warning: The following parameter of print_test_summary(const TestResults &test_results, const char *test_suite_name, const char *tag) is not documented:
   parameter 'tag'
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/registers/tmc51x0_register_defs.hpp:11: warning: explicit link request to 'define' could not be resolved
+/home/runner/work/hf-tmc5160-driver/hf-tmc5160-driver/inc/registers/tmc51x0_register_defs.hpp:13: warning: explicit link request to 'undef' could not be resolved
 nerating call graph for function test_daisy_chain_position_management
 Generating caller graph for function test_daisy_chain_position_management
 Generating call graph for function test_daisy_chain_setup
@@ -1049,118 +1051,7 @@ finalizing index lists...
 writing tag file...
 Running plantuml with JAVA...
 Running dot...
-Generating dot graphs using 5 parallel threads...
-Running dot for graph 1/42
-Running dot for graph 2/42
-Running dot for graph 3/42
-Running dot for graph 4/42
-Running dot for graph 5/42
-Running dot for graph 6/42
-Running dot for graph 7/42
-Running dot for graph 8/42
-Running dot for graph 9/42
-Running dot for graph 10/42
-Running dot for graph 11/42
-Running dot for graph 12/42
-Running dot for graph 13/42
-Running dot for graph 14/42
-Running dot for graph 15/42
-Running dot for graph 16/42
-Running dot for graph 17/42
-Running dot for graph 18/42
-Running dot for graph 19/42
-Running dot for graph 20/42
-Running dot for graph 21/42
-Running dot for graph 22/42
-Running dot for graph 23/42
-Running dot for graph 24/42
-Running dot for graph 25/42
-Running dot for graph 26/42
-Running dot for graph 27/42
-Running dot for graph 28/42
-Running dot for graph 29/42
-Running dot for graph 30/42
-Running dot for graph 31/42
-Running dot for graph 32/42
-Running dot for graph 33/42
-Running dot for graph 34/42
-Running dot for graph 35/42
-Running dot for graph 36/42
-Running dot for graph 37/42
-Running dot for graph 38/42
-Running dot for graph 39/42
-Running dot for graph 40/42
-Running dot for graph 41/42
-Running dot for graph 42/42
-Patching output file 1/69
-Patching output file 2/69
-Patching output file 3/69
-Patching output file 4/69
-Patching output file 5/69
-Patching output file 6/69
-Patching output file 7/69
-Patching output file 8/69
-Patching output file 9/69
-Patching output file 10/69
-Patching output file 11/69
-Patching output file 12/69
-Patching output file 13/69
-Patching output file 14/69
-Patching output file 15/69
-Patching output file 16/69
-Patching output file 17/69
-Patching output file 18/69
-Patching output file 19/69
-Patching output file 20/69
-Patching output file 21/69
-Patching output file 22/69
-Patching output file 23/69
-Patching output file 24/69
-Patching output file 25/69
-Patching output file 26/69
-Patching output file 27/69
-Patching output file 28/69
-Patching output file 29/69
-Patching output file 30/69
-Patching output file 31/69
-Patching output file 32/69
-Patching output file 33/69
-Patching output file 34/69
-Patching output file 35/69
-Patching output file 36/69
-Patching output file 37/69
-Patching output file 38/69
-Patching output file 39/69
-Patching output file 40/69
-Patching output file 41/69
-Patching output file 42/69
-Patching output file 43/69
-Patching output file 44/69
-Patching output file 45/69
-Patching output file 46/69
-Patching output file 47/69
-Patching output file 48/69
-Patching output file 49/69
-Patching output file 50/69
-Patching output file 51/69
-Patching output file 52/69
-Patching output file 53/69
-Patching output file 54/69
-Patching output file 55/69
-Patching output file 56/69
-Patching output file 57/69
-Patching output file 58/69
-Patching output file 59/69
-Patching output file 60/69
-Patching output file 61/69
-Patching output file 62/69
-Patching output file 63/69
-Patching output file 64/69
-Patching output file 65/69
-Patching output file 66/69
-Patching output file 67/69
-Patching output file 68/69
-Patching output file 69/69
+Patching output file 1/1
 type lookup cache used 8420/65536 hits=49045 misses=8756
-symbol lookup cache used 9525/65536 hits=53037 misses=9525
+symbol lookup cache used 9529/65536 hits=53037 misses=9529
 finished...

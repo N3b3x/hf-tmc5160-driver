@@ -130,7 +130,27 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>X-MACRO definitions for TMC51x0 registers (TMC5130 &amp; TMC5160) </p>
-<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2024-2025 HardFOC. All rights reserved. </dd></dl>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2024-2025 HardFOC. All rights reserved.</dd></dl>
+<p>This file uses the X-MACRO pattern to define all TMC51x0 registers with their addresses, access types, and metadata. This allows generating multiple data structures from a single source of truth. Supports both TMC5130 and TMC5160 chips.</p>
+<p>Usage follows TMC9660 pattern: #define <a class="el" href="tmc51x0__register__defs_8cpp.html#a24630b3eab1c0d05d738a64b2eb2a5a8">X(addr, name, access, category, desc)</a> ... <a class="el" href="#a551b7a02a3fa068ff7ddd37031c83036">REGISTER_LIST(X)</a> #undef X</p>
+<p>Access types:</p><ul>
+<li>R: Read-only</li>
+<li>W: Write-only</li>
+<li>RW: Read-Write</li>
+<li>RWC: Read-Write with clear behavior (some bits cleared on read/write)</li>
+</ul>
+<p>Categories:</p><ul>
+<li>CONFIG: Configuration registers</li>
+<li>STATUS: Status/result registers</li>
+<li>MOTION: Motion control registers</li>
+<li>CURRENT: Current control registers</li>
+<li>CHOPPER: Chopper configuration</li>
+<li>ENCODER: Encoder registers</li>
+<li>MICROSTEP: Microstep lookup table</li>
+<li>PROTECTION: Protection and safety</li>
+<li>OTP: One-time programmable memory</li>
+<li>IO: Input/Output pins </li>
+</ul>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a551b7a02a3fa068ff7ddd37031c83036" name="a551b7a02a3fa068ff7ddd37031c83036"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a551b7a02a3fa068ff7ddd37031c83036">&#9670;&#160;</a></span>REGISTER_LIST</h2>
