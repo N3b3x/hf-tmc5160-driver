@@ -16,7 +16,7 @@ issues: "https://github.com/N3b3x/hf-tmc5160-driver/issues"
 
 license: "GPL-3.0"
 maintainers:
-  - "Nebiyu Tadesse <nebysma@gmail.com>"
+  - "HardFOC"
 
 targets:
   - esp32
