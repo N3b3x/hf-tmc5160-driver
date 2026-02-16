@@ -1218,12 +1218,20 @@ Within each section, group logically:
 
 ### Error Handling Patterns
 
-#### C++: Use `std::expected` (C++23) or Error Codes
+#### C++: Use `std::expected` (C++23) or Per-Driver Polyfill (C++20)
+
+Drivers that need `expected<T,E>` semantics should provide a self-contained
+polyfill header (e.g. `tle92466ed_expected.hpp`) that aliases to `std::expected`
+on C++23 and supplies a lightweight fallback on C++20. This keeps every driver
+compilable at C++20 without cross-driver dependencies.
 
 ```cpp
-// C++23: std::expected
+// Per-driver expected polyfill (aliases to std::expected on C++23)
 template<typename T>
-using Result = std::expected<T, Error>;
+using Result = tle::expected<T, Error>;
+
+// The TMC5160 driver uses its own Result<T> type (tmc51x0_result.hpp),
+// which is also a valid approach.
 
 // Success case
 Result<void> result = {};
@@ -1232,7 +1240,7 @@ if (result) {
 }
 
 // Error case
-Result<uint16_t> value = std::unexpected(Error::NotInitialized);
+Result<uint16_t> value = tle::unexpected(Error::NotInitialized);
 if (!value) {
     auto error = value.error();
     // Handle error
@@ -1620,7 +1628,9 @@ volatile uint32_t* const SPI_BASE =
 
 ### No Exceptions in Embedded Code
 
-The codebase uses `std::expected` for error handling instead of exceptions:
+The codebase uses `expected`-style result types for error handling instead of exceptions.
+Drivers provide either a per-driver polyfill (e.g. `tle::expected`) or a custom
+`Result<T>` class (e.g. `tmc51x0::Result<T>`):
 
 ```cpp
 // ✅ Correct: Error handling without exceptions

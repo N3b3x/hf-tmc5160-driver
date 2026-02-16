@@ -2452,14 +2452,19 @@ hf-pcal95555-driver
   
 </h3>
     
-<h4 id="c-use-stdexpected-c23-or-error-codes">
+<h4 id="c-use-stdexpected-c23-or-per-driver-polyfill-c20">
   
   
-    <a href="#c-use-stdexpected-c23-or-error-codes" class="anchor-heading" aria-labelledby="c-use-stdexpected-c23-or-error-codes"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> C++: Use <code class="language-plaintext highlighter-rouge">std::expected</code> (C++23) or Error Codes
+    <a href="#c-use-stdexpected-c23-or-per-driver-polyfill-c20" class="anchor-heading" aria-labelledby="c-use-stdexpected-c23-or-per-driver-polyfill-c20"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> C++: Use <code class="language-plaintext highlighter-rouge">std::expected</code> (C++23) or Per-Driver Polyfill (C++20)
   
   
 </h4>
     
+
+<p>Drivers that need <code class="language-plaintext highlighter-rouge">expected&lt;T,E&gt;</code> semantics should provide a self-contained
+polyfill header (e.g. <code class="language-plaintext highlighter-rouge">tle92466ed_expected.hpp</code>) that aliases to <code class="language-plaintext highlighter-rouge">std::expected</code>
+on C++23 and supplies a lightweight fallback on C++20. This keeps every driver
+compilable at C++20 without cross-driver dependencies.</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -2489,9 +2494,15 @@ hf-pcal95555-driver
 26
 27
 28
-</pre></td><td class="rouge-code"><pre><span class="c1">// C++23: std::expected</span>
+29
+30
+31
+</pre></td><td class="rouge-code"><pre><span class="c1">// Per-driver expected polyfill (aliases to std::expected on C++23)</span>
 <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
-<span class="k">using</span> <span class="n">Result</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">expected</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">Error</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="k">using</span> <span class="n">Result</span> <span class="o">=</span> <span class="n">tle</span><span class="o">::</span><span class="n">expected</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">Error</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="c1">// The TMC5160 driver uses its own Result&lt;T&gt; type (tmc51x0_result.hpp),</span>
+<span class="c1">// which is also a valid approach.</span>
 
 <span class="c1">// Success case</span>
 <span class="n">Result</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="p">{};</span>
@@ -2500,7 +2511,7 @@ hf-pcal95555-driver
 <span class="p">}</span>
 
 <span class="c1">// Error case</span>
-<span class="n">Result</span><span class="o">&lt;</span><span class="kt">uint16_t</span><span class="o">&gt;</span> <span class="n">value</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">unexpected</span><span class="p">(</span><span class="n">Error</span><span class="o">::</span><span class="n">NotInitialized</span><span class="p">);</span>
+<span class="n">Result</span><span class="o">&lt;</span><span class="kt">uint16_t</span><span class="o">&gt;</span> <span class="n">value</span> <span class="o">=</span> <span class="n">tle</span><span class="o">::</span><span class="n">unexpected</span><span class="p">(</span><span class="n">Error</span><span class="o">::</span><span class="n">NotInitialized</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">auto</span> <span class="n">error</span> <span class="o">=</span> <span class="n">value</span><span class="p">.</span><span class="n">error</span><span class="p">();</span>
     <span class="c1">// Handle error</span>
@@ -3264,7 +3275,9 @@ hf-pcal95555-driver
 </h3>
     
 
-<p>The codebase uses <code class="language-plaintext highlighter-rouge">std::expected</code> for error handling instead of exceptions:</p>
+<p>The codebase uses <code class="language-plaintext highlighter-rouge">expected</code>-style result types for error handling instead of exceptions.
+Drivers provide either a per-driver polyfill (e.g. <code class="language-plaintext highlighter-rouge">tle::expected</code>) or a custom
+<code class="language-plaintext highlighter-rouge">Result&lt;T&gt;</code> class (e.g. <code class="language-plaintext highlighter-rouge">tmc51x0::Result&lt;T&gt;</code>):</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2

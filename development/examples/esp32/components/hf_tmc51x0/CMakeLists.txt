@@ -74,6 +74,6 @@ idf_component_register(
 # Compiler Configuration
 # =============================================================================
 # Header-only component becomes an INTERFACE library when SRCS is empty.
-# Use INTERFACE so that targets linking this component get C++17.
-target_compile_features(${COMPONENT_LIB} INTERFACE cxx_std_17)
+# Use INTERFACE so that targets linking this component get C++20.
+target_compile_features(${COMPONENT_LIB} INTERFACE cxx_std_20)
 
