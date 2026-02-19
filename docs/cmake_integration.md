@@ -9,8 +9,7 @@ permalink: /docs/cmake_integration/
 
 # TMC51x0 — CMake Integration Guide
 
-> **Build contract architecture and templates:**
-> [CMake Build Contract](../../../../../docs/development/CMAKE_BUILD_CONTRACT.md).
+> **Build contract architecture and templates:** See the main [Documentation](index.md) for integration details.
 
 ## Quick Start (Generic CMake)
 
@@ -44,4 +43,4 @@ target_compile_features(${COMPONENT_LIB} PRIVATE cxx_std_20)
 ---
 
 **Navigation**
-⬅️ [Back to Documentation Index](../../DOCUMENTATION_INDEX.md) | [CMake Build Contract ↗](../../../../../docs/development/CMAKE_BUILD_CONTRACT.md)
+⬅️ [Back to Documentation Index](index.md)
