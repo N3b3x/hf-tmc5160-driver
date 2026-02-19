@@ -97,6 +97,7 @@ extern "C" void app_main(void) {
              static_cast<int>(N_SENSITIVITY), static_cast<int>(N_CLEAR_MODE));
     ESP_LOGI(TAG, "Read Interval: %lu ms", READ_INTERVAL_MS);
     ESP_LOGI(TAG, "==========================================");
+    ESP_LOGI(TAG, "Driver version: %s", tmc51x0::GetDriverVersion());
 
     // 1. Initialize SPI Bus
     ESP_LOGI(TAG, "Initializing SPI bus...");

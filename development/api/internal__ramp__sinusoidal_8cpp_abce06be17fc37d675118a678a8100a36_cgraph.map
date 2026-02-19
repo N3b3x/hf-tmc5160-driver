@@ -1,34 +1,37 @@
 <map id="app_main" name="app_main">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,210,92,235"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,259,92,285"/>
 <area shape="rect" id="Node000002" href="$classBackAndForthMotion.html#aa090f6cf784e52cd82d0456426e301b5" title="Configure back&#45;and&#45;forth motion parameters." alt="" coords="173,5,330,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="51,209,61,178,78,136,104,93,138,55,159,43,161,47,142,59,108,96,83,139,66,180,56,211"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="49,259,56,219,71,165,98,106,116,79,138,55,159,42,162,46,142,59,120,82,103,109,76,166,61,221,54,260"/>
 <area shape="rect" id="Node000003" href="$classtmc51x0_1_1TMC51x0.html#a2aca219d7b860bc5a35738a28900a151" title="Get the communication interface used by this TMC51x0 instance." alt="" coords="140,70,363,95"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="54,208,85,158,110,130,139,106,153,98,155,103,141,110,113,133,90,161,59,211"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="51,258,60,227,78,185,103,142,138,106,148,99,151,104,142,110,108,146,82,188,65,229,56,260"/>
 <area shape="rect" id="Node000004" href="$namespacetmc51x0__test__config.html#ad88c0c8419d1ef47a6ba7e56b79936c7" title="Complete pin configuration for all tests." alt="" coords="170,120,333,160"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="73,208,139,176,175,162,177,167,141,181,75,212"/>
-<area shape="rect" id="Node000005" href="$classEsp32SPI.html#af6da72550da3f66fb49561b48e8cc3f0" title="Read GPIO pin state." alt="" coords="413,185,565,210"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="92,218,400,200,400,205,93,223"/>
-<area shape="rect" id="Node000009" href="$classEsp32SPI.html#a85d11c001a36b137e4d29ced49983d20" title="Initialize the SPI interface." alt="" coords="179,235,324,261"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="93,225,165,235,165,240,92,231"/>
-<area shape="rect" id="Node000012" href="$classtmc51x0_1_1TMC51x0.html#a97c3a1773a03aaeeb0882d2096f868d8" title="Initialize the TMC51x0 driver with configuration." alt="" coords="145,285,357,310"/>
-<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="71,233,103,252,141,270,169,279,167,284,139,274,101,257,68,238"/>
-<area shape="rect" id="Node000013" href="$classBackAndForthMotion.html#a6ababa55b07f6a7ccbe591b597f64ea3" title="Initialize and start back&#45;and&#45;forth motion." alt="" coords="411,328,568,368"/>
-<area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="59,234,91,279,114,302,141,320,205,343,272,355,337,359,397,357,397,362,337,364,271,360,203,348,139,325,110,306,87,282,55,237"/>
-<area shape="rect" id="Node000014" href="$classBackAndForthMotion.html#afac7a78a30c9fafbcee5eb2626e3f409" title="Update back&#45;and&#45;forth motion (call periodically)." alt="" coords="173,385,330,425"/>
-<area shape="poly" id="edge15_Node000001_Node000014" title=" " alt="" coords="57,234,86,296,111,333,142,365,162,378,159,382,138,369,107,336,82,299,52,237"/>
-<area shape="rect" id="Node000006" href="$classEsp32SPI.html#a80cfec36b3cd69c2c7b6c38df0a64e72" title="Get pin mapping for a TMC51x0 control pin." alt="" coords="626,210,814,235"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="566,203,613,208,612,213,566,208"/>
-<area shape="rect" id="Node000007" href="$classEsp32SPI.html#a30bb5ec2d8ae7478228bb7c76d1f65b7" title="Convert physical GPIO level to signal state." alt="" coords="616,161,824,186"/>
-<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="566,187,602,183,603,188,566,192"/>
-<area shape="rect" id="Node000008" href="$structtmc51x0_1_1PinActiveLevels.html#a68fd62c73fac36a16577e9fa25b952dd" title="Get active level for a specific pin." alt="" coords="872,203,1063,243"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="785,183,859,198,858,204,784,189"/>
-<area shape="rect" id="Node000010" href="$classEsp32SPI.html#a434e1cfd74165d1e6fac1a940d1d513a" title="Set GPIO pin state." alt="" coords="419,235,559,261"/>
-<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="325,245,405,245,405,251,325,251"/>
-<area shape="poly" id="edge10_Node000010_Node000006" title=" " alt="" coords="559,238,612,232,613,237,560,243"/>
-<area shape="rect" id="Node000011" href="$classEsp32SPI.html#a842da8d3bf354432cfbe134a148ed1ee" title="Convert signal state to physical GPIO level." alt="" coords="616,259,824,285"/>
-<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="560,253,603,257,602,262,559,258"/>
-<area shape="poly" id="edge12_Node000011_Node000008" title=" " alt="" coords="784,257,858,242,859,247,785,262"/>
-<area shape="poly" id="edge16_Node000014_Node000013" title=" " alt="" coords="330,384,396,368,398,373,331,389"/>
-<area shape="rect" id="Node000015" href="$classBackAndForthMotion.html#ad4b85db6e9c6aecc174be8d5a97efe07" title="Stop back&#45;and&#45;forth motion." alt="" coords="411,392,568,432"/>
-<area shape="poly" id="edge17_Node000014_Node000015" title=" " alt="" coords="330,405,397,407,397,412,330,410"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="56,258,88,215,112,190,139,170,156,160,158,165,141,174,115,194,92,218,60,261"/>
+<area shape="rect" id="Node000005" href="$namespacetmc51x0.html#a443a6e6bc5293c1f6970fe1bc077591c" title=" " alt="" coords="152,209,351,234"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="92,259,186,235,187,240,93,264"/>
+<area shape="rect" id="Node000006" href="$classEsp32SPI.html#af6da72550da3f66fb49561b48e8cc3f0" title="Read GPIO pin state." alt="" coords="413,259,565,285"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="92,269,400,269,400,275,92,275"/>
+<area shape="rect" id="Node000010" href="$classEsp32SPI.html#a85d11c001a36b137e4d29ced49983d20" title="Initialize the SPI interface." alt="" coords="179,310,324,335"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="93,280,187,304,186,309,92,285"/>
+<area shape="rect" id="Node000013" href="$classtmc51x0_1_1TMC51x0.html#a97c3a1773a03aaeeb0882d2096f868d8" title="Initialize the TMC51x0 driver with configuration." alt="" coords="145,359,357,385"/>
+<area shape="poly" id="edge15_Node000001_Node000013" title=" " alt="" coords="63,283,96,314,141,344,161,353,159,358,139,349,93,318,60,287"/>
+<area shape="rect" id="Node000014" href="$classBackAndForthMotion.html#a6ababa55b07f6a7ccbe591b597f64ea3" title="Initialize and start back&#45;and&#45;forth motion." alt="" coords="411,403,568,443"/>
+<area shape="poly" id="edge16_Node000001_Node000014" title=" " alt="" coords="57,284,86,340,111,371,141,395,172,409,204,420,271,433,337,436,397,434,397,439,337,442,270,438,202,425,170,414,139,400,107,374,82,343,52,286"/>
+<area shape="rect" id="Node000015" href="$classBackAndForthMotion.html#afac7a78a30c9fafbcee5eb2626e3f409" title="Update back&#45;and&#45;forth motion (call periodically)." alt="" coords="173,460,330,500"/>
+<area shape="poly" id="edge17_Node000001_Node000015" title=" " alt="" coords="56,284,66,316,83,357,108,401,142,439,162,453,159,457,138,443,104,404,78,360,61,318,51,286"/>
+<area shape="poly" id="edge5_Node000005_Node000005" title=" " alt="" coords="218,210,211,200,215,190,228,184,251,182,280,186,291,195,287,199,277,191,251,187,230,189,218,194,216,200,222,207"/>
+<area shape="rect" id="Node000007" href="$classEsp32SPI.html#a80cfec36b3cd69c2c7b6c38df0a64e72" title="Get pin mapping for a TMC51x0 control pin." alt="" coords="626,285,814,310"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="566,278,613,283,612,288,566,283"/>
+<area shape="rect" id="Node000008" href="$classEsp32SPI.html#a30bb5ec2d8ae7478228bb7c76d1f65b7" title="Convert physical GPIO level to signal state." alt="" coords="616,235,824,261"/>
+<area shape="poly" id="edge8_Node000006_Node000008" title=" " alt="" coords="566,261,602,258,603,263,566,267"/>
+<area shape="rect" id="Node000009" href="$structtmc51x0_1_1PinActiveLevels.html#a68fd62c73fac36a16577e9fa25b952dd" title="Get active level for a specific pin." alt="" coords="872,277,1063,317"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="785,258,859,273,858,278,784,263"/>
+<area shape="rect" id="Node000011" href="$classEsp32SPI.html#a434e1cfd74165d1e6fac1a940d1d513a" title="Set GPIO pin state." alt="" coords="419,310,559,335"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="325,320,405,320,405,325,325,325"/>
+<area shape="poly" id="edge12_Node000011_Node000007" title=" " alt="" coords="559,312,612,307,613,312,560,318"/>
+<area shape="rect" id="Node000012" href="$classEsp32SPI.html#a842da8d3bf354432cfbe134a148ed1ee" title="Convert signal state to physical GPIO level." alt="" coords="616,334,824,359"/>
+<area shape="poly" id="edge13_Node000011_Node000012" title=" " alt="" coords="560,327,603,332,602,337,559,333"/>
+<area shape="poly" id="edge14_Node000012_Node000009" title=" " alt="" coords="784,331,858,316,859,322,785,337"/>
+<area shape="poly" id="edge18_Node000015_Node000014" title=" " alt="" coords="330,458,396,442,398,447,331,464"/>
+<area shape="rect" id="Node000016" href="$classBackAndForthMotion.html#ad4b85db6e9c6aecc174be8d5a97efe07" title="Stop back&#45;and&#45;forth motion." alt="" coords="411,467,568,507"/>
+<area shape="poly" id="edge19_Node000015_Node000016" title=" " alt="" coords="330,480,397,481,397,487,330,485"/>
 </map>

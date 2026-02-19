@@ -1,79 +1,34 @@
-# =============================================================================
-# TMC51x0 Driver Component - CMakeLists.txt
-# =============================================================================
-# This component wraps the hardware-agnostic TMC51x0 driver for ESP-IDF.
-# The driver is header-only (template-based), so no source files need to be
-# compiled. We just need to set up the include directories.
-#
-# Note: src/ is included because tmc51x0.ipp is in src/ and is included
-# by tmc51x0.hpp using a relative path.
-# =============================================================================
+###############################################################################
+# HF TMC51x0 Driver - ESP-IDF Component Wrapper
+###############################################################################
+# Note:
+#   cmake_minimum_required() is intentionally omitted here — ESP-IDF's
+#   project.cmake already sets it and adding another can cause policy conflicts.
+###############################################################################
 
-cmake_minimum_required(VERSION 3.16)
+set(HF_TMC51X0_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../../.." CACHE PATH
+    "Path to root of hf-tmc5160-driver (auto-detected from component location)")
 
-# =============================================================================
-# Path Configuration
-# =============================================================================
-# Set the source root path relative to this component directory
-set(SRC_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../../../src")
-set(INC_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../../../inc")
+get_filename_component(HF_TMC51X0_ROOT "${HF_TMC51X0_ROOT}" ABSOLUTE)
+if(NOT EXISTS "${HF_TMC51X0_ROOT}/cmake/hf_tmc51x0_build_settings.cmake")
+    message(FATAL_ERROR
+        "Cannot find TMC51x0 driver root.\n"
+        "  Resolved path: ${HF_TMC51X0_ROOT}\n"
+        "  Expected file: ${HF_TMC51X0_ROOT}/cmake/hf_tmc51x0_build_settings.cmake\n"
+        "  Fix: set HF_TMC51X0_ROOT to the correct driver checkout path.")
+endif()
 
-message(STATUS "TMC51x0 Driver - ESP32 Component Configuration")
-message(STATUS "Source Root: ${SRC_ROOT}")
+include("${HF_TMC51X0_ROOT}/cmake/hf_tmc51x0_build_settings.cmake")
 
-# =============================================================================
-# Source File Discovery and Validation
-# =============================================================================
-# Driver is header-only: implementation is in src/tmc51x0.ipp
-# No separate .cpp to compile
-set(DRIVER_SRCS
-    # No source files - template implementation is included in header
-)
-
-# Check which source files actually exist and add them
-set(EXISTING_SRCS "")
-foreach(src_file ${DRIVER_SRCS})
-    if(EXISTS "${src_file}")
-        list(APPEND EXISTING_SRCS "${src_file}")
-        message(STATUS "Found source: ${src_file}")
-    else()
-        message(WARNING "Source file not found: ${src_file}")
-    endif()
-endforeach()
-
-# =============================================================================
-# Include Directories Configuration
-# =============================================================================
-# Define include directories for the driver component
-set(DRIVER_INCLUDE_DIRS
-    "${INC_ROOT}"                           # Main driver headers
-    "${INC_ROOT}/features"                  # Feature-specific headers
-    "${INC_ROOT}/registers"                 # Register definition headers
-    "${SRC_ROOT}"                           # Template implementation files (.ipp)
-)
-
-# =============================================================================
-# Component Dependencies
-# =============================================================================
-# Define required ESP-IDF components for the driver
-set(DRIVER_REQUIRES
-    driver              # ESP-IDF driver framework
-)
-
-# =============================================================================
-# Component Registration
-# =============================================================================
-# Register the driver component with ESP-IDF build system
 idf_component_register(
-    SRCS ${EXISTING_SRCS}                 # Source files (validated above)
-    INCLUDE_DIRS ${DRIVER_INCLUDE_DIRS}   # Include directories defined above
-    REQUIRES ${DRIVER_REQUIRES}           # Component dependencies defined above
+    SRCS ${HF_TMC51X0_SOURCE_FILES}
+    INCLUDE_DIRS ${HF_TMC51X0_PUBLIC_INCLUDE_DIRS}
+    REQUIRES ${HF_TMC51X0_IDF_REQUIRES}
 )
 
-# =============================================================================
-# Compiler Configuration
-# =============================================================================
-# Header-only component becomes an INTERFACE library when SRCS is empty.
-# Use INTERFACE so that targets linking this component get C++20.
-target_compile_features(${COMPONENT_LIB} INTERFACE cxx_std_20)
+if(HF_TMC51X0_SOURCE_FILES)
+    target_compile_features(${COMPONENT_LIB} PRIVATE cxx_std_20)
+else()
+    target_compile_features(${COMPONENT_LIB} INTERFACE cxx_std_20)
+endif()
 

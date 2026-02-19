@@ -401,6 +401,7 @@ extern "C" void app_main(void) {
   ESP_LOGI(TAG, "  ESP32 TMC51x0 UART Communication Test Suite");
   ESP_LOGI(TAG, "  HardFOC TMC51x0 Driver");
   ESP_LOGI(TAG, "==============================================================");
+  ESP_LOGI(TAG, "Driver version: %s", tmc51x0::GetDriverVersion());
   ESP_LOGI(TAG, "Node count: %u | UART port: %d | Baud: %u | TX=%d RX=%d",
            TEST_NODE_COUNT, UART_PORT, UART_BAUD, UART_TX_PIN, UART_RX_PIN);
 

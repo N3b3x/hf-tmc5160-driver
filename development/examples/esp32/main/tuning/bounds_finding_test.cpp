@@ -131,6 +131,7 @@ extern "C" void app_main(void) {
     ESP_LOGI(TAG, "==========================================");
     ESP_LOGI(TAG, "Starting Bounds Finding Test Tool");
     ESP_LOGI(TAG, "==========================================");
+    ESP_LOGI(TAG, "Driver version: %s", tmc51x0::GetDriverVersion());
 
     // Log configuration
     ESP_LOGI(TAG, "Configuration:");

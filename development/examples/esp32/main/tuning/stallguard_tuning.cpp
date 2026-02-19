@@ -58,6 +58,7 @@ static constexpr tmc51x0::Unit ACCELERATION_UNIT = tmc51x0::Unit::RevPerSec;  //
 
 extern "C" void app_main(void) {
   ESP_LOGI(TAG, "Starting StallGuard2 Tuning Tool...");
+  ESP_LOGI(TAG, "Driver version: %s", tmc51x0::GetDriverVersion());
 
   // 1. Initialize SPI Bus
   auto pin_config = tmc51x0_test_config::GetDefaultPinConfig();

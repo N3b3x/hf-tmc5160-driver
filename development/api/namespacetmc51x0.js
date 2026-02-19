@@ -335,6 +335,7 @@ var namespacetmc51x0 =
     [ "get", "namespacetmc51x0.html#ad20f982e1ae588d4e210b3a566955613", null ],
     [ "get", "namespacetmc51x0.html#a6818ace9cb52dc7f7363b93d6778ae77", null ],
     [ "get", "namespacetmc51x0.html#a257ff48df86e06b78f94c8f6153932b1", null ],
+    [ "GetDriverVersion", "namespacetmc51x0.html#a443a6e6bc5293c1f6970fe1bc077591c", null ],
     [ "GetRegisterDef", "namespacetmc51x0.html#aca4ec7876f2bc35ce259eee027485701", null ],
     [ "MicrostepsPerFullStep", "namespacetmc51x0.html#a60be1af970c350d5071ed3ba6a96c489", null ],
     [ "MmPerSecToStepsPerSec", "namespacetmc51x0.html#a75950339da8df172472557556f439628", null ],

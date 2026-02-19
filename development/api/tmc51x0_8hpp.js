@@ -22,5 +22,6 @@ var tmc51x0_8hpp =
     [ "tmc51x0::TMC51x0< CommType >::Printer", "structtmc51x0_1_1TMC51x0_1_1Printer.html", "structtmc51x0_1_1TMC51x0_1_1Printer" ],
     [ "tmc51x0::TMC51x0< CommType >::UartConfig", "structtmc51x0_1_1TMC51x0_1_1UartConfig.html", "structtmc51x0_1_1TMC51x0_1_1UartConfig" ],
     [ "tmc51x0::TMC51x0< CommType >::WriteOnlyRegisters", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters.html", "structtmc51x0_1_1TMC51x0_1_1WriteOnlyRegisters" ],
-    [ "TMC51X0_HEADER_INCLUDED", "tmc51x0_8hpp.html#a0af86be4595f72f72796cf56746e41fd", null ]
+    [ "TMC51X0_HEADER_INCLUDED", "tmc51x0_8hpp.html#a0af86be4595f72f72796cf56746e41fd", null ],
+    [ "GetDriverVersion", "tmc51x0_8hpp.html#a443a6e6bc5293c1f6970fe1bc077591c", null ]
 ];
