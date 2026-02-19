@@ -11,6 +11,7 @@
 #include "registers/tmc51x0_registers.hpp"
 #include "tmc51x0_result.hpp"
 #include "tmc51x0_types.hpp"
+#include "tmc51x0_version.h"
 
 namespace tmc51x0 {
 
@@ -3117,6 +3118,30 @@ protected:
    */
   [[nodiscard]] bool IsInitialized() const noexcept { return initialized_; }
 
+  // ===========================================================================
+  // Driver Version
+  // ===========================================================================
+
+  /** @brief Get the compiled driver version string. */
+  static constexpr const char* GetDriverVersion() noexcept {
+    return HF_TMC51X0_VERSION_STRING;
+  }
+
+  /** @brief Get the compiled driver major version number. */
+  static constexpr uint8_t GetDriverVersionMajor() noexcept {
+    return HF_TMC51X0_VERSION_MAJOR;
+  }
+
+  /** @brief Get the compiled driver minor version number. */
+  static constexpr uint8_t GetDriverVersionMinor() noexcept {
+    return HF_TMC51X0_VERSION_MINOR;
+  }
+
+  /** @brief Get the compiled driver patch version number. */
+  static constexpr uint8_t GetDriverVersionPatch() noexcept {
+    return HF_TMC51X0_VERSION_PATCH;
+  }
+
 private:
   /**
    * @brief Check whether the chip is currently in internal ramp-generator mode
@@ -3277,6 +3302,11 @@ private:
    */
   [[nodiscard]] int32_t thresholdSpeedToTstep(float speed_hz) const noexcept;
 };
+
+// Public API: Get driver version string
+inline const char* GetDriverVersion() noexcept {
+  return HF_TMC51X0_VERSION_STRING;
+}
 
 } // namespace tmc51x0
 
