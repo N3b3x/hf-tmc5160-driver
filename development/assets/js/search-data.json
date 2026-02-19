@@ -855,7 +855,7 @@
   },"122": {
     "doc": "⚙️ CMake Integration",
     "title": "TMC51x0 — CMake Integration Guide",
-    "content": "Build contract architecture and templates: CMake Build Contract. ",
+    "content": "Build contract architecture and templates: See the main Documentation for integration details. ",
     "url": "/hf-tmc5160-driver/development/docs/cmake_integration/#tmc51x0--cmake-integration-guide",
     
     "relUrl": "/docs/cmake_integration/#tmc51x0--cmake-integration-guide"
@@ -876,7 +876,7 @@
   },"125": {
     "doc": "⚙️ CMake Integration",
     "title": "Build Variables",
-    "content": "| Variable | Value | . | HF_TMC51X0_TARGET_NAME | hf_tmc51x0 | . | HF_TMC51X0_VERSION | Current MAJOR.MINOR.PATCH | . | HF_TMC51X0_SOURCE_FILES | \"\" (header-only) | . | HF_TMC51X0_IDF_REQUIRES | driver | . Navigation ⬅️ Back to Documentation Index | CMake Build Contract ↗ . ",
+    "content": "| Variable | Value | . | HF_TMC51X0_TARGET_NAME | hf_tmc51x0 | . | HF_TMC51X0_VERSION | Current MAJOR.MINOR.PATCH | . | HF_TMC51X0_SOURCE_FILES | \"\" (header-only) | . | HF_TMC51X0_IDF_REQUIRES | driver | . Navigation ⬅️ Back to Documentation Index . ",
     "url": "/hf-tmc5160-driver/development/docs/cmake_integration/#build-variables",
     
     "relUrl": "/docs/cmake_integration/#build-variables"
@@ -2204,173 +2204,173 @@
     
     "relUrl": "/docs/hardware_setup/"
   },"315": {
-    "doc": "📚 Documentation",
-    "title": "HF-TMC51x0 Documentation (TMC5130 &amp; TMC5160)",
-    "content": "Welcome! This directory contains step-by-step guides for installing, building, and using the HF-TMC51x0 library, which supports both TMC5130 and TMC5160 chips. ",
-    "url": "/hf-tmc5160-driver/development/docs/#hf-tmc51x0-documentation-tmc5130--tmc5160",
-    
-    "relUrl": "/docs/#hf-tmc51x0-documentation-tmc5130--tmc5160"
-  },"316": {
-    "doc": "📚 Documentation",
-    "title": "📚 Documentation Structure",
-    "content": " ",
-    "url": "/hf-tmc5160-driver/development/docs/#-documentation-structure",
-    
-    "relUrl": "/docs/#-documentation-structure"
-  },"317": {
-    "doc": "📚 Documentation",
-    "title": "Getting Started",
-    "content": ". | 🛠️ Installation – Prerequisites and how to obtain the source | ⚡ Quick Start – Minimal working example to get you running | 🔌 Hardware Setup – Wiring diagrams and pin connections | . ",
-    "url": "/hf-tmc5160-driver/development/docs/#getting-started",
-    
-    "relUrl": "/docs/#getting-started"
-  },"318": {
-    "doc": "📚 Documentation",
-    "title": "Integration",
-    "content": ". | 🔧 Platform Integration – Implement the CRTP communication interface for your platform | ⚙️ Configuration – Configuration options and settings | . ",
-    "url": "/hf-tmc5160-driver/development/docs/#integration",
-    
-    "relUrl": "/docs/#integration"
-  },"319": {
-    "doc": "📚 Documentation",
-    "title": "Reference",
-    "content": ". | 📖 API Reference – Complete API documentation | 💡 Examples – Detailed example walkthroughs | . ",
-    "url": "/hf-tmc5160-driver/development/docs/#reference",
-    
-    "relUrl": "/docs/#reference"
-  },"320": {
-    "doc": "📚 Documentation",
-    "title": "Advanced Features",
-    "content": ". | 📐 Unit Conversions – Converting between physical units and driver steps | ⚙️ Motor Setup from Specifications – High-level motor configuration from physical parameters | 🏠 Sensorless Homing – Homing without endstops using StallGuard2 | 🎯 Automatic Tuning – Intelligent StallGuard2 threshold optimization | 🔧 Advanced Configuration – CoolStep, dcStep, freewheeling, and more | 🔗 Multi-Chip Communication – SPI daisy chaining and UART multi-node addressing | 📡 Communication Interface – Low-level SPI/UART communication details | 🔌 GPIO Pin Configuration – Pin mapping, active levels, and mode pin setup | 📝 Register Access – Direct register read/write and initialization flow | 🔄 TMC5130 Support – Differences between TMC5130 and TMC5160 | . ",
-    "url": "/hf-tmc5160-driver/development/docs/#advanced-features",
-    
-    "relUrl": "/docs/#advanced-features"
-  },"321": {
-    "doc": "📚 Documentation",
-    "title": "Troubleshooting",
-    "content": ". | 🐛 Troubleshooting – Common issues and solutions | . ",
-    "url": "/hf-tmc5160-driver/development/docs/#troubleshooting",
-    
-    "relUrl": "/docs/#troubleshooting"
-  },"322": {
-    "doc": "📚 Documentation",
-    "title": "🚀 Quick Start Path",
-    "content": "New to TMC51x0? Follow this recommended path: . | Start with Installation to prepare your environment | Follow Hardware Setup to wire your hardware | Read Quick Start for a minimal working example and Result&lt;T&gt; error handling | Check Platform Integration to implement the SPI/UART interface | Explore Examples for progressively harder walkthroughs with explanations | Refer to Troubleshooting when things don’t work as expected | . ",
-    "url": "/hf-tmc5160-driver/development/docs/#-quick-start-path",
-    
-    "relUrl": "/docs/#-quick-start-path"
-  },"323": {
-    "doc": "📚 Documentation",
-    "title": "💡 Need Help?",
-    "content": ". | 🐛 Found a bug? Check the Troubleshooting guide | ❓ Have questions? Review the API Reference | 📝 Want to contribute? See the contributing guidelines in the main README | . Navigation Next: Installation -&gt; . ",
-    "url": "/hf-tmc5160-driver/development/docs/#-need-help",
-    
-    "relUrl": "/docs/#-need-help"
-  },"324": {
-    "doc": "📚 Documentation",
-    "title": "📚 Documentation",
-    "content": " ",
-    "url": "/hf-tmc5160-driver/development/docs/",
-    
-    "relUrl": "/docs/"
-  },"325": {
     "doc": "ESP32 Examples",
     "title": "ESP32 Examples and Tests Documentation",
     "content": "This directory contains comprehensive documentation for all ESP32 examples and test suites for the TMC5160 stepper motor driver library. ",
     "url": "/hf-tmc5160-driver/development/docs/esp32-examples/#esp32-examples-and-tests-documentation",
     
     "relUrl": "/docs/esp32-examples/#esp32-examples-and-tests-documentation"
-  },"326": {
+  },"316": {
     "doc": "ESP32 Examples",
     "title": "Overview",
     "content": "The ESP32 examples demonstrate practical applications of the TMC51x0 driver (TMC5130 &amp; TMC5160), while the comprehensive test suites provide thorough validation of all driver features. All examples and tests support multiple motor configurations selected at compile-time. ",
     "url": "/hf-tmc5160-driver/development/docs/esp32-examples/#overview",
     
     "relUrl": "/docs/esp32-examples/#overview"
-  },"327": {
+  },"317": {
     "doc": "ESP32 Examples",
     "title": "Test Rig Configuration",
     "content": "All examples and tests use a unified test rig selection system that automatically configures motor, board, and platform settings: . | TEST_RIG_CORE_DRIVER (default for most examples): 17HS4401S motor (geared or direct drive), TMC51x0 EVAL board, reference switches, encoder | TEST_RIG_FATIGUE (default for fatigue testing examples): Applied Motion 5034-369 NEMA 34 motor, TMC51x0 EVAL board, reference switches, encoder | . See Motor Configuration Guide for detailed specifications and selection instructions. ",
     "url": "/hf-tmc5160-driver/development/docs/esp32-examples/#test-rig-configuration",
     
     "relUrl": "/docs/esp32-examples/#test-rig-configuration"
-  },"328": {
+  },"318": {
     "doc": "ESP32 Examples",
     "title": "Examples",
     "content": "Practical applications demonstrating real-world usage: . ",
     "url": "/hf-tmc5160-driver/development/docs/esp32-examples/#examples",
     
     "relUrl": "/docs/esp32-examples/#examples"
-  },"329": {
+  },"319": {
     "doc": "ESP32 Examples",
     "title": "Motion Control Examples",
     "content": ". | Internal Ramp Sinusoidal - Simple back-and-forth motion using positioning mode (configurable via SELECTED_TEST_RIG) | Fatigue Testing - Point-to-point back-and-forth motion between bounds, ESP-NOW controlled, with StallGuard2 or encoder-based bounds detection | . ",
     "url": "/hf-tmc5160-driver/development/docs/esp32-examples/#motion-control-examples",
     
     "relUrl": "/docs/esp32-examples/#motion-control-examples"
-  },"330": {
+  },"320": {
     "doc": "ESP32 Examples",
     "title": "Comprehensive Test Suites",
     "content": "Thorough validation of driver features: . ",
     "url": "/hf-tmc5160-driver/development/docs/esp32-examples/#comprehensive-test-suites",
     
     "relUrl": "/docs/esp32-examples/#comprehensive-test-suites"
-  },"331": {
+  },"321": {
     "doc": "ESP32 Examples",
     "title": "Single Motor Tests",
     "content": ". | Internal Ramp Comprehensive Test - Main comprehensive test suite - Combines core, motor control, ramp control, diagnostics, and protection tests into a single wholesome test suite for SPI internal ramp mode (with encoder and reference switches) | Encoder configuration, position reading, and deviation detection are included in the internal ramp comprehensive test; there is no separate encoder-only test suite. | . ",
     "url": "/hf-tmc5160-driver/development/docs/esp32-examples/#single-motor-tests",
     
     "relUrl": "/docs/esp32-examples/#single-motor-tests"
-  },"332": {
+  },"322": {
     "doc": "ESP32 Examples",
     "title": "Multi-Motor Tests",
     "content": ". | SPI Daisy Chain Comprehensive Test - Multi-motor SPI daisy chain configuration and coordination | UART Multi-Node Comprehensive Test - Multi-motor UART network with node addressing | . ",
     "url": "/hf-tmc5160-driver/development/docs/esp32-examples/#multi-motor-tests",
     
     "relUrl": "/docs/esp32-examples/#multi-motor-tests"
-  },"333": {
+  },"323": {
     "doc": "ESP32 Examples",
     "title": "Quick Start",
     "content": ". | Select Your Test Rig: Edit the SELECTED_TEST_RIG constant at the top of your example/test file (TEST_RIG_CORE_DRIVER or TEST_RIG_FATIGUE) | Configure Pins: Modify pin assignments in esp32_tmc51x0_test_config.hpp if needed | Build: Use the build script (./scripts/build_app.sh &lt;app_name&gt; Debug) or ESP-IDF build system (idf.py build) | Flash: Flash using the flash script (./scripts/flash_app.sh --port /dev/ttyACM0 flash &lt;app_name&gt; Debug) or idf.py flash | Monitor: View output via serial monitor (idf.py monitor or ./scripts/flash_app.sh flash_monitor &lt;app_name&gt; Debug) | . For detailed setup, build, and flash instructions, see the ESP32 README and scripts/README.md. ",
     "url": "/hf-tmc5160-driver/development/docs/esp32-examples/#quick-start",
     
     "relUrl": "/docs/esp32-examples/#quick-start"
-  },"334": {
+  },"324": {
     "doc": "ESP32 Examples",
     "title": "Hardware Requirements",
     "content": ". | ESP32 development board (ESP32, ESP32-C3, ESP32-C6, etc.) | TMC5160 stepper motor driver board | Stepper motor (see motor configuration guide) | Power supply: 12-36V DC (ensure adequate current capacity) | SPI connection (for SPI examples/tests) | UART connection (for UART examples/tests) | . ",
     "url": "/hf-tmc5160-driver/development/docs/esp32-examples/#hardware-requirements",
     
     "relUrl": "/docs/esp32-examples/#hardware-requirements"
-  },"335": {
+  },"325": {
     "doc": "ESP32 Examples",
     "title": "Common Configuration",
     "content": "All examples and tests use shared configuration files: . | esp32_tmc51x0_test_config.hpp - Pin assignments, test rig configurations, and test defaults . | Default SPI pins: MOSI=6, MISO=2, SCLK=5, CS=18 | Default control pins: EN=11, CLK=10, DIAG0=23, DIAG1=15 | Default SPI clock: 500 kHz (some examples override this) | Test rig configurations: TEST_RIG_CORE_DRIVER (17HS4401S), TEST_RIG_FATIGUE (Applied Motion 5034-369) | . | esp32_tmc51x0_bus.hpp - ESP32-specific communication interface implementations | . ",
     "url": "/hf-tmc5160-driver/development/docs/esp32-examples/#common-configuration",
     
     "relUrl": "/docs/esp32-examples/#common-configuration"
-  },"336": {
+  },"326": {
     "doc": "ESP32 Examples",
     "title": "Documentation Structure",
     "content": "Each example/test has its own documentation file covering: . | Purpose and use cases | Hardware requirements | Pin configuration | Motor selection | Key features demonstrated | Usage instructions | Expected behavior | Troubleshooting tips | . ",
     "url": "/hf-tmc5160-driver/development/docs/esp32-examples/#documentation-structure",
     
     "relUrl": "/docs/esp32-examples/#documentation-structure"
-  },"337": {
+  },"327": {
     "doc": "ESP32 Examples",
     "title": "Support",
     "content": "For issues or questions: . | Check the specific example/test documentation | Review the main library documentation | Check hardware connections and power supply | Verify motor configuration matches your hardware | . | Navigation: Index | Next: Dev Board Setup → | . ",
     "url": "/hf-tmc5160-driver/development/docs/esp32-examples/#support",
     
     "relUrl": "/docs/esp32-examples/#support"
-  },"338": {
+  },"328": {
     "doc": "ESP32 Examples",
     "title": "ESP32 Examples",
     "content": " ",
     "url": "/hf-tmc5160-driver/development/docs/esp32-examples/",
     
     "relUrl": "/docs/esp32-examples/"
+  },"329": {
+    "doc": "📚 Documentation",
+    "title": "HF-TMC51x0 Documentation (TMC5130 &amp; TMC5160)",
+    "content": "Welcome! This directory contains step-by-step guides for installing, building, and using the HF-TMC51x0 library, which supports both TMC5130 and TMC5160 chips. ",
+    "url": "/hf-tmc5160-driver/development/docs/#hf-tmc51x0-documentation-tmc5130--tmc5160",
+    
+    "relUrl": "/docs/#hf-tmc51x0-documentation-tmc5130--tmc5160"
+  },"330": {
+    "doc": "📚 Documentation",
+    "title": "📚 Documentation Structure",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/#-documentation-structure",
+    
+    "relUrl": "/docs/#-documentation-structure"
+  },"331": {
+    "doc": "📚 Documentation",
+    "title": "Getting Started",
+    "content": ". | 🛠️ Installation – Prerequisites and how to obtain the source | ⚡ Quick Start – Minimal working example to get you running | 🔌 Hardware Setup – Wiring diagrams and pin connections | . ",
+    "url": "/hf-tmc5160-driver/development/docs/#getting-started",
+    
+    "relUrl": "/docs/#getting-started"
+  },"332": {
+    "doc": "📚 Documentation",
+    "title": "Integration",
+    "content": ". | 🔧 Platform Integration – Implement the CRTP communication interface for your platform | ⚙️ Configuration – Configuration options and settings | . ",
+    "url": "/hf-tmc5160-driver/development/docs/#integration",
+    
+    "relUrl": "/docs/#integration"
+  },"333": {
+    "doc": "📚 Documentation",
+    "title": "Reference",
+    "content": ". | 📖 API Reference – Complete API documentation | 💡 Examples – Detailed example walkthroughs | . ",
+    "url": "/hf-tmc5160-driver/development/docs/#reference",
+    
+    "relUrl": "/docs/#reference"
+  },"334": {
+    "doc": "📚 Documentation",
+    "title": "Advanced Features",
+    "content": ". | 📐 Unit Conversions – Converting between physical units and driver steps | ⚙️ Motor Setup from Specifications – High-level motor configuration from physical parameters | 🏠 Sensorless Homing – Homing without endstops using StallGuard2 | 🎯 Automatic Tuning – Intelligent StallGuard2 threshold optimization | 🔧 Advanced Configuration – CoolStep, dcStep, freewheeling, and more | 🔗 Multi-Chip Communication – SPI daisy chaining and UART multi-node addressing | 📡 Communication Interface – Low-level SPI/UART communication details | 🔌 GPIO Pin Configuration – Pin mapping, active levels, and mode pin setup | 📝 Register Access – Direct register read/write and initialization flow | 🔄 TMC5130 Support – Differences between TMC5130 and TMC5160 | . ",
+    "url": "/hf-tmc5160-driver/development/docs/#advanced-features",
+    
+    "relUrl": "/docs/#advanced-features"
+  },"335": {
+    "doc": "📚 Documentation",
+    "title": "Troubleshooting",
+    "content": ". | 🐛 Troubleshooting – Common issues and solutions | . ",
+    "url": "/hf-tmc5160-driver/development/docs/#troubleshooting",
+    
+    "relUrl": "/docs/#troubleshooting"
+  },"336": {
+    "doc": "📚 Documentation",
+    "title": "🚀 Quick Start Path",
+    "content": "New to TMC51x0? Follow this recommended path: . | Start with Installation to prepare your environment | Follow Hardware Setup to wire your hardware | Read Quick Start for a minimal working example and Result&lt;T&gt; error handling | Check Platform Integration to implement the SPI/UART interface | Explore Examples for progressively harder walkthroughs with explanations | Refer to Troubleshooting when things don’t work as expected | . ",
+    "url": "/hf-tmc5160-driver/development/docs/#-quick-start-path",
+    
+    "relUrl": "/docs/#-quick-start-path"
+  },"337": {
+    "doc": "📚 Documentation",
+    "title": "💡 Need Help?",
+    "content": ". | 🐛 Found a bug? Check the Troubleshooting guide | ❓ Have questions? Review the API Reference | 📝 Want to contribute? See the contributing guidelines in the main README | . Navigation Next: Installation -&gt; . ",
+    "url": "/hf-tmc5160-driver/development/docs/#-need-help",
+    
+    "relUrl": "/docs/#-need-help"
+  },"338": {
+    "doc": "📚 Documentation",
+    "title": "📚 Documentation",
+    "content": " ",
+    "url": "/hf-tmc5160-driver/development/docs/",
+    
+    "relUrl": "/docs/"
   },"339": {
     "doc": "🛠️ Installation",
     "title": "Installation",
