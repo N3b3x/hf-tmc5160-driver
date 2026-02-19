@@ -99,6 +99,7 @@ $(function(){initNavTree('classtmc51x0_1_1TMC51x0.html',''); initResizable(); })
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classtmc51x0_1_1TMC51x0-members.html">List of all members</a>  </div>
@@ -255,6 +256,21 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:af1458eb313a868ca4860f44e32630c8c" id="r_af1458eb313a868ca4860f44e32630c8c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1458eb313a868ca4860f44e32630c8c">IsInitialized</a> () const noexcept</td></tr>
 <tr class="memdesc:af1458eb313a868ca4860f44e32630c8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the driver is initialized.  <br /></td></tr>
 <tr class="separator:af1458eb313a868ca4860f44e32630c8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:af1c963480a91b6fe135a01fe79447c41" id="r_af1c963480a91b6fe135a01fe79447c41"><td class="memItemLeft" align="right" valign="top">static constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1c963480a91b6fe135a01fe79447c41">GetDriverVersion</a> () noexcept</td></tr>
+<tr class="memdesc:af1c963480a91b6fe135a01fe79447c41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the compiled driver version string.  <br /></td></tr>
+<tr class="separator:af1c963480a91b6fe135a01fe79447c41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8396aaf02cc95720df0ec4646524ee27" id="r_a8396aaf02cc95720df0ec4646524ee27"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8396aaf02cc95720df0ec4646524ee27">GetDriverVersionMajor</a> () noexcept</td></tr>
+<tr class="memdesc:a8396aaf02cc95720df0ec4646524ee27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the compiled driver major version number.  <br /></td></tr>
+<tr class="separator:a8396aaf02cc95720df0ec4646524ee27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20874f1f74abe513269f198b34d5c0be" id="r_a20874f1f74abe513269f198b34d5c0be"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20874f1f74abe513269f198b34d5c0be">GetDriverVersionMinor</a> () noexcept</td></tr>
+<tr class="memdesc:a20874f1f74abe513269f198b34d5c0be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the compiled driver minor version number.  <br /></td></tr>
+<tr class="separator:a20874f1f74abe513269f198b34d5c0be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5a2afdf69357e29e2d798ff56776b99" id="r_af5a2afdf69357e29e2d798ff56776b99"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af5a2afdf69357e29e2d798ff56776b99">GetDriverVersionPatch</a> () noexcept</td></tr>
+<tr class="memdesc:af5a2afdf69357e29e2d798ff56776b99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the compiled driver patch version number.  <br /></td></tr>
+<tr class="separator:af5a2afdf69357e29e2d798ff56776b99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -414,7 +430,7 @@ Usage Example</h2>
 <div class="line"><span class="comment">// Enable motor</span></div>
 <div class="line">driver.motorControl.Enable();</div>
 <div class="ttc" id="aclasstmc51x0_1_1SpiCommInterface_html"><div class="ttname"><a href="classtmc51x0_1_1SpiCommInterface.html">tmc51x0::SpiCommInterface</a></div><div class="ttdoc">CRTP-based SPI implementation of TMC5160CommInterface.</div><div class="ttdef"><b>Definition</b> tmc51x0_comm_interface.hpp:1660</div></div>
-<div class="ttc" id="aclasstmc51x0_1_1TMC51x0_html"><div class="ttname"><a href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a></div><div class="ttdoc">Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)</div><div class="ttdef"><b>Definition</b> tmc51x0.hpp:118</div></div>
+<div class="ttc" id="aclasstmc51x0_1_1TMC51x0_html"><div class="ttname"><a href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a></div><div class="ttdoc">Main class representing a TMC51x0 stepper motor driver (TMC5130 &amp; TMC5160)</div><div class="ttdef"><b>Definition</b> tmc51x0.hpp:119</div></div>
 <div class="ttc" id="anamespacetmc51x0_html_a9296c8b77977c4b405a85597699ada76a1e66935e3ab51cc2128e078cfd49d845"><div class="ttname"><a href="namespacetmc51x0.html#a9296c8b77977c4b405a85597699ada76a1e66935e3ab51cc2128e078cfd49d845">tmc51x0::RampMode::POSITIONING</a></div><div class="ttdeci">@ POSITIONING</div><div class="ttdoc">Positioning mode using all A, D and V parameters.</div></div>
 <div class="ttc" id="astructtmc51x0_1_1DriverConfig_html"><div class="ttname"><a href="structtmc51x0_1_1DriverConfig.html">tmc51x0::DriverConfig</a></div><div class="ttdoc">Driver initialization configuration structure.</div><div class="ttdef"><b>Definition</b> tmc51x0_types.hpp:2870</div></div>
 </div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
@@ -956,6 +972,122 @@ template&lt;typename CommType &gt; </div>
 <dl class="section note"><dt>Note</dt><dd>The returned string is allocated on the heap (std::string / std::to_string). </dd>
 <dd>
 For embedded systems, prefer <a class="el" href="#a20cfe6cdf1f4310965a619a81863d66b" title="Log a comprehensive, human-readable summary of a DriverConfig.">LogConfigSummary()</a> / <a class="el" href="#acee0f2d63d519db90810232f824ab4fe" title="Log a compact, table-style summary of derived/cached initialization values.">LogDerivedInitSummary()</a> or implement a fixed-size buffer variant. </dd></dl>
+
+</div>
+</div>
+<a id="af1c963480a91b6fe135a01fe79447c41" name="af1c963480a91b6fe135a01fe79447c41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1c963480a91b6fe135a01fe79447c41">&#9670;&#160;</a></span>GetDriverVersion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static constexpr const char * <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::GetDriverVersion </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">constexpr</span><span class="mlabel">protected</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the compiled driver version string. </p>
+
+</div>
+</div>
+<a id="a8396aaf02cc95720df0ec4646524ee27" name="a8396aaf02cc95720df0ec4646524ee27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8396aaf02cc95720df0ec4646524ee27">&#9670;&#160;</a></span>GetDriverVersionMajor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static constexpr uint8_t <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::GetDriverVersionMajor </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">constexpr</span><span class="mlabel">protected</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the compiled driver major version number. </p>
+
+</div>
+</div>
+<a id="a20874f1f74abe513269f198b34d5c0be" name="a20874f1f74abe513269f198b34d5c0be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20874f1f74abe513269f198b34d5c0be">&#9670;&#160;</a></span>GetDriverVersionMinor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static constexpr uint8_t <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::GetDriverVersionMinor </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">constexpr</span><span class="mlabel">protected</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the compiled driver minor version number. </p>
+
+</div>
+</div>
+<a id="af5a2afdf69357e29e2d798ff56776b99" name="af5a2afdf69357e29e2d798ff56776b99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5a2afdf69357e29e2d798ff56776b99">&#9670;&#160;</a></span>GetDriverVersionPatch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CommType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static constexpr uint8_t <a class="el" href="classtmc51x0_1_1TMC51x0.html">tmc51x0::TMC51x0</a>&lt; CommType &gt;::GetDriverVersionPatch </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">constexpr</span><span class="mlabel">protected</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the compiled driver patch version number. </p>
 
 </div>
 </div>

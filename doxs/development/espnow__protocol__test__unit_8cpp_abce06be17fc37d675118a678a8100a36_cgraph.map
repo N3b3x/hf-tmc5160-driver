@@ -1,98 +1,101 @@
 <map id="app_main" name="app_main">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,685,92,711"/>
-<area shape="rect" id="Node000002" href="$espnow__protocol__test__unit_8cpp.html#ac614fd7d8e7742a5eae2eb719c3cf4eb" title="FreeRTOS task: handle incoming ESP&#45;NOW protocol events (test&#45;unit simulator)." alt="" coords="140,877,308,903"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="64,710,204,865,200,869,60,713"/>
-<area shape="rect" id="Node000014" href="$namespaceEspNowReceiver.html#a7b5448c32668c4ce8c8b2e825fe523ee" title="Initialize ESP&#45;NOW (WiFi STA + ESP&#45;NOW) and start the receive task." alt="" coords="144,383,304,408"/>
-<area shape="poly" id="edge20_Node000001_Node000014" title=" " alt="" coords="55,684,206,419,211,422,60,686"/>
-<area shape="rect" id="Node000036" href="$espnow__protocol__test__unit_8cpp.html#a7911069ff3b4a42e289e32769900f4da" title="FreeRTOS task: periodically send simulated STATUS_UPDATE messages." alt="" coords="155,685,293,711"/>
-<area shape="poly" id="edge56_Node000001_Node000036" title=" " alt="" coords="92,695,141,695,141,701,92,701"/>
-<area shape="rect" id="Node000003" href="$namespaceEspNowReceiver.html#a126f3feacea21b45e4af0a34deb50dcd" title="Send CONFIG_ACK for a CONFIG_SET request." alt="" coords="356,774,527,814"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="248,875,355,824,371,817,373,822,357,829,251,880"/>
-<area shape="rect" id="Node000008" href="$namespaceEspNowReceiver.html#ac4af6aafe2cc9de4cbd2354dfc627dc7" title="Send CONFIG_RESPONSE containing the current settings." alt="" coords="356,838,527,878"/>
-<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="308,875,342,870,343,875,309,880"/>
-<area shape="rect" id="Node000009" href="$namespaceEspNowReceiver.html#a4af879c40f8c3223b890b26dfcd1d7aa" title="Send PAUSE_ACK (acknowledge PAUSE receipt)." alt="" coords="356,902,527,942"/>
-<area shape="poly" id="edge10_Node000002_Node000009" title=" " alt="" coords="309,900,343,905,342,910,308,905"/>
-<area shape="rect" id="Node000010" href="$namespaceEspNowReceiver.html#a5996f034b8b0ad5a9e75441c454b8a52" title="Send RESUME_ACK (acknowledge RESUME receipt)." alt="" coords="356,966,527,1006"/>
-<area shape="poly" id="edge12_Node000002_Node000010" title=" " alt="" coords="251,900,357,952,373,958,371,963,355,957,248,905"/>
-<area shape="rect" id="Node000011" href="$namespaceEspNowReceiver.html#afb76d5c6ce79015229aca11c94603692" title="Send START_ACK (acknowledge START receipt)." alt="" coords="356,1030,527,1070"/>
-<area shape="poly" id="edge14_Node000002_Node000011" title=" " alt="" coords="237,901,286,956,320,988,357,1016,368,1022,365,1026,355,1020,316,992,282,960,233,905"/>
-<area shape="rect" id="Node000012" href="$namespaceEspNowReceiver.html#a37dbf71c15486999f072d89e26d3dd7e" title="Send STATUS_UPDATE with cycle count and state." alt="" coords="356,710,527,750"/>
-<area shape="poly" id="edge16_Node000002_Node000012" title=" " alt="" coords="233,875,282,821,316,788,355,760,365,754,368,758,357,764,320,793,286,824,237,879"/>
-<area shape="rect" id="Node000013" href="$namespaceEspNowReceiver.html#a5f9e63a444d010ed79c649b6a2467277" title="Send STOP_ACK (acknowledge STOP receipt)." alt="" coords="356,1094,527,1134"/>
-<area shape="poly" id="edge18_Node000002_Node000013" title=" " alt="" coords="233,902,250,937,277,984,313,1035,358,1080,365,1085,362,1090,354,1084,309,1039,272,987,245,939,228,904"/>
-<area shape="rect" id="Node000004" href="$espnow__receiver_8cpp.html#af394d93fad387639cb5c155cfd037163" title=" " alt="" coords="589,813,712,839"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="527,804,576,812,575,817,526,810"/>
-<area shape="rect" id="Node000005" href="$espnow__receiver_8cpp.html#a38ae343ba91aa93458377b341e1d9e4a" title=" " alt="" coords="1284,545,1375,571"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="693,811,911,738,1055,685,1199,625,1294,575,1296,580,1201,630,1057,690,913,743,694,816"/>
-<area shape="rect" id="Node000006" href="$espnow__receiver_8cpp.html#a6eb0186376c3ffd1080f65ee4c597d9f" title=" " alt="" coords="1048,496,1157,521"/>
-<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="661,811,711,759,790,683,891,601,947,563,1004,530,1034,519,1036,524,1006,535,949,568,894,605,794,687,714,763,665,815"/>
-<area shape="poly" id="edge7_Node000006_Node000005" title=" " alt="" coords="1158,518,1271,543,1270,548,1157,523"/>
-<area shape="rect" id="Node000007" href="$espnow__protocol_8hpp.html#afa7c999b99fb5716dc9d60af3a151d11" title="Compute CRC16&#45;CCITT (poly 0x1021, init 0xFFFF)." alt="" coords="1285,364,1374,389"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="1156,497,1199,481,1230,462,1258,441,1305,398,1308,402,1262,445,1233,467,1201,486,1158,502"/>
-<area shape="poly" id="edge9_Node000008_Node000004" title=" " alt="" coords="526,842,575,835,576,840,527,848"/>
-<area shape="poly" id="edge11_Node000009_Node000004" title=" " alt="" coords="497,900,526,888,614,843,616,848,528,893,499,904"/>
-<area shape="poly" id="edge13_Node000010_Node000004" title=" " alt="" coords="504,964,525,952,557,928,586,900,630,848,634,851,590,903,560,932,528,956,506,968"/>
-<area shape="poly" id="edge15_Node000011_Node000004" title=" " alt="" coords="507,1028,525,1016,564,977,596,931,620,887,637,850,642,853,625,889,600,934,568,980,528,1020,510,1032"/>
-<area shape="poly" id="edge17_Node000012_Node000004" title=" " alt="" coords="499,748,528,760,616,804,614,809,526,765,497,753"/>
-<area shape="poly" id="edge19_Node000013_Node000004" title=" " alt="" coords="509,1092,525,1080,549,1054,571,1025,604,961,627,900,641,852,646,853,632,902,609,963,575,1028,553,1057,528,1084,512,1096"/>
-<area shape="poly" id="edge28_Node000014_Node000005" title=" " alt="" coords="237,406,286,459,320,490,357,516,434,559,497,587,563,602,649,606,867,606,1034,600,1200,579,1270,568,1271,573,1200,585,1034,605,867,611,649,611,562,607,495,592,431,564,355,520,316,494,282,463,233,410"/>
-<area shape="rect" id="Node000015" href="$espnow__receiver_8cpp.html#ac5e16fbe9d7733f8a1dd357e6cae40e0" title=" " alt="" coords="381,383,502,408"/>
-<area shape="poly" id="edge21_Node000014_Node000015" title=" " alt="" coords="304,393,367,393,367,398,304,398"/>
-<area shape="rect" id="Node000016" href="$espnow__receiver_8cpp.html#a42c9c9de39e4830eafe9a538f7363a21" title=" " alt="" coords="381,432,502,457"/>
-<area shape="poly" id="edge22_Node000014_Node000016" title=" " alt="" coords="281,406,372,426,371,432,280,411"/>
-<area shape="rect" id="Node000017" href="$namespacePeerStore.html#a9b28e00929e22d7fc686a164ff2951cf" title="Get the number of valid approved peers." alt="" coords="775,32,957,57"/>
-<area shape="poly" id="edge23_Node000014_Node000017" title=" " alt="" coords="234,381,283,327,317,295,354,267,414,229,476,195,602,136,719,90,809,59,811,64,720,95,604,141,478,200,416,234,358,271,321,299,287,331,238,384"/>
-<area shape="rect" id="Node000018" href="$namespacePeerStore.html#ad5335ecd8ed029adc89e1a2c571a5dcb" title="Initialize peer storage and load approved peers from NVS." alt="" coords="384,32,499,57"/>
-<area shape="poly" id="edge24_Node000014_Node000018" title=" " alt="" coords="229,382,277,283,313,216,354,149,386,104,417,66,421,70,390,107,358,152,318,218,281,285,233,384"/>
-<area shape="rect" id="Node000021" href="$espnow__receiver_8cpp.html#acfefef0575d2f148427e2d4fc622f175" title=" " alt="" coords="402,281,481,307"/>
-<area shape="poly" id="edge29_Node000014_Node000021" title=" " alt="" coords="246,380,355,324,390,309,392,314,357,329,249,385"/>
-<area shape="rect" id="Node000028" href="$espnow__receiver_8cpp.html#a28441301837d03aa3ab77181c35c2001" title=" " alt="" coords="1041,281,1165,307"/>
-<area shape="poly" id="edge54_Node000014_Node000028" title=" " alt="" coords="285,380,356,367,545,343,732,322,1026,297,1027,302,733,328,545,348,356,373,285,385"/>
-<area shape="rect" id="Node000034" href="$espnow__receiver_8cpp.html#a0dc64484e6494b6182745f1898ef3738" title=" " alt="" coords="1029,545,1176,571"/>
-<area shape="poly" id="edge55_Node000014_Node000034" title=" " alt="" coords="244,406,293,437,357,466,445,492,536,512,629,528,719,539,885,552,1015,556,1015,562,885,558,718,545,628,533,535,517,444,497,355,471,291,442,241,410"/>
-<area shape="rect" id="Node000019" href="$espnow__security_8hpp.html#a5404f39e50ea5a07bb38e958bfecd9d1" title="Check if a MAC address is all zeros." alt="" coords="1284,8,1375,33"/>
-<area shape="poly" id="edge25_Node000018_Node000019" title=" " alt="" coords="496,29,574,17,775,5,972,3,1145,8,1270,14,1270,20,1145,13,972,9,775,10,575,22,497,35"/>
-<area shape="rect" id="Node000020" href="$namespacePeerStore.html#ac1554ebd96d59c1197a1822c38876523" title="Log all approved peers (for debugging)." alt="" coords="575,32,727,57"/>
-<area shape="poly" id="edge26_Node000018_Node000020" title=" " alt="" coords="499,42,561,42,561,47,499,47"/>
-<area shape="poly" id="edge27_Node000020_Node000017" title=" " alt="" coords="727,42,761,42,761,47,727,47"/>
-<area shape="rect" id="Node000022" href="$espnow__receiver_8cpp.html#a9a8bd25cb8fe8e608970454951acc1aa" title=" " alt="" coords="597,281,705,307"/>
-<area shape="poly" id="edge30_Node000021_Node000022" title=" " alt="" coords="481,291,583,291,583,297,481,297"/>
-<area shape="poly" id="edge31_Node000022_Node000007" title=" " alt="" coords="668,279,756,223,821,189,894,158,972,136,1012,129,1052,126,1091,128,1130,135,1167,148,1202,168,1217,181,1226,196,1233,226,1237,258,1241,275,1250,293,1276,325,1303,353,1300,356,1272,329,1246,296,1236,277,1231,259,1228,226,1221,198,1213,185,1198,172,1164,153,1128,140,1091,133,1052,131,1013,134,973,141,896,163,823,194,759,227,671,284"/>
-<area shape="rect" id="Node000023" href="$espnow__receiver_8cpp.html#ad03b1f7a342f6c86bb9ce0beec5636f2" title=" " alt="" coords="785,231,947,256"/>
-<area shape="poly" id="edge32_Node000022_Node000023" title=" " alt="" coords="704,279,798,257,799,262,706,284"/>
-<area shape="poly" id="edge52_Node000022_Node000028" title=" " alt="" coords="705,291,1027,291,1027,297,705,297"/>
-<area shape="rect" id="Node000031" href="$espnow__receiver_8cpp.html#a969682e51603f89e14b08804e1434f86" title=" " alt="" coords="785,392,947,417"/>
-<area shape="poly" id="edge42_Node000022_Node000031" title=" " alt="" coords="678,304,829,383,827,388,675,309"/>
-<area shape="poly" id="edge53_Node000022_Node000034" title=" " alt="" coords="663,305,708,362,740,396,776,427,840,466,909,498,976,522,1034,539,1033,544,974,527,907,502,838,471,773,431,736,400,704,366,659,308"/>
-<area shape="rect" id="Node000035" href="$namespacePeerStore.html#a73b2cdf0c288d8403a1a70e0f571ffc2" title="Check if a MAC address is in the approved peer list." alt="" coords="1005,32,1200,57"/>
-<area shape="poly" id="edge49_Node000022_Node000035" title=" " alt="" coords="659,279,723,190,773,125,816,106,877,87,1013,57,1014,63,878,92,818,111,776,130,727,193,663,283"/>
-<area shape="rect" id="Node000024" href="$namespacePeerStore.html#afa0d1ce235ad40beccab05f96260bbb5" title="Add a new approved peer to storage." alt="" coords="1029,81,1176,107"/>
-<area shape="poly" id="edge33_Node000023_Node000024" title=" " alt="" coords="886,228,1069,112,1071,116,889,233"/>
-<area shape="rect" id="Node000027" href="$espnow__receiver_8cpp.html#afc321dce05a09b7e8487be200c7e4537" title=" " alt="" coords="1069,232,1136,257"/>
-<area shape="poly" id="edge37_Node000023_Node000027" title=" " alt="" coords="947,241,1056,242,1056,247,947,247"/>
-<area shape="poly" id="edge38_Node000023_Node000028" title=" " alt="" coords="927,254,1030,276,1029,281,926,259"/>
-<area shape="rect" id="Node000029" href="$espnow__security_8hpp.html#a6103306a96642435fea015548e305d67" title="Verify an HMAC response using constant&#45;time comparison." alt="" coords="1032,183,1173,208"/>
-<area shape="poly" id="edge40_Node000023_Node000029" title=" " alt="" coords="929,228,1026,208,1027,213,930,233"/>
-<area shape="poly" id="edge34_Node000024_Node000019" title=" " alt="" coords="1159,79,1199,66,1247,42,1270,34,1272,39,1249,47,1201,71,1161,84"/>
-<area shape="rect" id="Node000025" href="$espnow__security_8hpp.html#af7a73c0e28901c88d30288faf14c6a5d" title="Compare two MAC addresses." alt="" coords="1283,57,1375,83"/>
-<area shape="poly" id="edge35_Node000024_Node000025" title=" " alt="" coords="1176,84,1269,74,1270,79,1176,89"/>
-<area shape="rect" id="Node000026" href="$namespacePeerStore.html#a3318088ed933db034120d60f25e2ec9f" title="Save the current peer list to NVS." alt="" coords="1267,107,1392,132"/>
-<area shape="poly" id="edge36_Node000024_Node000026" title=" " alt="" coords="1176,100,1253,108,1253,114,1176,105"/>
-<area shape="poly" id="edge39_Node000028_Node000005" title=" " alt="" coords="1125,305,1162,332,1202,368,1238,411,1270,456,1317,532,1312,535,1265,459,1234,414,1198,372,1159,336,1122,309"/>
-<area shape="rect" id="Node000030" href="$espnow__security_8hpp.html#ae69756054396d09425336d822aa6c6b9" title="Compute HMAC&#45;SHA256, truncated to HMAC_SIZE bytes." alt="" coords="1248,257,1411,283"/>
-<area shape="poly" id="edge41_Node000029_Node000030" title=" " alt="" coords="1161,206,1201,217,1287,250,1285,254,1199,222,1159,211"/>
-<area shape="poly" id="edge46_Node000031_Node000006" title=" " alt="" coords="914,415,959,436,974,448,983,460,992,471,1007,481,1036,493,1034,498,1004,486,989,474,979,463,970,452,956,440,911,420"/>
-<area shape="poly" id="edge43_Node000031_Node000030" title=" " alt="" coords="917,390,1199,316,1283,285,1285,290,1201,321,918,395"/>
-<area shape="rect" id="Node000032" href="$espnow__security_8hpp.html#a970f324b3c3c6db045205b7b1c692f0c" title="Generate a random challenge nonce." alt="" coords="1029,447,1176,472"/>
-<area shape="poly" id="edge44_Node000031_Node000032" title=" " alt="" coords="922,415,1034,441,1033,446,921,420"/>
-<area shape="rect" id="Node000033" href="$namespaceEspNowReceiver.html#a93d8c346666ea692686d6fccfe1c2226" title="Check if device is currently in pairing mode." alt="" coords="1027,382,1178,422"/>
-<area shape="poly" id="edge45_Node000031_Node000033" title=" " alt="" coords="948,401,1013,400,1013,406,948,407"/>
-<area shape="poly" id="edge47_Node000031_Node000034" title=" " alt="" coords="883,416,1007,531,1024,539,1022,543,1004,535,880,420"/>
-<area shape="poly" id="edge48_Node000034_Node000005" title=" " alt="" coords="1176,555,1270,555,1270,561,1176,561"/>
-<area shape="poly" id="edge50_Node000035_Node000019" title=" " alt="" coords="1200,32,1270,24,1270,30,1201,37"/>
-<area shape="poly" id="edge51_Node000035_Node000025" title=" " alt="" coords="1201,53,1270,61,1269,66,1200,58"/>
-<area shape="poly" id="edge57_Node000036_Node000012" title=" " alt="" coords="294,706,343,713,342,718,293,711"/>
-<area shape="rect" id="Node000037" href="$namespaceEspNowReceiver.html#a24fe7b15e7685c89e8468b1fdbcbaf7d" title="Send TEST_COMPLETE message." alt="" coords="356,646,527,686"/>
-<area shape="poly" id="edge58_Node000036_Node000037" title=" " alt="" coords="293,685,342,678,343,683,294,691"/>
-<area shape="poly" id="edge59_Node000037_Node000004" title=" " alt="" coords="506,684,528,696,560,721,590,749,634,801,630,804,586,752,557,725,525,700,504,688"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,541,92,566"/>
+<area shape="rect" id="Node000002" href="$espnow__protocol__test__unit_8cpp.html#ac614fd7d8e7742a5eae2eb719c3cf4eb" title="FreeRTOS task: handle incoming ESP&#45;NOW protocol events (test&#45;unit simulator)." alt="" coords="155,237,323,262"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="56,539,221,272,225,275,60,542"/>
+<area shape="rect" id="Node000014" href="$namespacetmc51x0.html#a443a6e6bc5293c1f6970fe1bc077591c" title=" " alt="" coords="140,769,339,794"/>
+<area shape="poly" id="edge20_Node000001_Node000014" title=" " alt="" coords="56,566,66,598,83,642,109,689,142,731,163,748,187,761,184,766,160,752,138,735,104,692,79,644,61,600,51,567"/>
+<area shape="rect" id="Node000015" href="$namespaceEspNowReceiver.html#a7b5448c32668c4ce8c8b2e825fe523ee" title="Initialize ESP&#45;NOW (WiFi STA + ESP&#45;NOW) and start the receive task." alt="" coords="159,695,319,721"/>
+<area shape="poly" id="edge22_Node000001_Node000015" title=" " alt="" coords="68,564,214,684,210,689,64,569"/>
+<area shape="rect" id="Node000037" href="$espnow__protocol__test__unit_8cpp.html#a7911069ff3b4a42e289e32769900f4da" title="FreeRTOS task: periodically send simulated STATUS_UPDATE messages." alt="" coords="170,461,309,486"/>
+<area shape="poly" id="edge58_Node000001_Node000037" title=" " alt="" coords="79,538,194,489,196,494,81,543"/>
+<area shape="rect" id="Node000003" href="$namespaceEspNowReceiver.html#a126f3feacea21b45e4af0a34deb50dcd" title="Send CONFIG_ACK for a CONFIG_SET request." alt="" coords="387,261,557,301"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="324,258,373,265,373,270,323,264"/>
+<area shape="rect" id="Node000008" href="$namespaceEspNowReceiver.html#ac4af6aafe2cc9de4cbd2354dfc627dc7" title="Send CONFIG_RESPONSE containing the current settings." alt="" coords="387,325,557,365"/>
+<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="270,260,388,311,405,318,403,323,386,316,267,264"/>
+<area shape="rect" id="Node000009" href="$namespaceEspNowReceiver.html#a4af879c40f8c3223b890b26dfcd1d7aa" title="Send PAUSE_ACK (acknowledge PAUSE receipt)." alt="" coords="387,5,557,45"/>
+<area shape="poly" id="edge10_Node000002_Node000009" title=" " alt="" coords="245,235,264,200,295,152,336,101,385,55,393,50,396,54,388,59,340,104,300,155,269,203,249,238"/>
+<area shape="rect" id="Node000010" href="$namespaceEspNowReceiver.html#a5996f034b8b0ad5a9e75441c454b8a52" title="Send RESUME_ACK (acknowledge RESUME receipt)." alt="" coords="387,69,557,109"/>
+<area shape="poly" id="edge12_Node000002_Node000010" title=" " alt="" coords="250,234,305,180,344,148,385,119,397,113,399,117,388,124,347,152,309,184,254,238"/>
+<area shape="rect" id="Node000011" href="$namespaceEspNowReceiver.html#afb76d5c6ce79015229aca11c94603692" title="Send START_ACK (acknowledge START receipt)." alt="" coords="387,133,557,173"/>
+<area shape="poly" id="edge14_Node000002_Node000011" title=" " alt="" coords="267,234,386,183,403,176,405,181,388,188,270,239"/>
+<area shape="rect" id="Node000012" href="$namespaceEspNowReceiver.html#a37dbf71c15486999f072d89e26d3dd7e" title="Send STATUS_UPDATE with cycle count and state." alt="" coords="387,389,557,429"/>
+<area shape="poly" id="edge16_Node000002_Node000012" title=" " alt="" coords="254,260,309,315,347,347,388,375,399,381,397,386,385,380,344,351,305,319,250,264"/>
+<area shape="rect" id="Node000013" href="$namespaceEspNowReceiver.html#a5f9e63a444d010ed79c649b6a2467277" title="Send STOP_ACK (acknowledge STOP receipt)." alt="" coords="387,197,557,237"/>
+<area shape="poly" id="edge18_Node000002_Node000013" title=" " alt="" coords="323,235,373,228,373,234,324,240"/>
+<area shape="rect" id="Node000004" href="$espnow__receiver_8cpp.html#af394d93fad387639cb5c155cfd037163" title=" " alt="" coords="620,301,743,326"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="558,292,606,299,606,304,557,297"/>
+<area shape="rect" id="Node000005" href="$espnow__receiver_8cpp.html#a38ae343ba91aa93458377b341e1d9e4a" title=" " alt="" coords="1315,569,1405,594"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="725,323,944,396,1088,450,1232,510,1327,559,1325,564,1230,514,1086,455,942,401,723,329"/>
+<area shape="rect" id="Node000006" href="$espnow__receiver_8cpp.html#a6eb0186376c3ffd1080f65ee4c597d9f" title=" " alt="" coords="1079,569,1188,594"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="706,324,1100,559,1097,564,703,329"/>
+<area shape="poly" id="edge7_Node000006_Node000005" title=" " alt="" coords="1188,579,1301,579,1301,584,1188,584"/>
+<area shape="rect" id="Node000007" href="$espnow__protocol_8hpp.html#afa7c999b99fb5716dc9d60af3a151d11" title="Compute CRC16&#45;CCITT (poly 0x1021, init 0xFFFF)." alt="" coords="1315,669,1405,694"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="1189,590,1232,604,1285,631,1330,659,1328,663,1282,635,1230,609,1187,595"/>
+<area shape="poly" id="edge9_Node000008_Node000004" title=" " alt="" coords="557,330,606,322,606,327,558,335"/>
+<area shape="poly" id="edge11_Node000009_Node000004" title=" " alt="" coords="542,43,559,55,584,82,606,112,640,176,663,238,677,286,672,288,658,239,635,178,601,115,580,85,556,59,539,48"/>
+<area shape="poly" id="edge13_Node000010_Node000004" title=" " alt="" coords="540,107,559,119,599,159,631,205,656,250,672,287,668,289,651,253,626,208,594,163,556,123,537,112"/>
+<area shape="poly" id="edge15_Node000011_Node000004" title=" " alt="" coords="537,171,559,183,591,208,620,236,665,288,661,292,616,240,587,212,556,188,534,176"/>
+<area shape="poly" id="edge17_Node000012_Node000004" title=" " alt="" coords="528,387,556,375,644,330,647,335,558,380,530,392"/>
+<area shape="poly" id="edge19_Node000013_Node000004" title=" " alt="" coords="530,235,558,247,647,292,644,296,556,252,528,240"/>
+<area shape="poly" id="edge21_Node000014_Node000014" title=" " alt="" coords="208,770,201,760,205,750,218,744,239,742,265,746,276,754,273,758,263,750,239,747,219,749,209,754,207,760,212,767"/>
+<area shape="poly" id="edge30_Node000015_Node000005" title=" " alt="" coords="257,693,322,650,423,595,483,570,547,548,613,533,680,528,898,528,1065,534,1231,555,1302,567,1301,572,1230,560,1065,539,898,533,680,533,614,539,549,553,485,575,426,600,325,655,260,697"/>
+<area shape="rect" id="Node000016" href="$espnow__receiver_8cpp.html#ac5e16fbe9d7733f8a1dd357e6cae40e0" title=" " alt="" coords="411,1246,533,1271"/>
+<area shape="poly" id="edge23_Node000015_Node000016" title=" " alt="" coords="321,717,341,732,353,751,361,774,370,833,370,903,367,979,364,1054,364,1124,371,1183,378,1207,389,1225,402,1237,398,1241,385,1228,373,1209,366,1184,358,1125,358,1054,362,978,365,903,364,834,356,776,348,753,337,735,318,721"/>
+<area shape="rect" id="Node000017" href="$espnow__receiver_8cpp.html#a42c9c9de39e4830eafe9a538f7363a21" title=" " alt="" coords="411,1295,533,1321"/>
+<area shape="poly" id="edge24_Node000015_Node000017" title=" " alt="" coords="321,717,341,732,354,753,363,779,371,845,371,924,366,1008,361,1093,360,1171,368,1236,377,1262,389,1282,401,1293,397,1297,385,1286,372,1264,363,1238,355,1171,355,1093,360,1008,365,924,366,846,358,781,349,755,337,735,318,721"/>
+<area shape="rect" id="Node000018" href="$namespacePeerStore.html#a9b28e00929e22d7fc686a164ff2951cf" title="Get the number of valid approved peers." alt="" coords="805,1170,988,1195"/>
+<area shape="poly" id="edge25_Node000015_Node000018" title=" " alt="" coords="321,717,341,731,360,757,372,783,379,808,382,834,377,884,365,934,353,983,348,1033,351,1057,358,1081,370,1106,389,1130,411,1152,436,1170,491,1197,551,1213,614,1220,677,1219,737,1214,836,1196,837,1201,737,1219,677,1225,614,1225,550,1218,489,1202,433,1175,408,1156,385,1134,366,1109,353,1083,345,1058,343,1033,347,982,359,933,371,883,376,834,374,809,367,785,355,760,337,735,318,721"/>
+<area shape="rect" id="Node000019" href="$namespacePeerStore.html#ad5335ecd8ed029adc89e1a2c571a5dcb" title="Initialize peer storage and load approved peers from NVS." alt="" coords="415,1094,529,1119"/>
+<area shape="poly" id="edge26_Node000015_Node000019" title=" " alt="" coords="321,719,340,731,376,771,405,817,427,866,444,917,464,1010,472,1080,467,1081,459,1011,439,918,422,868,400,820,372,775,337,735,318,723"/>
+<area shape="rect" id="Node000022" href="$espnow__receiver_8cpp.html#acfefef0575d2f148427e2d4fc622f175" title=" " alt="" coords="433,746,511,771"/>
+<area shape="poly" id="edge31_Node000015_Node000022" title=" " alt="" coords="299,718,420,745,419,750,298,723"/>
+<area shape="rect" id="Node000029" href="$espnow__receiver_8cpp.html#a28441301837d03aa3ab77181c35c2001" title=" " alt="" coords="1071,618,1195,643"/>
+<area shape="poly" id="edge56_Node000015_Node000029" title=" " alt="" coords="301,693,386,679,575,659,763,645,1057,630,1057,636,763,650,576,664,387,684,302,698"/>
+<area shape="rect" id="Node000035" href="$espnow__receiver_8cpp.html#a0dc64484e6494b6182745f1898ef3738" title=" " alt="" coords="1060,667,1207,693"/>
+<area shape="poly" id="edge57_Node000015_Node000035" title=" " alt="" coords="319,703,1046,680,1046,685,319,708"/>
+<area shape="rect" id="Node000020" href="$espnow__security_8hpp.html#a5404f39e50ea5a07bb38e958bfecd9d1" title="Check if a MAC address is all zeros." alt="" coords="1315,1082,1405,1107"/>
+<area shape="poly" id="edge27_Node000019_Node000020" title=" " alt="" coords="530,1109,656,1119,829,1127,1029,1128,1131,1125,1230,1117,1301,1106,1302,1111,1231,1123,1131,1130,1029,1134,829,1132,655,1124,529,1115"/>
+<area shape="rect" id="Node000021" href="$namespacePeerStore.html#ac1554ebd96d59c1197a1822c38876523" title="Log all approved peers (for debugging)." alt="" coords="605,1145,757,1170"/>
+<area shape="poly" id="edge28_Node000019_Node000021" title=" " alt="" coords="526,1117,616,1139,614,1144,525,1122"/>
+<area shape="poly" id="edge29_Node000021_Node000018" title=" " alt="" coords="758,1164,792,1168,791,1173,757,1169"/>
+<area shape="rect" id="Node000023" href="$espnow__receiver_8cpp.html#a9a8bd25cb8fe8e608970454951acc1aa" title=" " alt="" coords="627,771,735,797"/>
+<area shape="poly" id="edge32_Node000022_Node000023" title=" " alt="" coords="512,761,614,773,613,778,511,766"/>
+<area shape="poly" id="edge33_Node000023_Node000007" title=" " alt="" coords="736,779,852,770,988,755,1159,724,1301,693,1302,698,1160,729,988,760,852,775,736,784"/>
+<area shape="rect" id="Node000024" href="$espnow__receiver_8cpp.html#ad03b1f7a342f6c86bb9ce0beec5636f2" title=" " alt="" coords="816,934,977,959"/>
+<area shape="poly" id="edge34_Node000023_Node000024" title=" " alt="" coords="701,795,869,923,866,928,698,799"/>
+<area shape="poly" id="edge54_Node000023_Node000029" title=" " alt="" coords="700,769,746,741,804,712,870,689,937,669,1057,641,1058,647,938,674,871,694,806,717,749,745,703,774"/>
+<area shape="rect" id="Node000032" href="$espnow__receiver_8cpp.html#a969682e51603f89e14b08804e1434f86" title=" " alt="" coords="815,822,978,847"/>
+<area shape="poly" id="edge44_Node000023_Node000032" title=" " alt="" coords="736,794,830,816,829,822,735,799"/>
+<area shape="poly" id="edge55_Node000023_Node000035" title=" " alt="" coords="735,769,1063,693,1065,698,736,774"/>
+<area shape="rect" id="Node000036" href="$namespacePeerStore.html#a73b2cdf0c288d8403a1a70e0f571ffc2" title="Check if a MAC address is in the approved peer list." alt="" coords="1036,1082,1231,1107"/>
+<area shape="poly" id="edge51_Node000023_Node000036" title=" " alt="" coords="690,796,706,830,731,876,765,926,807,970,864,1009,926,1039,989,1061,1046,1076,1045,1081,987,1066,924,1044,861,1013,804,974,761,929,727,879,701,832,685,798"/>
+<area shape="rect" id="Node000025" href="$namespacePeerStore.html#afa0d1ce235ad40beccab05f96260bbb5" title="Add a new approved peer to storage." alt="" coords="1060,983,1207,1009"/>
+<area shape="poly" id="edge35_Node000024_Node000025" title=" " alt="" coords="959,957,1059,978,1058,983,958,962"/>
+<area shape="rect" id="Node000028" href="$espnow__receiver_8cpp.html#afc321dce05a09b7e8487be200c7e4537" title=" " alt="" coords="1100,1033,1167,1058"/>
+<area shape="poly" id="edge39_Node000024_Node000028" title=" " alt="" coords="919,957,971,988,1037,1019,1087,1034,1086,1039,1035,1024,969,992,916,962"/>
+<area shape="poly" id="edge40_Node000024_Node000029" title=" " alt="" coords="915,932,951,901,970,881,986,859,998,830,1003,803,1002,753,1002,728,1005,704,1015,679,1034,654,1057,639,1060,643,1038,658,1019,682,1010,705,1007,729,1008,753,1008,804,1003,832,990,861,974,884,955,905,918,936"/>
+<area shape="rect" id="Node000030" href="$espnow__security_8hpp.html#a6103306a96642435fea015548e305d67" title="Verify an HMAC response using constant&#45;time comparison." alt="" coords="1063,934,1204,959"/>
+<area shape="poly" id="edge42_Node000024_Node000030" title=" " alt="" coords="978,944,1049,944,1049,949,978,949"/>
+<area shape="poly" id="edge36_Node000025_Node000020" title=" " alt="" coords="1203,1006,1232,1019,1248,1031,1257,1044,1266,1057,1280,1068,1303,1079,1301,1084,1277,1073,1262,1060,1253,1047,1244,1035,1229,1024,1201,1011"/>
+<area shape="rect" id="Node000026" href="$espnow__security_8hpp.html#af7a73c0e28901c88d30288faf14c6a5d" title="Compare two MAC addresses." alt="" coords="1314,1033,1406,1058"/>
+<area shape="poly" id="edge37_Node000025_Node000026" title=" " alt="" coords="1193,1006,1301,1030,1300,1035,1192,1011"/>
+<area shape="rect" id="Node000027" href="$namespacePeerStore.html#a3318088ed933db034120d60f25e2ec9f" title="Save the current peer list to NVS." alt="" coords="1297,983,1423,1009"/>
+<area shape="poly" id="edge38_Node000025_Node000027" title=" " alt="" coords="1207,993,1284,993,1284,999,1207,999"/>
+<area shape="poly" id="edge41_Node000029_Node000005" title=" " alt="" coords="1192,615,1301,591,1302,597,1193,621"/>
+<area shape="rect" id="Node000031" href="$espnow__security_8hpp.html#ae69756054396d09425336d822aa6c6b9" title="Compute HMAC&#45;SHA256, truncated to HMAC_SIZE bytes." alt="" coords="1279,851,1441,877"/>
+<area shape="poly" id="edge43_Node000030_Node000031" title=" " alt="" coords="1188,931,1230,919,1320,880,1322,885,1232,924,1190,937"/>
+<area shape="poly" id="edge48_Node000032_Node000006" title=" " alt="" coords="899,821,915,779,942,721,982,658,1006,629,1035,604,1064,589,1067,594,1037,609,1010,633,986,661,947,723,920,781,904,823"/>
+<area shape="poly" id="edge45_Node000032_Node000031" title=" " alt="" coords="947,819,1005,808,1076,799,1154,797,1231,805,1282,822,1326,842,1324,847,1280,827,1230,811,1154,802,1077,804,1006,813,948,825"/>
+<area shape="rect" id="Node000033" href="$espnow__security_8hpp.html#a970f324b3c3c6db045205b7b1c692f0c" title="Generate a random challenge nonce." alt="" coords="1060,819,1207,845"/>
+<area shape="poly" id="edge46_Node000032_Node000033" title=" " alt="" coords="978,831,1046,830,1046,836,979,836"/>
+<area shape="rect" id="Node000034" href="$namespaceEspNowReceiver.html#a93d8c346666ea692686d6fccfe1c2226" title="Check if device is currently in pairing mode." alt="" coords="1058,869,1209,909"/>
+<area shape="poly" id="edge47_Node000032_Node000034" title=" " alt="" coords="953,845,1045,866,1044,872,952,850"/>
+<area shape="poly" id="edge49_Node000032_Node000035" title=" " alt="" coords="916,820,1100,698,1103,703,919,824"/>
+<area shape="poly" id="edge50_Node000035_Node000005" title=" " alt="" coords="1196,665,1230,654,1283,627,1328,600,1331,604,1285,632,1232,658,1197,670"/>
+<area shape="poly" id="edge52_Node000036_Node000020" title=" " alt="" coords="1231,1092,1301,1092,1301,1097,1231,1097"/>
+<area shape="poly" id="edge53_Node000036_Node000026" title=" " alt="" coords="1192,1079,1300,1056,1301,1061,1193,1085"/>
+<area shape="poly" id="edge59_Node000037_Node000012" title=" " alt="" coords="286,458,385,430,386,436,287,463"/>
+<area shape="rect" id="Node000038" href="$namespaceEspNowReceiver.html#a24fe7b15e7685c89e8468b1fdbcbaf7d" title="Send TEST_COMPLETE message." alt="" coords="387,453,557,493"/>
+<area shape="poly" id="edge60_Node000037_Node000038" title=" " alt="" coords="309,471,373,471,373,476,309,476"/>
+<area shape="poly" id="edge61_Node000038_Node000004" title=" " alt="" coords="534,451,556,439,587,415,616,387,661,335,665,339,620,391,591,419,559,444,537,456"/>
 </map>
