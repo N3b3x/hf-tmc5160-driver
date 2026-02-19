@@ -2009,6 +2009,7 @@ extern "C" void app_main(void) {
   ESP_LOGI(TAG, "║         ESP32 TMC51x0 INTERNAL RAMP COMPREHENSIVE TEST SUITE                  ║");
   ESP_LOGI(TAG, "║                         HardFOC TMC51x0 Driver Tests                           ║");
   ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
+  ESP_LOGI(TAG, "Driver version: %s", tmc51x0::GetDriverVersion());
   
   ESP_LOGI(TAG, "");
   ESP_LOGI(TAG, "Configuration:");

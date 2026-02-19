@@ -14,6 +14,7 @@
 #include "esp_log.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "tmc51x0.hpp"
 
 static const char* TAG = "I2C_SCAN";
 
@@ -90,6 +91,7 @@ extern "C" void app_main(void) {
              static_cast<int>(I2C_SDA_PIN),
              static_cast<int>(I2C_SCL_PIN));
     ESP_LOGI(TAG, "Will scan at both 400 kHz (fast) and 100 kHz (standard) speeds");
+    ESP_LOGI(TAG, "Driver version: %s", tmc51x0::GetDriverVersion());
 
     i2c_master_bus_config_t bus_cfg{};
     bus_cfg.i2c_port = I2C_PORT;

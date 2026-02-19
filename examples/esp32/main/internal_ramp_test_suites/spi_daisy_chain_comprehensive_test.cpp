@@ -390,6 +390,7 @@ extern "C" void app_main(void) {
   ESP_LOGI(TAG, "║         ESP32 TMC51x0 SPI DAISY CHAIN COMPREHENSIVE TEST SUITE               ║");
   ESP_LOGI(TAG, "║                         HardFOC TMC51x0 Driver Tests                         ║");
   ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
+  ESP_LOGI(TAG, "Driver version: %s", tmc51x0::GetDriverVersion());
   ESP_LOGI(TAG, "Chain length: %u driver(s) -- change TEST_CHAIN_LENGTH to match your hardware", TEST_CHAIN_LENGTH);
   
   vTaskDelay(pdMS_TO_TICKS(1000));

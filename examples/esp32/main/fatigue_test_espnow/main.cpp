@@ -3019,6 +3019,7 @@ extern "C" void app_main()
     ESP_LOGI(TAG, "╔══════════════════════════════════════════════════════════════════════════════╗");
     ESP_LOGI(TAG, "║         Fatigue Test Unit with ESP-NOW Communication                         ║");
     ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
+    ESP_LOGI(TAG, "Driver version: %s", tmc51x0::GetDriverVersion());
 
     // Initialize default stall detection parameters from test config EARLY.
     // This prevents ConfigResponse from ever reporting placeholder defaults (e.g. SGT=127)

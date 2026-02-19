@@ -18,6 +18,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/queue.h"
+#include "tmc51x0.hpp"
 
 static const char* TAG = "EspNowTestUnit";
 
@@ -194,6 +195,7 @@ extern "C" void app_main()
     ESP_LOGI(TAG, "╔══════════════════════════════════════════════════════════════════════════════╗");
     ESP_LOGI(TAG, "║         ESP-NOW Protocol Test Unit (No Motor Control)                        ║");
     ESP_LOGI(TAG, "╚══════════════════════════════════════════════════════════════════════════════╝");
+    ESP_LOGI(TAG, "Driver version: %s", tmc51x0::GetDriverVersion());
     ESP_LOGI(TAG, "");
     ESP_LOGI(TAG, "Protocol: v%u, Device ID: %u", ESPNOW_PROTOCOL_VERSION, DEVICE_ID_FATIGUE_TESTER);
     ESP_LOGI(TAG, "");

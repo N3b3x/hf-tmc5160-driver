@@ -230,6 +230,7 @@ public:
 extern "C" void app_main() {
   ESP_LOGI(TAG, "TMC51x0 Back-and-Forth Motion Example for NEMA 44mm Motors");
   ESP_LOGI(TAG, "Using internal ramp generator with positioning control");
+  ESP_LOGI(TAG, "Driver version: %s", tmc51x0::GetDriverVersion());
 
   // Get standard pin configuration
   auto pin_config = tmc51x0_test_config::GetDefaultPinConfig();
