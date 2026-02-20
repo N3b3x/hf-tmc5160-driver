@@ -209,7 +209,7 @@ fatigue_test_espnow/
 
 ## Related Documentation
 
-- TMC5160 Datasheet: `datasheet/TMC5160A_datasheet_rev1.18.pdf`
+- TMC5160 Datasheet: `docs/docs/datasheet/TMC5160A_datasheet_rev1.18.pdf`
 - Driver API: `docs/api_reference.md`
 - Hardware Setup: `docs/hardware_setup.md`
 
