@@ -132,6 +132,7 @@ static Esp32SPI* g_spi = nullptr;
 enum class InternalState : uint8_t {
     IDLE = 0,           ///< System idle, motor disabled
     BOUNDS_FINDING,     ///< Searching for mechanical limits
+    MANUAL_BOUNDS,      ///< Manual bounds mode (motor may be enabled/disabled)
     RUNNING,            ///< Fatigue test active
     PAUSED,             ///< Test paused, motor holding position
     ERROR               ///< Error condition, motor disabled
@@ -307,6 +308,7 @@ static inline TestState ToProtoState(InternalState s) noexcept {
     switch (s) {
         case InternalState::IDLE: return TestState::Idle;
         case InternalState::BOUNDS_FINDING: return TestState::Running; // motor is active
+        case InternalState::MANUAL_BOUNDS: return TestState::Running;  // motor may be active
         case InternalState::RUNNING: return TestState::Running;
         case InternalState::PAUSED: return TestState::Paused;
         case InternalState::ERROR: return TestState::Error;
@@ -432,6 +434,71 @@ static bool MotorEnable() noexcept {
         ESP_LOGE(TAG, "Failed to enable motor (ErrorCode: %d)", static_cast<int>(res.Error()));
         return false;
     }
+    return true;
+}
+
+// -------------------- Manual Bounds Current Reduction --------------------
+
+/// Current reduction factor for manual bounds engagement (matches auto bounds)
+static constexpr float MANUAL_BOUNDS_CURRENT_FACTOR = 0.3f;
+
+/**
+ * @brief Set motor current to a reduced level for manual bounds engagement.
+ *
+ * @details
+ * Uses ConfigureMotorCurrent() with a modified MotorSpec where run_current_ma
+ * and hold_current_ma are scaled by MANUAL_BOUNDS_CURRENT_FACTOR (0.3x rated).
+ * This matches the auto bounds finding behavior and prevents excessive holding
+ * torque during initial engagement, reducing magnetic misalignment risk.
+ *
+ * @return true if current was successfully reduced
+ */
+static bool SetReducedCurrentForManualBounds() noexcept {
+    if (!g_driver || !g_driver_mutex) return false;
+    TmcMutexGuard guard(*g_driver_mutex);
+    auto config = g_driver->GetDriverConfig();
+    tmc51x0::MotorSpec reduced_spec = config.motor_spec;
+    const uint16_t run_ma = reduced_spec.run_current_ma > 0
+                          ? reduced_spec.run_current_ma
+                          : reduced_spec.rated_current_ma;
+    reduced_spec.run_current_ma = static_cast<uint16_t>(
+        static_cast<float>(run_ma) * MANUAL_BOUNDS_CURRENT_FACTOR);
+    reduced_spec.hold_current_ma = static_cast<uint16_t>(
+        static_cast<float>(run_ma) * MANUAL_BOUNDS_CURRENT_FACTOR);
+    auto res = g_driver->motorControl.ConfigureMotorCurrent(reduced_spec);
+    if (!res) {
+        ESP_LOGE(TAG, "SetReducedCurrentForManualBounds failed (err=%d)",
+                 static_cast<int>(res.Error()));
+        return false;
+    }
+    ESP_LOGI(TAG, "Manual bounds: current reduced to %u mA (%.0f%% of %u mA)",
+             reduced_spec.run_current_ma, MANUAL_BOUNDS_CURRENT_FACTOR * 100.0f, run_ma);
+    return true;
+}
+
+/**
+ * @brief Restore motor current to full rated level after manual bounds positioning.
+ *
+ * @details
+ * Re-applies the original MotorSpec from the driver config to restore run and hold
+ * current to their configured values. Called after the motor reaches center position.
+ *
+ * @return true if current was successfully restored
+ */
+static bool RestoreFullCurrent() noexcept {
+    if (!g_driver || !g_driver_mutex) return false;
+    TmcMutexGuard guard(*g_driver_mutex);
+    auto config = g_driver->GetDriverConfig();
+    auto res = g_driver->motorControl.ConfigureMotorCurrent(config.motor_spec);
+    if (!res) {
+        ESP_LOGE(TAG, "RestoreFullCurrent failed (err=%d)",
+                 static_cast<int>(res.Error()));
+        return false;
+    }
+    const uint16_t run_ma = config.motor_spec.run_current_ma > 0
+                          ? config.motor_spec.run_current_ma
+                          : config.motor_spec.rated_current_ma;
+    ESP_LOGI(TAG, "Motor current restored to full: %u mA", run_ma);
     return true;
 }
 
@@ -907,6 +974,452 @@ static void espnow_command_task(void* arg)
                     // Bounds finding is active (InternalState::BOUNDS_FINDING maps to TestState::Running).
                     EspNowReceiver::send_status_update(g_motion ? g_motion->GetCurrentCycles() : 0, ToProtoState(g_state), 0, GetBoundsValidFlag_());
                     break;
+
+                case ProtoEventType::CommandSetManualBounds: {
+                    // Legacy single-shot manual bounds (kept for protocol compat)
+                    ESP_LOGW(TAG, "Legacy SetManualBounds ignored; use new multi-step flow");
+                    EspNowReceiver::send_start_ack();
+                    break;
+                }
+
+                // ── Manual Bounds Multi-Step Flow ──────────────────────────
+                case ProtoEventType::CommandManualBoundsStart: {
+                    ESP_LOGI(TAG, "ManualBoundsStart: disengage motor");
+                    EspNowReceiver::send_start_ack();
+
+                    if (g_state == InternalState::RUNNING || g_state == InternalState::BOUNDS_FINDING) {
+                        ESP_LOGW(TAG, "ManualBoundsStart ignored: busy");
+                        break;
+                    }
+                    if (!g_driver || !g_driver_mutex) {
+                        ESP_LOGE(TAG, "ManualBoundsStart: driver not init");
+                        EspNowReceiver::send_error(2, 0);
+                        break;
+                    }
+                    BoundsCache::CancelDeenergizeTimer();
+                    MotorStopHoldDisable();
+                    g_state = InternalState::MANUAL_BOUNDS;
+                    EspNowReceiver::send_status_update(0, ToProtoState(g_state), 0, GetBoundsValidFlag_());
+                    break;
+                }
+
+                case ProtoEventType::CommandManualBoundsArmPlaced: {
+                    ESP_LOGI(TAG, "ManualBoundsArmPlaced: engage motor, set ref");
+                    EspNowReceiver::send_start_ack();
+
+                    if (g_state != InternalState::MANUAL_BOUNDS) {
+                        ESP_LOGW(TAG, "ManualBoundsArmPlaced: not in MANUAL_BOUNDS state");
+                        break;
+                    }
+                    if (!g_driver || !g_driver_mutex) break;
+
+                    // Set reduced current (0.3x) before engaging to prevent
+                    // magnetic misalignment — matches auto bounds behavior
+                    SetReducedCurrentForManualBounds();
+                    MotorEnable();
+                    vTaskDelay(pdMS_TO_TICKS(200)); // Power stage stabilization
+                    {
+                        TmcMutexGuard guard(*g_driver_mutex);
+                        (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+                        (void)g_driver->rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Deg);
+                        (void)g_driver->rampControl.SetTargetPosition(0.0f, tmc51x0::Unit::Deg);
+                    }
+                    ApplyMotionConfigFromSettings_();
+                    ESP_LOGI(TAG, "ManualBoundsArmPlaced: motor engaged at reduced current, position zeroed");
+                    break;
+                }
+
+                case ProtoEventType::CommandManualBoundsJog: {
+                    if (g_state != InternalState::MANUAL_BOUNDS) break;
+                    if (!g_driver || !g_driver_mutex) break;
+
+                    const float target = ev.data.manual_jog.target_deg;
+                    {
+                        TmcMutexGuard guard(*g_driver_mutex);
+                        (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+                        (void)g_driver->rampControl.SetTargetPosition(target, tmc51x0::Unit::Deg);
+                    }
+                    break;
+                }
+
+                case ProtoEventType::CommandManualBoundsConfirm: {
+                    const float total_range = ev.data.manual_confirm.total_range_deg;
+                    const float left_backoff = ev.data.manual_confirm.left_backoff_deg;
+                    const float right_backoff = ev.data.manual_confirm.right_backoff_deg;
+                    const float half_range = total_range / 2.0f;
+                    ESP_LOGI(TAG, "ManualBoundsConfirm: range=%.2f lb=%.2f rb=%.2f",
+                             total_range, left_backoff, right_backoff);
+                    EspNowReceiver::send_start_ack();
+
+                    if (g_state != InternalState::MANUAL_BOUNDS) {
+                        ESP_LOGW(TAG, "ManualBoundsConfirm: not in MANUAL_BOUNDS");
+                        break;
+                    }
+                    if (!g_driver || !g_driver_mutex || !g_motion) break;
+
+                    // Restore full current before center move so motor has
+                    // enough torque for the configured speed/acceleration
+                    RestoreFullCurrent();
+                    vTaskDelay(pdMS_TO_TICKS(100)); // Let current regulation settle
+
+                    // Move to center position (half of total range) and wait
+                    {
+                        TmcMutexGuard guard(*g_driver_mutex);
+                        // Set target BEFORE switching mode (datasheet §12)
+                        (void)g_driver->rampControl.SetTargetPosition(half_range, tmc51x0::Unit::Deg);
+                        (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+                    }
+                    {
+                        constexpr uint32_t kTimeout = 10000;
+                        const uint32_t t0 = static_cast<uint32_t>(esp_timer_get_time() / 1000);
+                        bool ok = false;
+                        while ((static_cast<uint32_t>(esp_timer_get_time() / 1000) - t0) < kTimeout) {
+                            vTaskDelay(pdMS_TO_TICKS(50));
+                            TmcMutexGuard guard(*g_driver_mutex);
+                            auto r = g_driver->rampControl.IsTargetReached();
+                            if (r.IsOk() && r.Value()) { ok = true; break; }
+                        }
+                        if (!ok) ESP_LOGW(TAG, "ManualBoundsConfirm: move-to-center timeout");
+                    }
+                    // Verify standstill before re-zeroing
+                    {
+                        constexpr uint32_t kStandstillTimeout = 2000;
+                        const uint32_t t0 = static_cast<uint32_t>(esp_timer_get_time() / 1000);
+                        while ((static_cast<uint32_t>(esp_timer_get_time() / 1000) - t0) < kStandstillTimeout) {
+                            TmcMutexGuard guard(*g_driver_mutex);
+                            auto r = g_driver->rampControl.IsStandstill();
+                            if (r.IsOk() && r.Value()) break;
+                            vTaskDelay(pdMS_TO_TICKS(50));
+                        }
+                    }
+
+                    // Re-zero at center: make center = home (0°)
+                    vTaskDelay(pdMS_TO_TICKS(200)); // Final mechanical settle
+                    {
+                        TmcMutexGuard guard(*g_driver_mutex);
+                        (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+                        (void)g_driver->rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Deg);
+                        (void)g_driver->rampControl.SetTargetPosition(0.0f, tmc51x0::Unit::Deg);
+                    }
+
+                    // Apply bounds: global = [-half, +half], local with separate backoffs
+                    g_motion->SetGlobalBounds(-half_range, half_range);
+                    g_motion->SetLocalBoundsFromCenterDegrees(
+                        -(half_range - left_backoff),
+                         (half_range - right_backoff), 0.0f);
+                    g_bounds_found = true;
+                    BoundsCache::MarkBoundsFound();
+
+                    ESP_LOGI(TAG, "ManualBoundsConfirm: global [%.2f,+%.2f] local [%.2f,+%.2f]",
+                             -half_range, half_range,
+                             -(half_range - left_backoff), (half_range - right_backoff));
+                    g_state = InternalState::IDLE;
+                    EspNowReceiver::send_status_update(0, TestState::Idle, 0, 1);
+                    break;
+                }
+
+                case ProtoEventType::CommandManualBoundsCancel: {
+                    ESP_LOGI(TAG, "ManualBoundsCancel: disabling motor");
+                    EspNowReceiver::send_start_ack();
+                    if (g_state == InternalState::MANUAL_BOUNDS) {
+                        MotorStopHoldDisable();
+                        g_state = InternalState::IDLE;
+                    }
+                    EspNowReceiver::send_status_update(0, ToProtoState(g_state), 0, GetBoundsValidFlag_());
+                    break;
+                }
+
+                case ProtoEventType::CommandManualBoundsReZero: {
+                    ESP_LOGI(TAG, "ManualBoundsReZero: zero position at current");
+                    EspNowReceiver::send_start_ack();
+                    if (g_state != InternalState::MANUAL_BOUNDS) break;
+                    if (!g_driver || !g_driver_mutex) break;
+                    {
+                        TmcMutexGuard guard(*g_driver_mutex);
+                        (void)g_driver->rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Deg);
+                        (void)g_driver->rampControl.SetTargetPosition(0.0f, tmc51x0::Unit::Deg);
+                        (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+                    }
+                    ESP_LOGI(TAG, "ManualBoundsReZero: position re-zeroed");
+                    break;
+                }
+
+                case ProtoEventType::CommandStartWithManualBounds: {
+                    // Start test reusing cached manual bounds (user placed arm at left stop)
+                    const float total_range = ev.data.manual_start.total_range_deg;
+                    const float left_backoff = ev.data.manual_start.left_backoff_deg;
+                    const float right_backoff = ev.data.manual_start.right_backoff_deg;
+                    const float half_range = total_range / 2.0f;
+                    ESP_LOGI(TAG, "StartWithManualBounds: range=%.2f lb=%.2f rb=%.2f",
+                             total_range, left_backoff, right_backoff);
+                    EspNowReceiver::send_start_ack();
+
+                    if (g_state == InternalState::RUNNING || g_state == InternalState::BOUNDS_FINDING) {
+                        ESP_LOGW(TAG, "StartWithManualBounds ignored: busy");
+                        break;
+                    }
+                    if (!g_driver || !g_driver_mutex || !g_motion) {
+                        ESP_LOGE(TAG, "StartWithManualBounds: driver/motion not init");
+                        EspNowReceiver::send_error(2, 0);
+                        break;
+                    }
+
+                    // 1) Enable motor at reduced current and zero position at left stop
+                    BoundsCache::CancelDeenergizeTimer();
+                    SetReducedCurrentForManualBounds();
+                    MotorEnable();
+
+                    // Power stage stabilization: TMC5160 needs time after enable
+                    // for charge pump, current regulation, and StealthChop init.
+                    // Without this the first motion command can jerk/bounce.
+                    vTaskDelay(pdMS_TO_TICKS(200));
+
+                    {
+                        TmcMutexGuard guard(*g_driver_mutex);
+                        // HOLD first to prevent any residual ramp motion
+                        (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+                        (void)g_driver->rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Deg);
+                        (void)g_driver->rampControl.SetTargetPosition(0.0f, tmc51x0::Unit::Deg);
+
+                        // Configure gentle speed/accel for the hard-drive into left stop
+                        constexpr float kHardDriveRpm = 5.0f;       // ~30°/s – gentle push
+                        constexpr float kHardDriveAccel = 1.0f;     // rev/s² – smooth ramp
+                        g_driver->rampControl.SetMaxSpeed(kHardDriveRpm, tmc51x0::Unit::RPM);
+                        g_driver->rampControl.SetAcceleration(kHardDriveAccel, tmc51x0::Unit::RevPerSec);
+                        g_driver->rampControl.SetDeceleration(kHardDriveAccel, tmc51x0::Unit::RevPerSec);
+
+                        // Set target BEFORE switching to POSITIONING (datasheet §12)
+                        (void)g_driver->rampControl.SetTargetPosition(-3.6f, tmc51x0::Unit::Deg);
+                        ESP_LOGI(TAG, "Hard-drive: %.1f RPM, %.1f rev/s², target -3.6°",
+                                 kHardDriveRpm, kHardDriveAccel);
+                    }
+
+                    // 2) Drive INTO left bound by 3.6° (2 full steps) to re-align against stop
+                    {
+                        TmcMutexGuard guard(*g_driver_mutex);
+                        (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+                    }
+                    // Wait for target reached (position)
+                    {
+                        constexpr uint32_t kTimeout = 5000;
+                        const uint32_t t0 = static_cast<uint32_t>(esp_timer_get_time() / 1000);
+                        while ((static_cast<uint32_t>(esp_timer_get_time() / 1000) - t0) < kTimeout) {
+                            vTaskDelay(pdMS_TO_TICKS(50));
+                            TmcMutexGuard guard(*g_driver_mutex);
+                            auto r = g_driver->rampControl.IsTargetReached();
+                            if (r.IsOk() && r.Value()) break;
+                        }
+                    }
+                    // Verify standstill (velocity == 0) to prevent re-zeroing while vibrating
+                    {
+                        constexpr uint32_t kStandstillTimeout = 2000;
+                        const uint32_t t0 = static_cast<uint32_t>(esp_timer_get_time() / 1000);
+                        while ((static_cast<uint32_t>(esp_timer_get_time() / 1000) - t0) < kStandstillTimeout) {
+                            TmcMutexGuard guard(*g_driver_mutex);
+                            auto r = g_driver->rampControl.IsStandstill();
+                            if (r.IsOk() && r.Value()) break;
+                            vTaskDelay(pdMS_TO_TICKS(50));
+                        }
+                    }
+                    vTaskDelay(pdMS_TO_TICKS(300)); // Let motor fully settle against stop
+                    // Re-zero at left stop
+                    {
+                        TmcMutexGuard guard(*g_driver_mutex);
+                        (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+                        (void)g_driver->rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Deg);
+                        (void)g_driver->rampControl.SetTargetPosition(0.0f, tmc51x0::Unit::Deg);
+                    }
+                    ESP_LOGI(TAG, "StartWithManualBounds: drove into left stop, re-zeroed");
+
+                    // Restore full current BEFORE center move so the motor has
+                    // enough torque for 60 RPM / 10 rev/s² acceleration.
+                    // (Motor is pinned against stop — safe to increase current here.)
+                    RestoreFullCurrent();
+                    vTaskDelay(pdMS_TO_TICKS(100)); // Let current regulation settle
+
+                    // Restore test speed/accel for the center move
+                    ApplyMotionConfigFromSettings_();
+
+                    // 3) Navigate to center (now at full current + full speed)
+                    {
+                        TmcMutexGuard guard(*g_driver_mutex);
+                        // Set target BEFORE switching mode (datasheet §12)
+                        (void)g_driver->rampControl.SetTargetPosition(half_range, tmc51x0::Unit::Deg);
+                        (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+                    }
+                    // Wait for target reached (position)
+                    {
+                        constexpr uint32_t kTimeout = 10000;
+                        const uint32_t t0 = static_cast<uint32_t>(esp_timer_get_time() / 1000);
+                        bool ok = false;
+                        while ((static_cast<uint32_t>(esp_timer_get_time() / 1000) - t0) < kTimeout) {
+                            vTaskDelay(pdMS_TO_TICKS(50));
+                            TmcMutexGuard guard(*g_driver_mutex);
+                            auto r = g_driver->rampControl.IsTargetReached();
+                            if (r.IsOk() && r.Value()) { ok = true; break; }
+                        }
+                        if (!ok) ESP_LOGW(TAG, "StartWithManualBounds: move-to-center timeout");
+                    }
+                    // Verify standstill before re-zeroing
+                    {
+                        constexpr uint32_t kStandstillTimeout = 2000;
+                        const uint32_t t0 = static_cast<uint32_t>(esp_timer_get_time() / 1000);
+                        while ((static_cast<uint32_t>(esp_timer_get_time() / 1000) - t0) < kStandstillTimeout) {
+                            TmcMutexGuard guard(*g_driver_mutex);
+                            auto r = g_driver->rampControl.IsStandstill();
+                            if (r.IsOk() && r.Value()) break;
+                            vTaskDelay(pdMS_TO_TICKS(50));
+                        }
+                    }
+
+                    // 4) Re-zero at center and set bounds
+                    vTaskDelay(pdMS_TO_TICKS(200)); // Final mechanical settle
+                    {
+                        TmcMutexGuard guard(*g_driver_mutex);
+                        (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+                        (void)g_driver->rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Deg);
+                        (void)g_driver->rampControl.SetTargetPosition(0.0f, tmc51x0::Unit::Deg);
+                    }
+                    g_motion->SetGlobalBounds(-half_range, half_range);
+                    g_motion->SetLocalBoundsFromCenterDegrees(
+                        -(half_range - left_backoff),
+                         (half_range - right_backoff), 0.0f);
+                    g_bounds_found = true;
+                    BoundsCache::MarkBoundsFound();
+
+                    // 5) Ensure StealthChop + no stall stop
+                    {
+                        TmcMutexGuard guard(*g_driver_mutex);
+                        (void)g_driver->stallGuard.EnableStopOnStall(false);
+                        (void)g_driver->motorControl.SetStealthChopEnabled(true);
+                    }
+
+                    // 6) Reset cycles and start
+                    g_motion->ResetCycles();
+                    ApplyMotionConfigFromSettings_();
+                    if (!g_motion->Start()) {
+                        ESP_LOGE(TAG, "StartWithManualBounds: motion start failed");
+                        g_state = InternalState::ERROR;
+                        MotorStopHoldDisable();
+                        EspNowReceiver::send_error(2, 0);
+                        break;
+                    }
+                    g_state = InternalState::RUNNING;
+                    ESP_LOGI(TAG, "StartWithManualBounds: test started global [%.2f,+%.2f] local [%.2f,+%.2f]",
+                             -half_range, half_range,
+                             -(half_range - left_backoff), (half_range - right_backoff));
+                    EspNowReceiver::send_status_update(0, TestState::Running, 0, 1);
+                    break;
+                }
+
+                case ProtoEventType::CommandStartWithManualRealign: {
+                    // Start test after manual encoder realignment (user already jogged to correct position)
+                    // Skip hard-drive — just re-zero at current position, center, and start
+                    const float total_range = ev.data.manual_start.total_range_deg;
+                    const float left_backoff = ev.data.manual_start.left_backoff_deg;
+                    const float right_backoff = ev.data.manual_start.right_backoff_deg;
+                    const float half_range = total_range / 2.0f;
+                    ESP_LOGI(TAG, "StartWithManualRealign: range=%.2f lb=%.2f rb=%.2f",
+                             total_range, left_backoff, right_backoff);
+                    EspNowReceiver::send_start_ack();
+
+                    if (g_state == InternalState::RUNNING || g_state == InternalState::BOUNDS_FINDING) {
+                        ESP_LOGW(TAG, "StartWithManualRealign ignored: busy");
+                        break;
+                    }
+                    if (!g_driver || !g_driver_mutex || !g_motion) {
+                        ESP_LOGE(TAG, "StartWithManualRealign: driver/motion not init");
+                        EspNowReceiver::send_error(2, 0);
+                        break;
+                    }
+
+                    // 1) Re-zero at current position (user already aligned via encoder jog)
+                    BoundsCache::CancelDeenergizeTimer();
+                    {
+                        TmcMutexGuard guard(*g_driver_mutex);
+                        (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+                        (void)g_driver->rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Deg);
+                        (void)g_driver->rampControl.SetTargetPosition(0.0f, tmc51x0::Unit::Deg);
+                    }
+                    ESP_LOGI(TAG, "StartWithManualRealign: re-zeroed at user-aligned position");
+
+                    // Restore full current before center move
+                    RestoreFullCurrent();
+                    vTaskDelay(pdMS_TO_TICKS(100));
+
+                    // Restore test speed/accel for the center move
+                    ApplyMotionConfigFromSettings_();
+
+                    // 2) Navigate to center
+                    {
+                        TmcMutexGuard guard(*g_driver_mutex);
+                        (void)g_driver->rampControl.SetTargetPosition(half_range, tmc51x0::Unit::Deg);
+                        (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
+                    }
+                    // Wait for target reached
+                    {
+                        constexpr uint32_t kTimeout = 10000;
+                        const uint32_t t0 = static_cast<uint32_t>(esp_timer_get_time() / 1000);
+                        bool ok = false;
+                        while ((static_cast<uint32_t>(esp_timer_get_time() / 1000) - t0) < kTimeout) {
+                            vTaskDelay(pdMS_TO_TICKS(50));
+                            TmcMutexGuard guard(*g_driver_mutex);
+                            auto r = g_driver->rampControl.IsTargetReached();
+                            if (r.IsOk() && r.Value()) { ok = true; break; }
+                        }
+                        if (!ok) ESP_LOGW(TAG, "StartWithManualRealign: move-to-center timeout");
+                    }
+                    // Verify standstill
+                    {
+                        constexpr uint32_t kStandstillTimeout = 2000;
+                        const uint32_t t0 = static_cast<uint32_t>(esp_timer_get_time() / 1000);
+                        while ((static_cast<uint32_t>(esp_timer_get_time() / 1000) - t0) < kStandstillTimeout) {
+                            TmcMutexGuard guard(*g_driver_mutex);
+                            auto r = g_driver->rampControl.IsStandstill();
+                            if (r.IsOk() && r.Value()) break;
+                            vTaskDelay(pdMS_TO_TICKS(50));
+                        }
+                    }
+
+                    // 3) Re-zero at center and set bounds
+                    vTaskDelay(pdMS_TO_TICKS(200));
+                    {
+                        TmcMutexGuard guard(*g_driver_mutex);
+                        (void)g_driver->rampControl.SetRampMode(tmc51x0::RampMode::HOLD);
+                        (void)g_driver->rampControl.SetCurrentPosition(0.0f, tmc51x0::Unit::Deg);
+                        (void)g_driver->rampControl.SetTargetPosition(0.0f, tmc51x0::Unit::Deg);
+                    }
+                    g_motion->SetGlobalBounds(-half_range, half_range);
+                    g_motion->SetLocalBoundsFromCenterDegrees(
+                        -(half_range - left_backoff),
+                         (half_range - right_backoff), 0.0f);
+                    g_bounds_found = true;
+                    BoundsCache::MarkBoundsFound();
+
+                    // 4) Ensure StealthChop + no stall stop
+                    {
+                        TmcMutexGuard guard(*g_driver_mutex);
+                        (void)g_driver->stallGuard.EnableStopOnStall(false);
+                        (void)g_driver->motorControl.SetStealthChopEnabled(true);
+                    }
+
+                    // 5) Reset cycles and start
+                    g_motion->ResetCycles();
+                    ApplyMotionConfigFromSettings_();
+                    if (!g_motion->Start()) {
+                        ESP_LOGE(TAG, "StartWithManualRealign: motion start failed");
+                        g_state = InternalState::ERROR;
+                        MotorStopHoldDisable();
+                        EspNowReceiver::send_error(2, 0);
+                        break;
+                    }
+                    g_state = InternalState::RUNNING;
+                    ESP_LOGI(TAG, "StartWithManualRealign: test started global [%.2f,+%.2f] local [%.2f,+%.2f]",
+                             -half_range, half_range,
+                             -(half_range - left_backoff), (half_range - right_backoff));
+                    EspNowReceiver::send_status_update(0, TestState::Running, 0, 1);
+                    break;
+                }
                     
                 default:
                     ESP_LOGW(TAG, "Unhandled event type: %d", (int)ev.type);
@@ -3158,7 +3671,7 @@ extern "C" void app_main()
     // NOTE: motion_control_task will call Update() but Update() checks running_ flag
     // Since motion is not started, Update() will return early and cause no motion
     ESP_LOGI(TAG, "Creating background tasks...");
-    xTaskCreate(espnow_command_task, "espnow_cmd", 4096, nullptr, 5, nullptr);
+    xTaskCreate(espnow_command_task, "espnow_cmd", 8192, nullptr, 5, nullptr);
     xTaskCreate(motion_control_task, "motion_ctrl", 8192, nullptr, 5, nullptr);
     xTaskCreate(status_update_task, "status_upd", 4096, nullptr, 3, nullptr);
     xTaskCreate(uart_command_task, "uart_cmd", 4096, &parser, 3, nullptr);

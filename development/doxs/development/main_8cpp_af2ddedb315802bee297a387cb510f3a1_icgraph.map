@@ -1,0 +1,7 @@
+<map id="RestoreFullCurrent" name="RestoreFullCurrent">
+<area shape="rect" id="Node000001" title="Restore motor current to full rated level after manual bounds positioning." alt="" coords="367,5,509,31"/>
+<area shape="rect" id="Node000002" href="$main_8cpp.html#a282cbb4958ae3bf0285b9be28ecb1d79" title="FreeRTOS task: process inbound ESP&#45;NOW protocol events." alt="" coords="140,5,319,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="353,21,319,21,319,15,353,15"/>
+<area shape="rect" id="Node000003" href="$main_8cpp.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,5,92,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="126,21,92,21,92,15,126,15"/>
+</map>

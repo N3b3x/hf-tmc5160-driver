@@ -1,6 +1,7 @@
 var structProtoEvent =
 [
     [ "at_cycle", "structProtoEvent.html#ac2c3f3a1beec65aa1bf3b38149cc5604", null ],
+    [ "center_distance_deg", "structProtoEvent.html#ab3ab00a28fc2151a8457411285a644b2", null ],
     [ "config", "structProtoEvent.html#ae1fcb0180b849183d34ff20435759ac0", null ],
     [ "cycle", "structProtoEvent.html#a760274f2e3a34d06684653262046da6b", null ],
     [ "data", "structProtoEvent.html#a3f2fdd1c7b46534db2723b0818ab2bb1", null ],
@@ -8,9 +9,17 @@ var structProtoEvent =
     [ "device_type", "structProtoEvent.html#a8aafcd7f000aac8ad0483550151483a9", null ],
     [ "err_code", "structProtoEvent.html#a0315209b00c6276f0691c78e132da9a5", null ],
     [ "error", "structProtoEvent.html#a94cd92515637aef485cbc9e283c1e43e", null ],
+    [ "left_backoff_deg", "structProtoEvent.html#ae387bb78f0c51956c59ac7d901a615f6", null ],
+    [ "manual_bounds", "structProtoEvent.html#aee3a98547cf62ae342c90cbc46315458", null ],
+    [ "manual_confirm", "structProtoEvent.html#ad14798f5a360e8348acaf9ee4e10507e", null ],
+    [ "manual_jog", "structProtoEvent.html#a360c2fef12680775477484cd5bb8d0e4", null ],
+    [ "manual_start", "structProtoEvent.html#ab72d2fdaa841a6856d6f3093c3cde7f0", null ],
     [ "pairing", "structProtoEvent.html#a8c4ecfd4111cb5dcb064d0a756ddd498", null ],
     [ "peer_mac", "structProtoEvent.html#a589fa20f3a9b92dcddf94211631e3abd", null ],
+    [ "right_backoff_deg", "structProtoEvent.html#a7b6d2f2657c8414b59cddf403f3214e6", null ],
     [ "state", "structProtoEvent.html#a07901926ee7f95851cc73a54ef2c7c3f", null ],
     [ "status", "structProtoEvent.html#a49d7e83d86dd1156db4ec4a2b2035ecf", null ],
+    [ "target_deg", "structProtoEvent.html#a630320333aa9c56e92914c981ab4936d", null ],
+    [ "total_range_deg", "structProtoEvent.html#a6c46f4603ad229b473ac2a98a78a275b", null ],
     [ "type", "structProtoEvent.html#aa98e3204ca995c4e71913a120ac9572d", null ]
 ];

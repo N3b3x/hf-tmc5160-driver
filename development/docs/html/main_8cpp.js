@@ -23,6 +23,7 @@ var main_8cpp =
     [ "InternalState", "main_8cpp.html#aa041e16b2a09d6f2a5b8b74582790ed5", [
       [ "IDLE", "main_8cpp.html#aa041e16b2a09d6f2a5b8b74582790ed5aa5daf7f2ebbba4975d61dab1c40188c7", null ],
       [ "BOUNDS_FINDING", "main_8cpp.html#aa041e16b2a09d6f2a5b8b74582790ed5a7496a1a0e479ed36762983a70d1dbb09", null ],
+      [ "MANUAL_BOUNDS", "main_8cpp.html#aa041e16b2a09d6f2a5b8b74582790ed5a11dfeb9bdaaed305cb5b2ee936581571", null ],
       [ "RUNNING", "main_8cpp.html#aa041e16b2a09d6f2a5b8b74582790ed5a43491564ebcfd38568918efbd6e840fd", null ],
       [ "PAUSED", "main_8cpp.html#aa041e16b2a09d6f2a5b8b74582790ed5a99b2439e63f73ad515f7ab2447a80673", null ],
       [ "ERROR", "main_8cpp.html#aa041e16b2a09d6f2a5b8b74582790ed5abb1ca97ec761fc37101737ba0aa2e7c5", null ]
@@ -78,6 +79,8 @@ var main_8cpp =
     [ "PrintWarning", "main_8cpp.html#a7530059a95b958a7d66c5b0613dcbb67", null ],
     [ "RequestBoundsOnly", "main_8cpp.html#a03b28507170724db0aecf3bdf950b30a", null ],
     [ "RequestStart", "main_8cpp.html#a05b979a9e80a20ecf074106e268da672", null ],
+    [ "RestoreFullCurrent", "main_8cpp.html#af2ddedb315802bee297a387cb510f3a1", null ],
+    [ "SetReducedCurrentForManualBounds", "main_8cpp.html#ae2344237d134678ce00d04c26334ddb7", null ],
     [ "SetValidityMinutes", "main_8cpp.html#ab3bf6a5c64c0a59da71f08f4832bda91", null ],
     [ "ShouldCancelBounds", "main_8cpp.html#a25a95fc0d7fa9ed58edd599d795ecd86", null ],
     [ "status_update_task", "main_8cpp.html#a087fdcdd7d4c34c0c22196a7223d96f5", null ],
@@ -110,6 +113,7 @@ var main_8cpp =
     [ "g_use_stallguard", "main_8cpp.html#a1015f103c81a7548604603c04c21901e", null ],
     [ "LOG_INTERVAL_LONG_US", "main_8cpp.html#a3f20df455bc5fda76473928e39ab345c", null ],
     [ "LOG_INTERVAL_US", "main_8cpp.html#a58be5d5ca97b35c1686fa818847f4787", null ],
+    [ "MANUAL_BOUNDS_CURRENT_FACTOR", "main_8cpp.html#ae93c43b17e951d821954d625a7c17c72", null ],
     [ "MOTION_UPDATE_PERIOD_MS", "main_8cpp.html#adab8a2bff58e372e6c6416c8c0312b5e", null ],
     [ "OSCILLATION_EDGE_BACKOFF_DEG", "main_8cpp.html#a53713d3df1e41068e727c8d4c10a5cd0", null ],
     [ "SELECTED_TEST_RIG", "main_8cpp.html#a3f1e89f6e3a0be599511d4a8cc389305", null ],

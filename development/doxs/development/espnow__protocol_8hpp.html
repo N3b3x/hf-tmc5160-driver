@@ -211,6 +211,17 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#a62651afa1b82816bb6ca42a7dece0901a11a755d598c0c417f9a36758c3da7481">Stop</a> = 4
 , <br />
 &#160;&#160;<a class="el" href="#a62651afa1b82816bb6ca42a7dece0901aa90c5bc2bb92333c1627b45de0f25299">RunBoundsFinding</a> = 5
+, <a class="el" href="#a62651afa1b82816bb6ca42a7dece0901aa763345ede57aa5b976a66b8a23e49e9">SetManualBounds</a> = 6
+, <a class="el" href="#a62651afa1b82816bb6ca42a7dece0901a4eec8cf75d3ad2199de6ca71c173ef67">ManualBoundsStart</a> = 7
+, <a class="el" href="#a62651afa1b82816bb6ca42a7dece0901a0a950f9489632222d6bd867c831d066a">ManualBoundsArmPlaced</a> = 8
+, <br />
+&#160;&#160;<a class="el" href="#a62651afa1b82816bb6ca42a7dece0901a97b5b90f6a37150299018ada5e3d0a34">ManualBoundsJog</a> = 9
+, <a class="el" href="#a62651afa1b82816bb6ca42a7dece0901a425e4657f7eec0deae41e57a92a21215">ManualBoundsConfirm</a> = 10
+, <a class="el" href="#a62651afa1b82816bb6ca42a7dece0901a5fb1d114b8d01beb661dcfd2ce0ed9e2">ManualBoundsCancel</a> = 11
+, <a class="el" href="#a62651afa1b82816bb6ca42a7dece0901a2732ccf00a12b64898cffcee74d8fa43">ManualBoundsReZero</a> = 12
+, <br />
+&#160;&#160;<a class="el" href="#a62651afa1b82816bb6ca42a7dece0901a95095d569e66111aaa71d7126a5cc054">StartWithManualBounds</a> = 13
+, <a class="el" href="#a62651afa1b82816bb6ca42a7dece0901ac39f69cf9dcbe5226a32f3fa807340ce">StartWithManualRealign</a> = 14
 <br />
  }</td></tr>
 <tr class="memdesc:a62651afa1b82816bb6ca42a7dece0901"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command IDs for COMMAND message type.  <a href="#a62651afa1b82816bb6ca42a7dece0901">More...</a><br /></td></tr>
@@ -224,24 +235,35 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea744e0e7d8814c6ce12d2d7992131a5a9">CommandResume</a>
 , <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea15bc458ccd8081b6f7a5006e94f0fd36">CommandStop</a>
 , <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea8c5af051979b06c91e47e8373f7b621a">CommandRunBoundsFinding</a>
-, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea89e049f20cbb75d50c912687cf036a22">ConfigUpdated</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea7edae27b9bca61af4733d6a3c770432d">CommandSetManualBounds</a>
 , <br />
-&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aead92b5dda2129b9614905aa23d482b5b1">ConfigApplyOk</a>
+&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aead84764287a50d77c769f15b06f25fe8c">CommandManualBoundsStart</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea565d728bfd45f7e5165db0b91dd025be">CommandManualBoundsArmPlaced</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea8ddb9f86bfc11a28958268ce733d9caa">CommandManualBoundsJog</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea5165852688b223790257ed4a905e1fba">CommandManualBoundsConfirm</a>
+, <br />
+&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aead3b33d78cc0666de14d60e5e164f57d5">CommandManualBoundsCancel</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea982840eda9a60ad47280955d0914b651">CommandManualBoundsReZero</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea9495492325a0a7a1f24c105f26c2a7f9">CommandStartWithManualBounds</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeaf487bdc8f03c6845f7a2c3c644c89b0f">CommandStartWithManualRealign</a>
+, <br />
+&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea89e049f20cbb75d50c912687cf036a22">ConfigUpdated</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aead92b5dda2129b9614905aa23d482b5b1">ConfigApplyOk</a>
 , <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeafb6038726e9e65a2426a75f8ac1b3175">ConfigApplyFail</a>
 , <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea8428552d86c0d262a542a528af490afa">Started</a>
-, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeae99180abf47a8b3a856e0bcb2656990a">Paused</a>
 , <br />
-&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeab2a21932ddc3b1e41c012d711c7bd238">Resumed</a>
+&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeae99180abf47a8b3a856e0bcb2656990a">Paused</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeab2a21932ddc3b1e41c012d711c7bd238">Resumed</a>
 , <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeac23e2b09ebe6bf4cb5e2a9abe85c0be2">Stopped</a>
 , <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeaec53a8c4f07baed5d8825072c89799be">Status</a>
-, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aead9b024b1a3a8208b7edc8eb711ff441e">ErrorEvent</a>
 , <br />
-&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea716f0ec05d9f5bd5e06f08ae004686c4">TestCompleted</a>
+&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aead9b024b1a3a8208b7edc8eb711ff441e">ErrorEvent</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea716f0ec05d9f5bd5e06f08ae004686c4">TestCompleted</a>
 , <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeaba73a4d8ed6e05d97f94b185d83efbf2">PairingRequest</a>
 , <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea834991040923d1ebcf233cfafa454365">PairingComplete</a>
-, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea95bffc6912df58c71768c176be291840">PairingFailed</a>
 , <br />
-&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeaa7a083b02c3bf335b41cf22b8cd8eb92">PeerUnpaired</a>
+&#160;&#160;<a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aea95bffc6912df58c71768c176be291840">PairingFailed</a>
+, <a class="el" href="#ae3e128b3e7e8c9e272e987f862e1d5aeaa7a083b02c3bf335b41cf22b8cd8eb92">PeerUnpaired</a>
 <br />
  }</td></tr>
 <tr class="memdesc:ae3e128b3e7e8c9e272e987f862e1d5ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Higher-level events emitted by the protocol layer.  <a href="#ae3e128b3e7e8c9e272e987f862e1d5ae">More...</a><br /></td></tr>
@@ -301,6 +323,23 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a62651afa1b82816bb6ca42a7dece0901af1cefec9e2196c672a622347f1fbc325" name="a62651afa1b82816bb6ca42a7dece0901af1cefec9e2196c672a622347f1fbc325"></a>Resume&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a62651afa1b82816bb6ca42a7dece0901a11a755d598c0c417f9a36758c3da7481" name="a62651afa1b82816bb6ca42a7dece0901a11a755d598c0c417f9a36758c3da7481"></a>Stop&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a62651afa1b82816bb6ca42a7dece0901aa90c5bc2bb92333c1627b45de0f25299" name="a62651afa1b82816bb6ca42a7dece0901aa90c5bc2bb92333c1627b45de0f25299"></a>RunBoundsFinding&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a62651afa1b82816bb6ca42a7dece0901aa763345ede57aa5b976a66b8a23e49e9" name="a62651afa1b82816bb6ca42a7dece0901aa763345ede57aa5b976a66b8a23e49e9"></a>SetManualBounds&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a62651afa1b82816bb6ca42a7dece0901a4eec8cf75d3ad2199de6ca71c173ef67" name="a62651afa1b82816bb6ca42a7dece0901a4eec8cf75d3ad2199de6ca71c173ef67"></a>ManualBoundsStart&#160;</td><td class="fielddoc"><p>Start manual bounds: disengage motor. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a62651afa1b82816bb6ca42a7dece0901a0a950f9489632222d6bd867c831d066a" name="a62651afa1b82816bb6ca42a7dece0901a0a950f9489632222d6bd867c831d066a"></a>ManualBoundsArmPlaced&#160;</td><td class="fielddoc"><p>Arm at left stop: engage motor, set reference. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a62651afa1b82816bb6ca42a7dece0901a97b5b90f6a37150299018ada5e3d0a34" name="a62651afa1b82816bb6ca42a7dece0901a97b5b90f6a37150299018ada5e3d0a34"></a>ManualBoundsJog&#160;</td><td class="fielddoc"><p>Jog to absolute position (float degrees) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a62651afa1b82816bb6ca42a7dece0901a425e4657f7eec0deae41e57a92a21215" name="a62651afa1b82816bb6ca42a7dece0901a425e4657f7eec0deae41e57a92a21215"></a>ManualBoundsConfirm&#160;</td><td class="fielddoc"><p>Confirm bounds (center_deg f32, local_gap_deg f32) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a62651afa1b82816bb6ca42a7dece0901a5fb1d114b8d01beb661dcfd2ce0ed9e2" name="a62651afa1b82816bb6ca42a7dece0901a5fb1d114b8d01beb661dcfd2ce0ed9e2"></a>ManualBoundsCancel&#160;</td><td class="fielddoc"><p>Cancel manual bounds finding. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a62651afa1b82816bb6ca42a7dece0901a2732ccf00a12b64898cffcee74d8fa43" name="a62651afa1b82816bb6ca42a7dece0901a2732ccf00a12b64898cffcee74d8fa43"></a>ManualBoundsReZero&#160;</td><td class="fielddoc"><p>Re-zero motor position at current location. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a62651afa1b82816bb6ca42a7dece0901a95095d569e66111aaa71d7126a5cc054" name="a62651afa1b82816bb6ca42a7dece0901a95095d569e66111aaa71d7126a5cc054"></a>StartWithManualBounds&#160;</td><td class="fielddoc"><p>Start test reusing cached manual bounds (center, gap, fix_offset) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a62651afa1b82816bb6ca42a7dece0901ac39f69cf9dcbe5226a32f3fa807340ce" name="a62651afa1b82816bb6ca42a7dece0901ac39f69cf9dcbe5226a32f3fa807340ce"></a>StartWithManualRealign&#160;</td><td class="fielddoc"><p>Start test after manual encoder realignment (skip hard-drive) </p>
+</td></tr>
 </table>
 
 </div>
@@ -387,6 +426,15 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea744e0e7d8814c6ce12d2d7992131a5a9" name="ae3e128b3e7e8c9e272e987f862e1d5aea744e0e7d8814c6ce12d2d7992131a5a9"></a>CommandResume&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea15bc458ccd8081b6f7a5006e94f0fd36" name="ae3e128b3e7e8c9e272e987f862e1d5aea15bc458ccd8081b6f7a5006e94f0fd36"></a>CommandStop&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea8c5af051979b06c91e47e8373f7b621a" name="ae3e128b3e7e8c9e272e987f862e1d5aea8c5af051979b06c91e47e8373f7b621a"></a>CommandRunBoundsFinding&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea7edae27b9bca61af4733d6a3c770432d" name="ae3e128b3e7e8c9e272e987f862e1d5aea7edae27b9bca61af4733d6a3c770432d"></a>CommandSetManualBounds&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aead84764287a50d77c769f15b06f25fe8c" name="ae3e128b3e7e8c9e272e987f862e1d5aead84764287a50d77c769f15b06f25fe8c"></a>CommandManualBoundsStart&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea565d728bfd45f7e5165db0b91dd025be" name="ae3e128b3e7e8c9e272e987f862e1d5aea565d728bfd45f7e5165db0b91dd025be"></a>CommandManualBoundsArmPlaced&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea8ddb9f86bfc11a28958268ce733d9caa" name="ae3e128b3e7e8c9e272e987f862e1d5aea8ddb9f86bfc11a28958268ce733d9caa"></a>CommandManualBoundsJog&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea5165852688b223790257ed4a905e1fba" name="ae3e128b3e7e8c9e272e987f862e1d5aea5165852688b223790257ed4a905e1fba"></a>CommandManualBoundsConfirm&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aead3b33d78cc0666de14d60e5e164f57d5" name="ae3e128b3e7e8c9e272e987f862e1d5aead3b33d78cc0666de14d60e5e164f57d5"></a>CommandManualBoundsCancel&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea982840eda9a60ad47280955d0914b651" name="ae3e128b3e7e8c9e272e987f862e1d5aea982840eda9a60ad47280955d0914b651"></a>CommandManualBoundsReZero&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea9495492325a0a7a1f24c105f26c2a7f9" name="ae3e128b3e7e8c9e272e987f862e1d5aea9495492325a0a7a1f24c105f26c2a7f9"></a>CommandStartWithManualBounds&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aeaf487bdc8f03c6845f7a2c3c644c89b0f" name="ae3e128b3e7e8c9e272e987f862e1d5aeaf487bdc8f03c6845f7a2c3c644c89b0f"></a>CommandStartWithManualRealign&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aea89e049f20cbb75d50c912687cf036a22" name="ae3e128b3e7e8c9e272e987f862e1d5aea89e049f20cbb75d50c912687cf036a22"></a>ConfigUpdated&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aead92b5dda2129b9614905aa23d482b5b1" name="ae3e128b3e7e8c9e272e987f862e1d5aead92b5dda2129b9614905aa23d482b5b1"></a>ConfigApplyOk&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae3e128b3e7e8c9e272e987f862e1d5aeafb6038726e9e65a2426a75f8ac1b3175" name="ae3e128b3e7e8c9e272e987f862e1d5aeafb6038726e9e65a2426a75f8ac1b3175"></a>ConfigApplyFail&#160;</td><td class="fielddoc"></td></tr>

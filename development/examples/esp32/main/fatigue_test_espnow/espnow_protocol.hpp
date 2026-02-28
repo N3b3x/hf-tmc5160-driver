@@ -107,6 +107,16 @@ enum class CommandId : uint8_t {
     Stop = 4,
     // Dedicated bounds-finding command (independent of starting the test).
     RunBoundsFinding = 5,
+    // Set manual bounds (center distance from left stop, degrees).
+    SetManualBounds = 6,
+    ManualBoundsStart = 7,      ///< Start manual bounds: disengage motor
+    ManualBoundsArmPlaced = 8,  ///< Arm at left stop: engage motor, set reference
+    ManualBoundsJog = 9,        ///< Jog to absolute position (float degrees)
+    ManualBoundsConfirm = 10,   ///< Confirm bounds (center_deg f32, local_gap_deg f32)
+    ManualBoundsCancel = 11,    ///< Cancel manual bounds finding
+    ManualBoundsReZero = 12,    ///< Re-zero motor position at current location
+    StartWithManualBounds = 13, ///< Start test reusing cached manual bounds (center, gap, fix_offset)
+    StartWithManualRealign = 14, ///< Start test after manual encoder realignment (skip hard-drive)
 };
 
 /**
@@ -302,6 +312,15 @@ enum class ProtoEventType {
     CommandResume,
     CommandStop,
     CommandRunBoundsFinding,
+    CommandSetManualBounds,
+    CommandManualBoundsStart,
+    CommandManualBoundsArmPlaced,
+    CommandManualBoundsJog,
+    CommandManualBoundsConfirm,
+    CommandManualBoundsCancel,
+    CommandManualBoundsReZero,
+    CommandStartWithManualBounds,
+    CommandStartWithManualRealign,
     // Status/response events (both sides)
     ConfigUpdated,
     ConfigApplyOk,
@@ -337,6 +356,10 @@ struct ProtoEvent {
             uint8_t device_type;
             char    device_name[MAX_DEVICE_NAME_LEN];
         } pairing;
+        struct { float center_distance_deg; } manual_bounds;
+        struct { float target_deg; } manual_jog;
+        struct { float total_range_deg; float left_backoff_deg; float right_backoff_deg; } manual_confirm;
+        struct { float total_range_deg; float left_backoff_deg; float right_backoff_deg; } manual_start;
     } data;
 };
 
