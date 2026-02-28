@@ -754,6 +754,85 @@ static void handlePacket(const RawMsg& msg, const EspNowPacket& pkt, uint16_t re
                     case CommandId::RunBoundsFinding:
                         ev.type = ProtoEventType::CommandRunBoundsFinding;
             break;
+                    case CommandId::SetManualBounds:
+                        if (pkt.hdr.len >= 5) {  // 1 byte cmd_id + 4 bytes float
+                            float center_deg = 0.0f;
+                            std::memcpy(&center_deg, &pkt.payload[1], 4);
+                            ev.data.manual_bounds.center_distance_deg = center_deg;
+                            ev.type = ProtoEventType::CommandSetManualBounds;
+                        } else {
+                            ESP_LOGW(TAG, "SetManualBounds: payload too short (%u)", pkt.hdr.len);
+                            return;
+                        }
+                        break;
+                    case CommandId::ManualBoundsStart:
+                        ev.type = ProtoEventType::CommandManualBoundsStart;
+                        break;
+                    case CommandId::ManualBoundsArmPlaced:
+                        ev.type = ProtoEventType::CommandManualBoundsArmPlaced;
+                        break;
+                    case CommandId::ManualBoundsJog:
+                        if (pkt.hdr.len >= 5) {
+                            float target = 0.0f;
+                            std::memcpy(&target, &pkt.payload[1], 4);
+                            ev.data.manual_jog.target_deg = target;
+                            ev.type = ProtoEventType::CommandManualBoundsJog;
+                        } else {
+                            ESP_LOGW(TAG, "ManualBoundsJog: payload too short (%u)", pkt.hdr.len);
+                            return;
+                        }
+                        break;
+                    case CommandId::ManualBoundsConfirm:
+                        if (pkt.hdr.len >= 13) {  // 1 byte cmd_id + 3×4 float
+                            float tr = 0.0f, lb = 0.0f, rb = 0.0f;
+                            std::memcpy(&tr, &pkt.payload[1], 4);
+                            std::memcpy(&lb, &pkt.payload[5], 4);
+                            std::memcpy(&rb, &pkt.payload[9], 4);
+                            ev.data.manual_confirm.total_range_deg = tr;
+                            ev.data.manual_confirm.left_backoff_deg = lb;
+                            ev.data.manual_confirm.right_backoff_deg = rb;
+                            ev.type = ProtoEventType::CommandManualBoundsConfirm;
+                        } else {
+                            ESP_LOGW(TAG, "ManualBoundsConfirm: payload too short (%u)", pkt.hdr.len);
+                            return;
+                        }
+                        break;
+                    case CommandId::ManualBoundsCancel:
+                        ev.type = ProtoEventType::CommandManualBoundsCancel;
+                        break;
+                    case CommandId::ManualBoundsReZero:
+                        ev.type = ProtoEventType::CommandManualBoundsReZero;
+                        break;
+                    case CommandId::StartWithManualBounds:
+                        if (pkt.hdr.len >= 13) {  // 1 byte cmd_id + 3 × 4 bytes float
+                            float tr = 0.0f, lb = 0.0f, rb = 0.0f;
+                            std::memcpy(&tr, &pkt.payload[1], 4);
+                            std::memcpy(&lb, &pkt.payload[5], 4);
+                            std::memcpy(&rb, &pkt.payload[9], 4);
+                            ev.data.manual_start.total_range_deg = tr;
+                            ev.data.manual_start.left_backoff_deg = lb;
+                            ev.data.manual_start.right_backoff_deg = rb;
+                            ev.type = ProtoEventType::CommandStartWithManualBounds;
+                        } else {
+                            ESP_LOGW(TAG, "StartWithManualBounds: payload too short (%u)", pkt.hdr.len);
+                            return;
+                        }
+                        break;
+                    case CommandId::StartWithManualRealign:
+                        if (pkt.hdr.len >= 13) {  // 1 byte cmd_id + 3 × 4 bytes float
+                            float tr = 0.0f, lb = 0.0f, rb = 0.0f;
+                            std::memcpy(&tr, &pkt.payload[1], 4);
+                            std::memcpy(&lb, &pkt.payload[5], 4);
+                            std::memcpy(&rb, &pkt.payload[9], 4);
+                            ev.data.manual_start.total_range_deg = tr;
+                            ev.data.manual_start.left_backoff_deg = lb;
+                            ev.data.manual_start.right_backoff_deg = rb;
+                            ev.type = ProtoEventType::CommandStartWithManualRealign;
+                        } else {
+                            ESP_LOGW(TAG, "StartWithManualRealign: payload too short (%u)", pkt.hdr.len);
+                            return;
+                        }
+                        break;
                     default:
                         ESP_LOGW(TAG, "Unknown command ID: %u", cmd_id);
                         return;
