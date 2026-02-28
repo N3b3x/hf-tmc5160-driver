@@ -169,10 +169,11 @@ Enumerations</h2></td></tr>
 <tr class="memitem:aa041e16b2a09d6f2a5b8b74582790ed5" id="r_aa041e16b2a09d6f2a5b8b74582790ed5"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa041e16b2a09d6f2a5b8b74582790ed5">InternalState</a> : uint8_t { <br />
 &#160;&#160;<a class="el" href="#aa041e16b2a09d6f2a5b8b74582790ed5aa5daf7f2ebbba4975d61dab1c40188c7">IDLE</a> = 0
 , <a class="el" href="#aa041e16b2a09d6f2a5b8b74582790ed5a7496a1a0e479ed36762983a70d1dbb09">BOUNDS_FINDING</a>
+, <a class="el" href="#aa041e16b2a09d6f2a5b8b74582790ed5a11dfeb9bdaaed305cb5b2ee936581571">MANUAL_BOUNDS</a>
 , <a class="el" href="#aa041e16b2a09d6f2a5b8b74582790ed5a43491564ebcfd38568918efbd6e840fd">RUNNING</a>
-, <a class="el" href="#aa041e16b2a09d6f2a5b8b74582790ed5a99b2439e63f73ad515f7ab2447a80673">PAUSED</a>
 , <br />
-&#160;&#160;<a class="el" href="#aa041e16b2a09d6f2a5b8b74582790ed5abb1ca97ec761fc37101737ba0aa2e7c5">ERROR</a>
+&#160;&#160;<a class="el" href="#aa041e16b2a09d6f2a5b8b74582790ed5a99b2439e63f73ad515f7ab2447a80673">PAUSED</a>
+, <a class="el" href="#aa041e16b2a09d6f2a5b8b74582790ed5abb1ca97ec761fc37101737ba0aa2e7c5">ERROR</a>
 <br />
  }</td></tr>
 <tr class="memdesc:aa041e16b2a09d6f2a5b8b74582790ed5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal application state machine for the fatigue test unit.  <a href="#aa041e16b2a09d6f2a5b8b74582790ed5">More...</a><br /></td></tr>
@@ -276,6 +277,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a8aaffec68f13f95314677ea8f112a338" id="r_a8aaffec68f13f95314677ea8f112a338"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8aaffec68f13f95314677ea8f112a338">MotorEnable</a> () noexcept</td></tr>
 <tr class="memdesc:a8aaffec68f13f95314677ea8f112a338"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable (energize) the motor power stage.  <br /></td></tr>
 <tr class="separator:a8aaffec68f13f95314677ea8f112a338"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2344237d134678ce00d04c26334ddb7" id="r_ae2344237d134678ce00d04c26334ddb7"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae2344237d134678ce00d04c26334ddb7">SetReducedCurrentForManualBounds</a> () noexcept</td></tr>
+<tr class="memdesc:ae2344237d134678ce00d04c26334ddb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set motor current to a reduced level for manual bounds engagement.  <br /></td></tr>
+<tr class="separator:ae2344237d134678ce00d04c26334ddb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2ddedb315802bee297a387cb510f3a1" id="r_af2ddedb315802bee297a387cb510f3a1"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af2ddedb315802bee297a387cb510f3a1">RestoreFullCurrent</a> () noexcept</td></tr>
+<tr class="memdesc:af2ddedb315802bee297a387cb510f3a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restore motor current to full rated level after manual bounds positioning.  <br /></td></tr>
+<tr class="separator:af2ddedb315802bee297a387cb510f3a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9129736e9ca5c05905c4c74e75cb969c" id="r_a9129736e9ca5c05905c4c74e75cb969c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9129736e9ca5c05905c4c74e75cb969c">DeenergizeTimerCallback</a> (void *arg)</td></tr>
 <tr class="memdesc:a9129736e9ca5c05905c4c74e75cb969c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Timer callback to de-energize motor after bounds validity expires.  <br /></td></tr>
 <tr class="separator:a9129736e9ca5c05905c4c74e75cb969c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -423,6 +430,9 @@ Variables</h2></td></tr>
 <tr class="separator:a9d0550e6576a54512053ed0012f57ae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3bb865236d215d6463a0e2d082bf207" id="r_ab3bb865236d215d6463a0e2d082bf207"><td class="memItemLeft" align="right" valign="top">static volatile <a class="el" href="#a806a56232ad25c740e34fcbbe00ef97a">PendingStartKind</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab3bb865236d215d6463a0e2d082bf207">g_pending_start</a> = <a class="el" href="#a806a56232ad25c740e34fcbbe00ef97aab50339a10e1de285ac99d4c3990b8693">PendingStartKind::NONE</a></td></tr>
 <tr class="separator:ab3bb865236d215d6463a0e2d082bf207"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae93c43b17e951d821954d625a7c17c72" id="r_ae93c43b17e951d821954d625a7c17c72"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae93c43b17e951d821954d625a7c17c72">MANUAL_BOUNDS_CURRENT_FACTOR</a> = 0.3f</td></tr>
+<tr class="memdesc:ae93c43b17e951d821954d625a7c17c72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current reduction factor for manual bounds engagement (matches auto bounds)  <br /></td></tr>
+<tr class="separator:ae93c43b17e951d821954d625a7c17c72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21a844cda3665e0bb629bd82a6678152" id="r_a21a844cda3665e0bb629bd82a6678152"><td class="memItemLeft" align="right" valign="top">static volatile <a class="el" href="#a90f72dece0749919ebf0d39fc2594928">BoundsTaskMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a21a844cda3665e0bb629bd82a6678152">g_bounds_task_mode</a> = <a class="el" href="#a90f72dece0749919ebf0d39fc2594928a693d8019e2d5f9fca1fb5ba767e14deb">BoundsTaskMode::FIND_AND_START</a></td></tr>
 <tr class="separator:a21a844cda3665e0bb629bd82a6678152"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26cca625bfbb1df43ca6f8b4579dc39a" id="r_a26cca625bfbb1df43ca6f8b4579dc39a"><td class="memItemLeft" align="right" valign="top">static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceCommandOutput.html#a26cca625bfbb1df43ca6f8b4579dc39a">CommandOutput::BOX_WIDTH</a> = 78</td></tr>
@@ -559,6 +569,8 @@ Task creation failure transitions to <code>ERROR</code>, stops and disables the 
 </td></tr>
 <tr><td class="fieldname"><a id="aa041e16b2a09d6f2a5b8b74582790ed5a7496a1a0e479ed36762983a70d1dbb09" name="aa041e16b2a09d6f2a5b8b74582790ed5a7496a1a0e479ed36762983a70d1dbb09"></a>BOUNDS_FINDING&#160;</td><td class="fielddoc"><p>Searching for mechanical limits. </p>
 </td></tr>
+<tr><td class="fieldname"><a id="aa041e16b2a09d6f2a5b8b74582790ed5a11dfeb9bdaaed305cb5b2ee936581571" name="aa041e16b2a09d6f2a5b8b74582790ed5a11dfeb9bdaaed305cb5b2ee936581571"></a>MANUAL_BOUNDS&#160;</td><td class="fielddoc"><p>Manual bounds mode (motor may be enabled/disabled) </p>
+</td></tr>
 <tr><td class="fieldname"><a id="aa041e16b2a09d6f2a5b8b74582790ed5a43491564ebcfd38568918efbd6e840fd" name="aa041e16b2a09d6f2a5b8b74582790ed5a43491564ebcfd38568918efbd6e840fd"></a>RUNNING&#160;</td><td class="fielddoc"><p>Fatigue test active. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="aa041e16b2a09d6f2a5b8b74582790ed5a99b2439e63f73ad515f7ab2447a80673" name="aa041e16b2a09d6f2a5b8b74582790ed5a99b2439e63f73ad515f7ab2447a80673"></a>PAUSED&#160;</td><td class="fielddoc"><p>Test paused, motor holding position. </p>
@@ -664,7 +676,7 @@ Task creation failure transitions to <code>ERROR</code>, stops and disables the 
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_abce06be17fc37d675118a678a8100a36_cgraph.svg" width="867" height="2152"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_abce06be17fc37d675118a678a8100a36_cgraph.svg" width="1160" height="2327"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -703,7 +715,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_aa57215c763eed0b2d653533cf6392ffc_icgraph.svg" width="1094" height="143"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_aa57215c763eed0b2d653533cf6392ffc_icgraph.svg" width="1094" height="136"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -839,7 +851,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a282cbb4958ae3bf0285b9be28ecb1d79_cgraph.svg" width="1579" height="2050"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a282cbb4958ae3bf0285b9be28ecb1d79_cgraph.svg" width="1618" height="2284"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -1465,7 +1477,7 @@ Power stabilization delay should be handled by the caller after setting motor to
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a8aaffec68f13f95314677ea8f112a338_icgraph.svg" width="959" height="143"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a8aaffec68f13f95314677ea8f112a338_icgraph.svg" width="959" height="135"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1626,6 +1638,84 @@ Here is the call graph for this function:</div>
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_a05b979a9e80a20ecf074106e268da672_icgraph.svg" width="558" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="af2ddedb315802bee297a387cb510f3a1" name="af2ddedb315802bee297a387cb510f3a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2ddedb315802bee297a387cb510f3a1">&#9670;&#160;</a></span>RestoreFullCurrent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool RestoreFullCurrent </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Restore motor current to full rated level after manual bounds positioning. </p>
+<p>Re-applies the original MotorSpec from the driver config to restore run and hold current to their configured values. Called after the motor reaches center position.</p>
+<dl class="section return"><dt>Returns</dt><dd>true if current was successfully restored </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_af2ddedb315802bee297a387cb510f3a1_cgraph.svg" width="420" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_af2ddedb315802bee297a387cb510f3a1_icgraph.svg" width="515" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ae2344237d134678ce00d04c26334ddb7" name="ae2344237d134678ce00d04c26334ddb7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2344237d134678ce00d04c26334ddb7">&#9670;&#160;</a></span>SetReducedCurrentForManualBounds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool SetReducedCurrentForManualBounds </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set motor current to a reduced level for manual bounds engagement. </p>
+<p>Uses ConfigureMotorCurrent() with a modified MotorSpec where run_current_ma and hold_current_ma are scaled by MANUAL_BOUNDS_CURRENT_FACTOR (0.3x rated). This matches the auto bounds finding behavior and prevents excessive holding torque during initial engagement, reducing magnetic misalignment risk.</p>
+<dl class="section return"><dt>Returns</dt><dd>true if current was successfully reduced </dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_ae2344237d134678ce00d04c26334ddb7_cgraph.svg" width="492" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp_ae2344237d134678ce00d04c26334ddb7_icgraph.svg" width="587" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -2210,6 +2300,30 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae93c43b17e951d821954d625a7c17c72" name="ae93c43b17e951d821954d625a7c17c72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae93c43b17e951d821954d625a7c17c72">&#9670;&#160;</a></span>MANUAL_BOUNDS_CURRENT_FACTOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr float MANUAL_BOUNDS_CURRENT_FACTOR = 0.3f</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Current reduction factor for manual bounds engagement (matches auto bounds) </p>
 
 </div>
 </div>
