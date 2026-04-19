@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['📚_20table_20of_20contents_0',['📚 Table of Contents',['../index.html#autotoc_md32',1,'']]]
+  ['📖_20api_20reference_0',['📖 API Reference',['../index.html#autotoc_md57',1,'']]]
 ];

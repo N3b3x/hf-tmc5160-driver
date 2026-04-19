@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['🔍_20diagnostics_20tuning_0',['🔍 Diagnostics &amp; Tuning',['../index.html#autotoc_md40',1,'']]]
+  ['🔀_20chip_20compatibility_0',['🔀 Chip Compatibility',['../index.html#autotoc_md36',1,'']]]
 ];

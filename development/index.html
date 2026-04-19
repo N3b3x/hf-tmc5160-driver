@@ -375,6 +375,82 @@ overhead</strong> while maintaining complete platform independence.</p>
   <li><strong>Dual Chip Support</strong>: Automatically detects and supports both TMC5130 and TMC5160 chips</li>
   <li><strong>Modern C++17</strong>: Type-safe API with RAII principles and compile-time optimizations</li>
 </ul>
+<h3 id="-chip-compatibility">
+  
+  
+    <a href="#-chip-compatibility" class="anchor-heading" aria-labelledby="-chip-compatibility"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 🔀 Chip Compatibility
+  
+  
+</h3>
+    
+
+<p>The driver targets the entire TMC51x0 family with a single class. Chip-specific features
+degrade gracefully with <code class="language-plaintext highlighter-rouge">ErrorCode::UNSUPPORTED</code> when called on a chip that lacks them.</p>
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>TMC5130</th>
+      <th>TMC5160</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Internal motion controller (ramp gen)</td>
+      <td>✅</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>StealthChop2 / SpreadCycle / CoolStep</td>
+      <td>✅</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>StallGuard2 sensorless load detection</td>
+      <td>✅</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>ABN encoder + index homing</td>
+      <td>✅</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>SPI daisy-chain / UART multi-node</td>
+      <td>✅</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Integrated MOSFETs (≤ 2 A_RMS)</td>
+      <td>✅</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>External gate driver (≤ 20 A peak)</td>
+      <td>—</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Higher V_M range</td>
+      <td>up to 46 V</td>
+      <td>up to 60 V</td>
+    </tr>
+    <tr>
+      <td>Short-to-supply / short-to-GND protect</td>
+      <td>basic</td>
+      <td>advanced (S2VS / S2G levels)</td>
+    </tr>
+    <tr>
+      <td>Power-stage configuration (DRV_CONF)</td>
+      <td>limited</td>
+      <td>full</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<p>Chip detection is automatic during <code class="language-plaintext highlighter-rouge">Initialize()</code>. See
+<a href="/hf-tmc5160-driver/development/docs/tmc5130_support/">docs/tmc5130_support.md</a> for the complete differences list.</p>
 <h2 id="-features">
   
   
@@ -625,14 +701,6 @@ overhead</strong> while maintaining complete platform independence.</p>
   
 </h2>
     
-<h3 id="single-motor-setup">
-  
-  
-    <a href="#single-motor-setup" class="anchor-heading" aria-labelledby="single-motor-setup"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Single Motor Setup
-  
-  
-</h3>
-    
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -666,321 +734,50 @@ overhead</strong> while maintaining complete platform independence.</p>
 30
 31
 32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
 </pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"inc/tmc51x0.hpp"</span><span class="cp">
 </span>
-<span class="c1">// 1. Implement the communication interface - implement these required methods for your platform.</span>
-<span class="c1">//    See docs/platform_integration.md for full implementation examples (ESP32, STM32, etc.).</span>
+<span class="c1">// 1. Implement the SPI/UART communication interface for your platform.</span>
+<span class="c1">//    See docs/platform_integration.md for full ESP32/STM32/Arduino templates.</span>
 <span class="k">class</span> <span class="nc">MySPI</span> <span class="o">:</span> <span class="k">public</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">SpiCommInterface</span><span class="o">&lt;</span><span class="n">MySPI</span><span class="o">&gt;</span> <span class="p">{</span>
 <span class="nl">public:</span>
-    <span class="c1">// SPI transfer: tx/rx buffers, byte length. Return Ok on success.</span>
-    <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Result</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;</span> <span class="n">SpiTransfer</span><span class="p">(</span><span class="k">const</span> <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">tx</span><span class="p">,</span> <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">rx</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">length</span><span class="p">)</span> <span class="k">noexcept</span> <span class="p">{</span>
-        <span class="c1">// TODO: Call your platform's SPI transfer (e.g. spi_transmit, HAL_SPI_TransmitReceive)</span>
-        <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">tx</span><span class="p">;</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">rx</span><span class="p">;</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">length</span><span class="p">;</span>
-        <span class="k">return</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Result</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;</span><span class="p">();</span>
-    <span class="p">}</span>
-    <span class="c1">// GPIO output: pin (EN, DIR, STEP, SPI_MODE, SD_MODE, CS, CLK, etc.), signal (ACTIVE/INACTIVE)</span>
-    <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Result</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;</span> <span class="n">GpioSet</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">TMC51x0CtrlPin</span> <span class="n">pin</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">GpioSignal</span> <span class="n">signal</span><span class="p">)</span> <span class="k">noexcept</span> <span class="p">{</span>
-        <span class="c1">// TODO: Map pin to your GPIO, set output high/low per signal</span>
-        <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">pin</span><span class="p">;</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">signal</span><span class="p">;</span>
-        <span class="k">return</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Result</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;</span><span class="p">();</span>
-    <span class="p">}</span>
-    <span class="c1">// GPIO input: read pin state (ACTIVE/INACTIVE)</span>
-    <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Result</span><span class="o">&lt;</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">GpioSignal</span><span class="o">&gt;</span> <span class="n">GpioRead</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">TMC51x0CtrlPin</span> <span class="n">pin</span><span class="p">)</span> <span class="k">noexcept</span> <span class="p">{</span>
-        <span class="c1">// TODO: Map pin to your GPIO, read and return GpioSignal::ACTIVE or INACTIVE</span>
-        <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">pin</span><span class="p">;</span>
-        <span class="k">return</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Result</span><span class="o">&lt;</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">GpioSignal</span><span class="o">&gt;</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">GpioSignal</span><span class="o">::</span><span class="n">INACTIVE</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="kt">void</span> <span class="n">DelayMs</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">ms</span><span class="p">)</span> <span class="k">noexcept</span> <span class="p">{</span>
-        <span class="c1">// TODO: Platform delay (e.g. vTaskDelay, HAL_Delay)</span>
-        <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">ms</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="kt">void</span> <span class="n">DelayUs</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">us</span><span class="p">)</span> <span class="k">noexcept</span> <span class="p">{</span>
-        <span class="c1">// TODO: Platform microsecond delay</span>
-        <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">us</span><span class="p">;</span>
-    <span class="p">}</span>
+    <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Result</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;</span> <span class="n">SpiTransfer</span><span class="p">(</span><span class="k">const</span> <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">tx</span><span class="p">,</span> <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">rx</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">length</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Result</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;</span> <span class="n">GpioSet</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">TMC51x0CtrlPin</span> <span class="n">pin</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">GpioSignal</span> <span class="n">sig</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Result</span><span class="o">&lt;</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">GpioSignal</span><span class="o">&gt;</span> <span class="n">GpioRead</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">TMC51x0CtrlPin</span> <span class="n">pin</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">DelayMs</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">ms</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">DelayUs</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">us</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
 <span class="nl">protected:</span>
-    <span class="kt">void</span> <span class="n">DebugLog</span><span class="p">(</span><span class="kt">int</span> <span class="n">level</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">tag</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">format</span><span class="p">,</span> <span class="kt">va_list</span> <span class="n">args</span><span class="p">)</span> <span class="k">noexcept</span> <span class="p">{</span>
-        <span class="c1">// TODO: Optional - forward to your logging (printf, ESP_LOGD, etc.)</span>
-        <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">level</span><span class="p">;</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">tag</span><span class="p">;</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">format</span><span class="p">;</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">args</span><span class="p">;</span>
-    <span class="p">}</span>
+    <span class="kt">void</span> <span class="n">DebugLog</span><span class="p">(</span><span class="kt">int</span> <span class="n">level</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">tag</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">fmt</span><span class="p">,</span> <span class="kt">va_list</span> <span class="n">args</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
 <span class="p">};</span>
 
 <span class="c1">// 2. Create driver instance</span>
 <span class="n">MySPI</span> <span class="n">spi</span><span class="p">;</span>
 <span class="n">tmc51x0</span><span class="o">::</span><span class="n">TMC51x0</span><span class="o">&lt;</span><span class="n">MySPI</span><span class="o">&gt;</span> <span class="n">driver</span><span class="p">(</span><span class="n">spi</span><span class="p">);</span>
 
-<span class="c1">// 3. Initialize driver</span>
+<span class="c1">// 3. Initialize from motor spec — IRUN, IHOLD, and GLOBAL_SCALER are auto-calculated</span>
 <span class="n">tmc51x0</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
-<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">rated_current_ma</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">;</span>  <span class="c1">// 2A rated current</span>
-<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">sense_resistor_mohm</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>  <span class="c1">// 0.05Ω sense resistor</span>
-<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">supply_voltage_mv</span> <span class="o">=</span> <span class="mi">24000</span><span class="p">;</span> <span class="c1">// 24V supply</span>
-<span class="c1">// IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated</span>
-<span class="k">auto</span> <span class="n">init_result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
-<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">init_result</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">printf</span><span class="p">(</span><span class="s">"Initialization error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">init_result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>
-    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">rated_current_ma</span>   <span class="o">=</span> <span class="mi">2000</span><span class="p">;</span>   <span class="c1">// 2 A rated current</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">sense_resistor_mohm</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>    <span class="c1">// 0.05 Ω sense resistor</span>
+<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">supply_voltage_mv</span>  <span class="o">=</span> <span class="mi">24000</span><span class="p">;</span>  <span class="c1">// 24 V supply</span>
+<span class="k">if</span> <span class="p">(</span><span class="k">auto</span> <span class="n">r</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span> <span class="o">!</span><span class="n">r</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* handle r.ErrorMessage() */</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
 
-<span class="c1">// 4. Enable and start motion</span>
+<span class="c1">// 4. Enable and run a positioning move</span>
 <span class="n">driver</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
 <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetRampMode</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">RampMode</span><span class="o">::</span><span class="n">POSITIONING</span><span class="p">);</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">60.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RPM</span><span class="p">);</span>               <span class="c1">// 60 RPM</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetAcceleration</span><span class="p">(</span><span class="mf">5.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RevPerSec</span><span class="p">);</span>      <span class="c1">// 5 rev/s²</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetDeceleration</span><span class="p">(</span><span class="mf">5.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RevPerSec</span><span class="p">);</span>      <span class="c1">// 5 rev/s²</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mf">180.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Deg</span><span class="p">);</span>        <span class="c1">// Move to 180°</span>
-
-<span class="c1">// Wait for target position</span>
-<span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">auto</span> <span class="n">reached</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">IsTargetReached</span><span class="p">();</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">reached</span><span class="p">.</span><span class="n">IsOk</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">reached</span><span class="p">.</span><span class="n">Value</span><span class="p">())</span> <span class="k">break</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></td></tr></tbody></table></div></code></pre></div></div>
-<h3 id="multi-motor-daisy-chain-setup">
-  
-  
-    <a href="#multi-motor-daisy-chain-setup" class="anchor-heading" aria-labelledby="multi-motor-daisy-chain-setup"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Multi-Motor Daisy Chain Setup
-  
-  
-</h3>
-    
-
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-</pre></td><td class="rouge-code"><pre><span class="cp">#include</span> <span class="cpf">"inc/tmc51x0.hpp"</span><span class="cp">
-#include</span> <span class="cpf">"inc/features/tmc51x0_daisy_chain.hpp"</span><span class="cp">
-</span>
-<span class="c1">// 1. Create SPI communication interface (shared by all devices)</span>
-<span class="n">MySPI</span> <span class="n">spi</span><span class="p">;</span>
-
-<span class="c1">// 2. Create daisy-chain manager: 3 devices, max 5 supported, 12 MHz clock</span>
-<span class="n">tmc51x0</span><span class="o">::</span><span class="n">TMC51x0DaisyChain</span><span class="o">&lt;</span><span class="n">MySPI</span><span class="p">,</span> <span class="mi">5</span><span class="o">&gt;</span> <span class="n">chain</span><span class="p">(</span><span class="n">spi</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">12'000'000</span><span class="p">);</span>
-
-<span class="c1">// 3. Initialize all devices with motor specifications</span>
-<span class="n">tmc51x0</span><span class="o">::</span><span class="n">DriverConfig</span> <span class="n">cfg</span><span class="p">{};</span>
-<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">rated_current_ma</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">;</span>
-<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">sense_resistor_mohm</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
-<span class="n">cfg</span><span class="p">.</span><span class="n">motor_spec</span><span class="p">.</span><span class="n">supply_voltage_mv</span> <span class="o">=</span> <span class="mi">24000</span><span class="p">;</span>
-<span class="n">chain</span><span class="p">.</span><span class="n">InitializeAll</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
-
-<span class="c1">// 4. Access individual motors by index</span>
-<span class="k">auto</span><span class="o">&amp;</span> <span class="n">x_axis</span> <span class="o">=</span> <span class="n">chain</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-<span class="k">auto</span><span class="o">&amp;</span> <span class="n">y_axis</span> <span class="o">=</span> <span class="n">chain</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
-<span class="k">auto</span><span class="o">&amp;</span> <span class="n">z_axis</span> <span class="o">=</span> <span class="n">chain</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
-
-<span class="n">x_axis</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mf">90.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Deg</span><span class="p">);</span>
-<span class="n">y_axis</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">30.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RPM</span><span class="p">);</span>
-<span class="n">z_axis</span><span class="p">.</span><span class="n">motorControl</span><span class="p">.</span><span class="n">Enable</span><span class="p">();</span>
-</pre></td></tr></tbody></table></div></code></pre></div></div>
-<h3 id="using-physical-units">
-  
-  
-    <a href="#using-physical-units" class="anchor-heading" aria-labelledby="using-physical-units"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Using Physical Units
-  
-  
-</h3>
-    
-
-<p>All position, speed, and acceleration methods accept a <code class="language-plaintext highlighter-rouge">Unit</code> parameter:</p>
-
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-</pre></td><td class="rouge-code"><pre><span class="k">using</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="p">;</span>
-
-<span class="c1">// Position in degrees, millimeters, or revolutions</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mf">90.0</span><span class="n">f</span><span class="p">,</span> <span class="n">Unit</span><span class="o">::</span><span class="n">Deg</span><span class="p">);</span>       <span class="c1">// 90 degrees</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mf">25.0</span><span class="n">f</span><span class="p">,</span> <span class="n">Unit</span><span class="o">::</span><span class="n">Mm</span><span class="p">);</span>        <span class="c1">// 25 mm (requires MechanicalSystem in config)</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">MoveRelative</span><span class="p">(</span><span class="o">-</span><span class="mf">10.0</span><span class="n">f</span><span class="p">,</span> <span class="n">Unit</span><span class="o">::</span><span class="n">Deg</span><span class="p">);</span>           <span class="c1">// Move 10° backward</span>
-
-<span class="c1">// Speed in RPM or revolutions per second (default)</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">60.0</span><span class="n">f</span><span class="p">,</span> <span class="n">Unit</span><span class="o">::</span><span class="n">RPM</span><span class="p">);</span>             <span class="c1">// 60 RPM</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">1.0</span><span class="n">f</span><span class="p">,</span> <span class="n">Unit</span><span class="o">::</span><span class="n">RevPerSec</span><span class="p">);</span>        <span class="c1">// 1 rev/s (same as 60 RPM)</span>
-
-<span class="c1">// Acceleration in rev/s²</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetAcceleration</span><span class="p">(</span><span class="mf">5.0</span><span class="n">f</span><span class="p">,</span> <span class="n">Unit</span><span class="o">::</span><span class="n">RevPerSec</span><span class="p">);</span>    <span class="c1">// 5 rev/s²</span>
-
-<span class="c1">// Read position back in any unit</span>
-<span class="k">auto</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">GetCurrentPosition</span><span class="p">(</span><span class="n">Unit</span><span class="o">::</span><span class="n">Deg</span><span class="p">);</span>  <span class="c1">// Current position in degrees</span>
-<span class="k">auto</span> <span class="n">spd</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">GetCurrentSpeed</span><span class="p">(</span><span class="n">Unit</span><span class="o">::</span><span class="n">RPM</span><span class="p">);</span>     <span class="c1">// Current speed in RPM</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">60.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RPM</span><span class="p">);</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetAcceleration</span><span class="p">(</span><span class="mf">5.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RevPerSec</span><span class="p">);</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetTargetPosition</span><span class="p">(</span><span class="mf">180.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Deg</span><span class="p">);</span>   <span class="c1">// move to 180°</span>
 </pre></td></tr></tbody></table></div></code></pre></div></div>
 
-<p>For detailed setup, see <a href="/hf-tmc5160-driver/development/docs/installation/">Installation</a> and <a href="/hf-tmc5160-driver/development/docs/quickstart/">Quick Start Guide</a>.</p>
-<h3 id="error-handling--the-resultt-pattern">
-  
-  
-    <a href="#error-handling--the-resultt-pattern" class="anchor-heading" aria-labelledby="error-handling--the-resultt-pattern"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Error Handling – the <code class="language-plaintext highlighter-rouge">Result&lt;T&gt;</code> Pattern
-  
-  
-</h3>
-    
-
-<p>Every driver method returns a <code class="language-plaintext highlighter-rouge">Result&lt;T&gt;</code> – a lightweight wrapper that carries either a <strong>value</strong> or an <strong>error code</strong>. This replaces exceptions (which are disabled in most embedded toolchains) with a zero-overhead, type-safe pattern.</p>
-
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-</pre></td><td class="rouge-code"><pre><span class="c1">// Check success with IsOk() or boolean conversion</span>
-<span class="k">auto</span> <span class="n">result</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">SetMaxSpeed</span><span class="p">(</span><span class="mf">60.0</span><span class="n">f</span><span class="p">,</span> <span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">RPM</span><span class="p">);</span>
-<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">result</span><span class="p">)</span> <span class="p">{</span>                                      <span class="c1">// boolean shorthand (same as !result.IsOk())</span>
-    <span class="n">printf</span><span class="p">(</span><span class="s">"Error: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">ErrorMessage</span><span class="p">());</span>   <span class="c1">// human-readable message</span>
-    <span class="n">tmc51x0</span><span class="o">::</span><span class="n">ErrorCode</span> <span class="n">code</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">Error</span><span class="p">();</span>       <span class="c1">// machine-readable code</span>
-    <span class="k">return</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="c1">// For methods that return a value, use Value() after checking</span>
-<span class="k">auto</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">rampControl</span><span class="p">.</span><span class="n">GetCurrentPosition</span><span class="p">(</span><span class="n">tmc51x0</span><span class="o">::</span><span class="n">Unit</span><span class="o">::</span><span class="n">Deg</span><span class="p">);</span>
-<span class="k">if</span> <span class="p">(</span><span class="n">pos</span><span class="p">.</span><span class="n">IsOk</span><span class="p">())</span> <span class="p">{</span>
-    <span class="kt">float</span> <span class="n">degrees</span> <span class="o">=</span> <span class="n">pos</span><span class="p">.</span><span class="n">Value</span><span class="p">();</span>                    <span class="c1">// safe -- we checked first</span>
-<span class="p">}</span>
-
-<span class="c1">// Or use ValueOr() for a safe default without branching</span>
-<span class="kt">float</span> <span class="n">degrees</span> <span class="o">=</span> <span class="n">pos</span><span class="p">.</span><span class="n">ValueOr</span><span class="p">(</span><span class="mf">0.0</span><span class="n">f</span><span class="p">);</span>                 <span class="c1">// returns 0.0 if error</span>
-</pre></td></tr></tbody></table></div></code></pre></div></div>
-
-<p><strong>Error codes</strong> (<a href="inc/tmc51x0_result.hpp"><code class="language-plaintext highlighter-rouge">inc/tmc51x0_result.hpp</code></a>):</p>
-
-<div class="table-wrapper"><table>
-  <thead>
-    <tr>
-      <th>ErrorCode</th>
-      <th>Meaning</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">OK</code></td>
-      <td>Success</td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">COMM_ERROR</code></td>
-      <td>SPI/UART transfer failed</td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">NOT_INITIALIZED</code></td>
-      <td><code class="language-plaintext highlighter-rouge">Initialize()</code> not called yet</td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">INVALID_VALUE</code></td>
-      <td>Parameter out of range</td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">INVALID_STATE</code></td>
-      <td>Operation not valid now (e.g. moving while reconfiguring)</td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">TIMEOUT</code></td>
-      <td>Operation exceeded time limit</td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">HARDWARE_ERROR</code></td>
-      <td>TMC driver fault (<code class="language-plaintext highlighter-rouge">drv_err</code>, <code class="language-plaintext highlighter-rouge">uv_cp</code>, <code class="language-plaintext highlighter-rouge">reset</code>)</td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">SHORT_CIRCUIT</code></td>
-      <td>Short to supply or ground detected</td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">OVERTEMP_WARNING</code></td>
-      <td>Temperature warning threshold exceeded</td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">OVERTEMP_SHUTDOWN</code></td>
-      <td>Temperature shutdown</td>
-    </tr>
-    <tr>
-      <td><code class="language-plaintext highlighter-rouge">UNSUPPORTED</code></td>
-      <td>Feature not available on this chip (TMC5130 vs TMC5160)</td>
-    </tr>
-  </tbody>
-</table></div>
+<p>For a fully-stubbed <code class="language-plaintext highlighter-rouge">MySPI</code> template plus daisy-chain, units, and <code class="language-plaintext highlighter-rouge">Result&lt;T&gt;</code> patterns,
+see <a href="/hf-tmc5160-driver/development/docs/quickstart/">docs/quickstart.md</a>, <a href="/hf-tmc5160-driver/development/docs/platform_integration/">docs/platform_integration.md</a>,
+and the <a href="/hf-tmc5160-driver/development/docs/special_features_multi_chip/">Multi-chip / Units / Error-handling cookbook</a>.</p>
 
 <blockquote>
-  <p><strong>Note on the Quick Start examples above:</strong> Error checks are omitted for brevity. In production code, always check <code class="language-plaintext highlighter-rouge">Result</code> return values – especially <code class="language-plaintext highlighter-rouge">Initialize()</code>, <code class="language-plaintext highlighter-rouge">Enable()</code>, and communication-dependent calls. See the <a href="/hf-tmc5160-driver/development/docs/quickstart/">Quick Start Guide</a> and <a href="/hf-tmc5160-driver/development/docs/troubleshooting/">Troubleshooting</a> for complete error handling examples.</p>
+  <p><strong><code class="language-plaintext highlighter-rouge">Result&lt;T&gt;</code> pattern</strong>: every method returns a lightweight <code class="language-plaintext highlighter-rouge">Result&lt;T&gt;</code> carrying
+either a value or an <code class="language-plaintext highlighter-rouge">ErrorCode</code> (no exceptions). Check with <code class="language-plaintext highlighter-rouge">if (auto r = ...; !r)</code>
+or <code class="language-plaintext highlighter-rouge">r.IsOk()</code>. Full code list and <code class="language-plaintext highlighter-rouge">Value()</code> / <code class="language-plaintext highlighter-rouge">ValueOr()</code> patterns are in
+<a href="/hf-tmc5160-driver/development/docs/troubleshooting/">docs/troubleshooting.md</a>. Quick Start above omits checks
+for brevity — production code should always inspect the result.</p>
 </blockquote>
 <h2 id="-installation">
   
@@ -1003,17 +800,17 @@ overhead</strong> while maintaining complete platform independence.</p>
 </ol>
 
 <p>For detailed installation instructions, see <a href="/hf-tmc5160-driver/development/docs/installation/">docs/installation.md</a>.</p>
-<h2 id="api-reference">
+<h2 id="-api-reference">
   
   
-    <a href="#api-reference" class="anchor-heading" aria-labelledby="api-reference"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> API Reference
+    <a href="#-api-reference" class="anchor-heading" aria-labelledby="-api-reference"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 📖 API Reference
   
   
 </h2>
     
 
 <blockquote>
-  <p>All methods return <a href="#error-handling----the-resultt-pattern"><code class="language-plaintext highlighter-rouge">Result&lt;T&gt;</code></a> types. Check with <code class="language-plaintext highlighter-rouge">IsOk()</code> / <code class="language-plaintext highlighter-rouge">operator bool</code> before using <code class="language-plaintext highlighter-rouge">Value()</code>. See the <a href="/hf-tmc5160-driver/development/docs/api_reference/">full API Reference</a> for complete signatures and return types.</p>
+  <p>All methods return <code class="language-plaintext highlighter-rouge">Result&lt;T&gt;</code> types. Check with <code class="language-plaintext highlighter-rouge">IsOk()</code> / <code class="language-plaintext highlighter-rouge">operator bool</code> before using <code class="language-plaintext highlighter-rouge">Value()</code>. See the <a href="/hf-tmc5160-driver/development/docs/api_reference/">full API Reference</a> for complete signatures and return types, and <a href="/hf-tmc5160-driver/development/docs/troubleshooting/">docs/troubleshooting.md</a> for the full <code class="language-plaintext highlighter-rouge">ErrorCode</code> list.</p>
 </blockquote>
 <h3 id="class-structure--subsystems">
   
@@ -1452,10 +1249,10 @@ overhead</strong> while maintaining complete platform independence.</p>
 </ul>
 
 <p>All examples use a unified test rig selection (<code class="language-plaintext highlighter-rouge">SELECTED_TEST_RIG</code>) for compile-time motor/board/platform configuration. See <a href="/hf-tmc5160-driver/development/docs/examples/">docs/examples.md</a> for detailed walkthroughs.</p>
-<h2 id="documentation">
+<h2 id="-documentation">
   
   
-    <a href="#documentation" class="anchor-heading" aria-labelledby="documentation"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Documentation
+    <a href="#-documentation" class="anchor-heading" aria-labelledby="-documentation"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 📚 Documentation
   
   
 </h2>
@@ -1527,7 +1324,7 @@ overhead</strong> while maintaining complete platform independence.</p>
       <td>Progressively harder walkthroughs with explanations</td>
     </tr>
     <tr>
-      <td><a href="#error-handling----the-resultt-pattern">Error Handling</a></td>
+      <td><a href="/hf-tmc5160-driver/development/docs/troubleshooting/">Error Handling</a></td>
       <td><code class="language-plaintext highlighter-rouge">Result&lt;T&gt;</code>, <code class="language-plaintext highlighter-rouge">ErrorCode</code>, common patterns</td>
     </tr>
     <tr>
@@ -1577,6 +1374,53 @@ overhead</strong> while maintaining complete platform independence.</p>
 </table></div>
 
 <p>For local browsing, see the <a href="/hf-tmc5160-driver/development/docs/">docs directory</a>.</p>
+<h2 id="-references">
+  
+  
+    <a href="#-references" class="anchor-heading" aria-labelledby="-references"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 🔗 References
+  
+  
+</h2>
+    
+
+<div class="table-wrapper"><table>
+  <thead>
+    <tr>
+      <th>Resource</th>
+      <th>Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Trinamic TMC5160 product page</td>
+      <td><a href="https://www.analog.com/en/products/tmc5160.html">https://www.analog.com/en/products/tmc5160.html</a></td>
+    </tr>
+    <tr>
+      <td>Trinamic TMC5130 product page</td>
+      <td><a href="https://www.analog.com/en/products/tmc5130.html">https://www.analog.com/en/products/tmc5130.html</a></td>
+    </tr>
+    <tr>
+      <td>TMC5160 datasheet (ADI/Trinamic)</td>
+      <td><a href="https://www.analog.com/media/en/technical-documentation/data-sheets/tmc5160_datasheet.pdf">https://www.analog.com/media/en/technical-documentation/data-sheets/tmc5160_datasheet.pdf</a></td>
+    </tr>
+    <tr>
+      <td>TMC5130 datasheet (ADI/Trinamic)</td>
+      <td><a href="https://www.analog.com/media/en/technical-documentation/data-sheets/tmc5130_datasheet.pdf">https://www.analog.com/media/en/technical-documentation/data-sheets/tmc5130_datasheet.pdf</a></td>
+    </tr>
+    <tr>
+      <td>StallGuard2 / CoolStep / StealthChop2 application notes</td>
+      <td><a href="https://www.analog.com/en/products/landing-pages/001/trinamic-application-notes.html">https://www.analog.com/en/products/landing-pages/001/trinamic-application-notes.html</a></td>
+    </tr>
+    <tr>
+      <td>ESP-IDF SPI / UART</td>
+      <td><a href="https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/peripherals/index.html">https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/peripherals/index.html</a></td>
+    </tr>
+    <tr>
+      <td>C++17 language reference</td>
+      <td><a href="https://en.cppreference.com/w/cpp/17">https://en.cppreference.com/w/cpp/17</a></td>
+    </tr>
+  </tbody>
+</table></div>
 <h2 id="-contributing">
   
   
