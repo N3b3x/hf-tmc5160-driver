@@ -78,6 +78,27 @@ overhead** while maintaining complete platform independence.
 - **Dual Chip Support**: Automatically detects and supports both TMC5130 and TMC5160 chips
 - **Modern C++17**: Type-safe API with RAII principles and compile-time optimizations
 
+### 🔀 Chip Compatibility
+
+The driver targets the entire TMC51x0 family with a single class. Chip-specific features
+degrade gracefully with `ErrorCode::UNSUPPORTED` when called on a chip that lacks them.
+
+| Feature                                | TMC5130 | TMC5160 |
+|----------------------------------------|---------|---------|
+| Internal motion controller (ramp gen)  | ✅      | ✅      |
+| StealthChop2 / SpreadCycle / CoolStep  | ✅      | ✅      |
+| StallGuard2 sensorless load detection  | ✅      | ✅      |
+| ABN encoder + index homing             | ✅      | ✅      |
+| SPI daisy-chain / UART multi-node      | ✅      | ✅      |
+| Integrated MOSFETs (≤ 2 A_RMS)         | ✅      | —       |
+| External gate driver (≤ 20 A peak)     | —       | ✅      |
+| Higher V_M range                       | up to 46 V | up to 60 V |
+| Short-to-supply / short-to-GND protect | basic   | advanced (S2VS / S2G levels) |
+| Power-stage configuration (DRV_CONF)   | limited | full     |
+
+Chip detection is automatic during `Initialize()`. See
+[docs/tmc5130_support.md](docs/tmc5130_support.md) for the complete differences list.
+
 ## ✨ Features
 
 ### 🎯 Core Motor Control
@@ -180,174 +201,50 @@ overhead** while maintaining complete platform independence.
 
 ## 🚀 Quick Start
 
-### Single Motor Setup
-
 ```cpp
 #include "inc/tmc51x0.hpp"
 
-// 1. Implement the communication interface - implement these required methods for your platform.
-//    See docs/platform_integration.md for full implementation examples (ESP32, STM32, etc.).
+// 1. Implement the SPI/UART communication interface for your platform.
+//    See docs/platform_integration.md for full ESP32/STM32/Arduino templates.
 class MySPI : public tmc51x0::SpiCommInterface<MySPI> {
 public:
-    // SPI transfer: tx/rx buffers, byte length. Return Ok on success.
-    tmc51x0::Result<void> SpiTransfer(const uint8_t* tx, uint8_t* rx, size_t length) noexcept {
-        // TODO: Call your platform's SPI transfer (e.g. spi_transmit, HAL_SPI_TransmitReceive)
-        (void)tx; (void)rx; (void)length;
-        return tmc51x0::Result<void>();
-    }
-    // GPIO output: pin (EN, DIR, STEP, SPI_MODE, SD_MODE, CS, CLK, etc.), signal (ACTIVE/INACTIVE)
-    tmc51x0::Result<void> GpioSet(tmc51x0::TMC51x0CtrlPin pin, tmc51x0::GpioSignal signal) noexcept {
-        // TODO: Map pin to your GPIO, set output high/low per signal
-        (void)pin; (void)signal;
-        return tmc51x0::Result<void>();
-    }
-    // GPIO input: read pin state (ACTIVE/INACTIVE)
-    tmc51x0::Result<tmc51x0::GpioSignal> GpioRead(tmc51x0::TMC51x0CtrlPin pin) noexcept {
-        // TODO: Map pin to your GPIO, read and return GpioSignal::ACTIVE or INACTIVE
-        (void)pin;
-        return tmc51x0::Result<tmc51x0::GpioSignal>(tmc51x0::GpioSignal::INACTIVE);
-    }
-    void DelayMs(uint32_t ms) noexcept {
-        // TODO: Platform delay (e.g. vTaskDelay, HAL_Delay)
-        (void)ms;
-    }
-    void DelayUs(uint32_t us) noexcept {
-        // TODO: Platform microsecond delay
-        (void)us;
-    }
+    tmc51x0::Result<void> SpiTransfer(const uint8_t* tx, uint8_t* rx, size_t length) noexcept;
+    tmc51x0::Result<void> GpioSet(tmc51x0::TMC51x0CtrlPin pin, tmc51x0::GpioSignal sig) noexcept;
+    tmc51x0::Result<tmc51x0::GpioSignal> GpioRead(tmc51x0::TMC51x0CtrlPin pin) noexcept;
+    void DelayMs(uint32_t ms) noexcept;
+    void DelayUs(uint32_t us) noexcept;
 protected:
-    void DebugLog(int level, const char* tag, const char* format, va_list args) noexcept {
-        // TODO: Optional - forward to your logging (printf, ESP_LOGD, etc.)
-        (void)level; (void)tag; (void)format; (void)args;
-    }
+    void DebugLog(int level, const char* tag, const char* fmt, va_list args) noexcept;
 };
 
 // 2. Create driver instance
 MySPI spi;
 tmc51x0::TMC51x0<MySPI> driver(spi);
 
-// 3. Initialize driver
+// 3. Initialize from motor spec — IRUN, IHOLD, and GLOBAL_SCALER are auto-calculated
 tmc51x0::DriverConfig cfg{};
-cfg.motor_spec.rated_current_ma = 2000;  // 2A rated current
-cfg.motor_spec.sense_resistor_mohm = 50;  // 0.05Ω sense resistor
-cfg.motor_spec.supply_voltage_mv = 24000; // 24V supply
-// IRUN, IHOLD, and GLOBAL_SCALER are automatically calculated
-auto init_result = driver.Initialize(cfg);
-if (!init_result) {
-    printf("Initialization error: %s\n", init_result.ErrorMessage());
-    return -1;
-}
+cfg.motor_spec.rated_current_ma   = 2000;   // 2 A rated current
+cfg.motor_spec.sense_resistor_mohm = 50;    // 0.05 Ω sense resistor
+cfg.motor_spec.supply_voltage_mv  = 24000;  // 24 V supply
+if (auto r = driver.Initialize(cfg); !r) { /* handle r.ErrorMessage() */ return; }
 
-// 4. Enable and start motion
+// 4. Enable and run a positioning move
 driver.motorControl.Enable();
 driver.rampControl.SetRampMode(tmc51x0::RampMode::POSITIONING);
-driver.rampControl.SetMaxSpeed(60.0f, tmc51x0::Unit::RPM);               // 60 RPM
-driver.rampControl.SetAcceleration(5.0f, tmc51x0::Unit::RevPerSec);      // 5 rev/s²
-driver.rampControl.SetDeceleration(5.0f, tmc51x0::Unit::RevPerSec);      // 5 rev/s²
-driver.rampControl.SetTargetPosition(180.0f, tmc51x0::Unit::Deg);        // Move to 180°
-
-// Wait for target position
-while (true) {
-    auto reached = driver.rampControl.IsTargetReached();
-    if (reached.IsOk() && reached.Value()) break;
-}
+driver.rampControl.SetMaxSpeed(60.0f, tmc51x0::Unit::RPM);
+driver.rampControl.SetAcceleration(5.0f, tmc51x0::Unit::RevPerSec);
+driver.rampControl.SetTargetPosition(180.0f, tmc51x0::Unit::Deg);   // move to 180°
 ```
 
-### Multi-Motor Daisy Chain Setup
+For a fully-stubbed `MySPI` template plus daisy-chain, units, and `Result<T>` patterns,
+see [docs/quickstart.md](docs/quickstart.md), [docs/platform_integration.md](docs/platform_integration.md),
+and the [Multi-chip / Units / Error-handling cookbook](docs/special_features_multi_chip.md).
 
-```cpp
-#include "inc/tmc51x0.hpp"
-#include "inc/features/tmc51x0_daisy_chain.hpp"
-
-// 1. Create SPI communication interface (shared by all devices)
-MySPI spi;
-
-// 2. Create daisy-chain manager: 3 devices, max 5 supported, 12 MHz clock
-tmc51x0::TMC51x0DaisyChain<MySPI, 5> chain(spi, 3, 12'000'000);
-
-// 3. Initialize all devices with motor specifications
-tmc51x0::DriverConfig cfg{};
-cfg.motor_spec.rated_current_ma = 2000;
-cfg.motor_spec.sense_resistor_mohm = 50;
-cfg.motor_spec.supply_voltage_mv = 24000;
-chain.InitializeAll(cfg);
-
-// 4. Access individual motors by index
-auto& x_axis = chain[0];
-auto& y_axis = chain[1];
-auto& z_axis = chain[2];
-
-x_axis.rampControl.SetTargetPosition(90.0f, tmc51x0::Unit::Deg);
-y_axis.rampControl.SetMaxSpeed(30.0f, tmc51x0::Unit::RPM);
-z_axis.motorControl.Enable();
-```
-
-### Using Physical Units
-
-All position, speed, and acceleration methods accept a `Unit` parameter:
-
-```cpp
-using tmc51x0::Unit;
-
-// Position in degrees, millimeters, or revolutions
-driver.rampControl.SetTargetPosition(90.0f, Unit::Deg);       // 90 degrees
-driver.rampControl.SetTargetPosition(25.0f, Unit::Mm);        // 25 mm (requires MechanicalSystem in config)
-driver.rampControl.MoveRelative(-10.0f, Unit::Deg);           // Move 10° backward
-
-// Speed in RPM or revolutions per second (default)
-driver.rampControl.SetMaxSpeed(60.0f, Unit::RPM);             // 60 RPM
-driver.rampControl.SetMaxSpeed(1.0f, Unit::RevPerSec);        // 1 rev/s (same as 60 RPM)
-
-// Acceleration in rev/s²
-driver.rampControl.SetAcceleration(5.0f, Unit::RevPerSec);    // 5 rev/s²
-
-// Read position back in any unit
-auto pos = driver.rampControl.GetCurrentPosition(Unit::Deg);  // Current position in degrees
-auto spd = driver.rampControl.GetCurrentSpeed(Unit::RPM);     // Current speed in RPM
-```
-
-For detailed setup, see [Installation](docs/installation.md) and [Quick Start Guide](docs/quickstart.md).
-
-### Error Handling -- the `Result<T>` Pattern
-
-Every driver method returns a `Result<T>` -- a lightweight wrapper that carries either a **value** or an **error code**. This replaces exceptions (which are disabled in most embedded toolchains) with a zero-overhead, type-safe pattern.
-
-```cpp
-// Check success with IsOk() or boolean conversion
-auto result = driver.rampControl.SetMaxSpeed(60.0f, tmc51x0::Unit::RPM);
-if (!result) {                                      // boolean shorthand (same as !result.IsOk())
-    printf("Error: %s\n", result.ErrorMessage());   // human-readable message
-    tmc51x0::ErrorCode code = result.Error();       // machine-readable code
-    return;
-}
-
-// For methods that return a value, use Value() after checking
-auto pos = driver.rampControl.GetCurrentPosition(tmc51x0::Unit::Deg);
-if (pos.IsOk()) {
-    float degrees = pos.Value();                    // safe -- we checked first
-}
-
-// Or use ValueOr() for a safe default without branching
-float degrees = pos.ValueOr(0.0f);                 // returns 0.0 if error
-```
-
-**Error codes** ([`inc/tmc51x0_result.hpp`](inc/tmc51x0_result.hpp)):
-
-| ErrorCode | Meaning |
-|-----------|---------|
-| `OK` | Success |
-| `COMM_ERROR` | SPI/UART transfer failed |
-| `NOT_INITIALIZED` | `Initialize()` not called yet |
-| `INVALID_VALUE` | Parameter out of range |
-| `INVALID_STATE` | Operation not valid now (e.g. moving while reconfiguring) |
-| `TIMEOUT` | Operation exceeded time limit |
-| `HARDWARE_ERROR` | TMC driver fault (`drv_err`, `uv_cp`, `reset`) |
-| `SHORT_CIRCUIT` | Short to supply or ground detected |
-| `OVERTEMP_WARNING` | Temperature warning threshold exceeded |
-| `OVERTEMP_SHUTDOWN` | Temperature shutdown |
-| `UNSUPPORTED` | Feature not available on this chip (TMC5130 vs TMC5160) |
-
-> **Note on the Quick Start examples above:** Error checks are omitted for brevity. In production code, always check `Result` return values -- especially `Initialize()`, `Enable()`, and communication-dependent calls. See the [Quick Start Guide](docs/quickstart.md) and [Troubleshooting](docs/troubleshooting.md) for complete error handling examples.
+> **`Result<T>` pattern**: every method returns a lightweight `Result<T>` carrying
+> either a value or an `ErrorCode` (no exceptions). Check with `if (auto r = ...; !r)`
+> or `r.IsOk()`. Full code list and `Value()` / `ValueOr()` patterns are in
+> [docs/troubleshooting.md](docs/troubleshooting.md). Quick Start above omits checks
+> for brevity — production code should always inspect the result.
 
 ## 🔧 Installation
 
@@ -361,9 +258,9 @@ float degrees = pos.ValueOr(0.0f);                 // returns 0.0 if error
 
 For detailed installation instructions, see [docs/installation.md](docs/installation.md).
 
-## API Reference
+## 📖 API Reference
 
-> All methods return [`Result<T>`](#error-handling----the-resultt-pattern) types. Check with `IsOk()` / `operator bool` before using `Value()`. See the [full API Reference](docs/api_reference.md) for complete signatures and return types.
+> All methods return `Result<T>` types. Check with `IsOk()` / `operator bool` before using `Value()`. See the [full API Reference](docs/api_reference.md) for complete signatures and return types, and [docs/troubleshooting.md](docs/troubleshooting.md) for the full `ErrorCode` list.
 
 ### Class Structure & Subsystems
 
@@ -567,7 +464,7 @@ Comprehensive ESP32 examples are available in [`examples/esp32/main/`](examples/
 
 All examples use a unified test rig selection (`SELECTED_TEST_RIG`) for compile-time motor/board/platform configuration. See [docs/examples.md](docs/examples.md) for detailed walkthroughs.
 
-## Documentation
+## 📚 Documentation
 
 **[Complete Documentation on GitHub Pages](https://n3b3x.github.io/hf-tmc5160-driver/)**
 
@@ -587,7 +484,7 @@ All examples use a unified test rig selection (`SELECTED_TEST_RIG`) for compile-
 | [API Reference](docs/api_reference.md) | Complete method signatures, return types, and parameters |
 | [Configuration](docs/configuration.md) | `DriverConfig` fields, chopper tuning, StealthChop parameters |
 | [Examples](docs/examples.md) | Progressively harder walkthroughs with explanations |
-| [Error Handling](#error-handling----the-resultt-pattern) | `Result<T>`, `ErrorCode`, common patterns |
+| [Error Handling](docs/troubleshooting.md) | `Result<T>`, `ErrorCode`, common patterns |
 | [Troubleshooting](docs/troubleshooting.md) | Error codes, common failures, recovery strategies |
 
 ### Advanced Features
@@ -601,6 +498,18 @@ All examples use a unified test rig selection (`SELECTED_TEST_RIG`) for compile-
 | [TMC5130 Support](docs/tmc5130_support.md) | Differences from TMC5160, compatibility notes |
 
 For local browsing, see the [docs directory](docs/index.md).
+
+## 🔗 References
+
+| Resource | Link |
+|----------|------|
+| Trinamic TMC5160 product page | <https://www.analog.com/en/products/tmc5160.html> |
+| Trinamic TMC5130 product page | <https://www.analog.com/en/products/tmc5130.html> |
+| TMC5160 datasheet (ADI/Trinamic) | <https://www.analog.com/media/en/technical-documentation/data-sheets/tmc5160_datasheet.pdf> |
+| TMC5130 datasheet (ADI/Trinamic) | <https://www.analog.com/media/en/technical-documentation/data-sheets/tmc5130_datasheet.pdf> |
+| StallGuard2 / CoolStep / StealthChop2 application notes | <https://www.analog.com/en/products/landing-pages/001/trinamic-application-notes.html> |
+| ESP-IDF SPI / UART | <https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/peripherals/index.html> |
+| C++17 language reference | <https://en.cppreference.com/w/cpp/17> |
 
 ## 🤝 Contributing
 
