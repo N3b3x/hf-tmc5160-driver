@@ -126,7 +126,7 @@ var searchData=
   ['gettestrigreferenceswitchconfig_123',['GetTestRigReferenceSwitchConfig',['../namespacetmc51x0__test__config.html#a2ef0138a8a8531dafa2bcc7dedb31979',1,'tmc51x0_test_config']]],
   ['getthighregistervalue_124',['GetThighRegisterValue',['../structtmc51x0_1_1TMC51x0_1_1Thresholds.html#af5519752354fd876d7cbedce6fe6dc02',1,'tmc51x0::TMC51x0::Thresholds']]],
   ['gettimebetweenmicrosteps_125',['GetTimeBetweenMicrosteps',['../structtmc51x0_1_1TMC51x0_1_1Status.html#aeec25e4836580b5f458e2bf74f907129',1,'tmc51x0::TMC51x0::Status']]],
-  ['getting_20started_126',['Getting Started',['../index.html#autotoc_md85',1,'']]],
+  ['getting_20started_126',['Getting Started',['../index.html#autotoc_md82',1,'']]],
   ['gettpwmthrsregistervalue_127',['GetTpwmthrsRegisterValue',['../structtmc51x0_1_1TMC51x0_1_1Thresholds.html#a940a857c4adde0811ff7a6e050783341',1,'tmc51x0::TMC51x0::Thresholds']]],
   ['getuartnodeaddress_128',['GetUartNodeAddress',['../structtmc51x0_1_1TMC51x0_1_1Communication.html#a98a773e1d1a1177d2ec58f20d55b9dc7',1,'tmc51x0::TMC51x0::Communication']]],
   ['getuarttransmissioncount_129',['GetUartTransmissionCount',['../structtmc51x0_1_1TMC51x0_1_1Status.html#a3a61ad4645457b4f79b6f0cdc60ead0c',1,'tmc51x0::TMC51x0::Status']]],
