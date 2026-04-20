@@ -119,6 +119,7 @@ $(function(){initNavTree('index.html',''); initResizable(); });
 </blockquote>
 <p><b>HF-TMC51x0</b> is a comprehensive, production-ready C++17 driver for the <b>Trinamic TMC51x0</b> stepper motor controller ICs (TMC5130 &amp; TMC5160). The TMC51x0 family includes sophisticated stepper motor drivers supporting advanced features including stealthChop for silent operation, spreadCycle for high torque, StallGuard2 for stall detection, and encoder support for closed-loop control.</p>
 <p>This driver provides <b>complete feature coverage</b> of all 47 TMC51x0 registers with <b>100+ public API methods</b> organized into intuitive, well-structured subsystems. It supports <b>multi-chip communication</b> via SPI daisy chaining and UART multi-node addressing, <b>physical unit conversions</b> (mm, degrees, RPM, belt teeth), <b>automatic parameter tuning</b>, <b>sensorless homing</b>, and many other advanced features not found in other TMC51x0 drivers. The driver <b>automatically detects</b> and supports both TMC5130 and TMC5160 chips.</p>
+<p><img src="docs/assets/tmc5160-daisy-ramp.svg" alt="TMC5160 SPI daisy-chain topology and 7-phase motion ramp profile" style="pointer-events: none;" class="inline"/></p>
 <h2><a class="anchor" id="autotoc_md34"></a>
 Architecture &amp; Design</h2>
 <p>The driver is built with a <b>subsystem-based architecture</b> that organizes functionality into logical groups, making it easy to find and use the features you need:</p>

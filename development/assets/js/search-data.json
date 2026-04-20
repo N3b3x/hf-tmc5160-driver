@@ -2073,7 +2073,7 @@
   },"296": {
     "doc": "🔌 Hardware Setup",
     "title": "Hardware Setup",
-    "content": "This guide covers the physical connections and hardware requirements for the TMC51x0 stepper motor (TMC5130 &amp; TMC5160) driver chip. ",
+    "content": ". This guide covers the physical connections and hardware requirements for the TMC51x0 stepper motor (TMC5130 &amp; TMC5160) driver chip. ",
     "url": "/hf-tmc5160-driver/development/docs/hardware_setup/#hardware-setup",
     
     "relUrl": "/docs/hardware_setup/#hardware-setup"
