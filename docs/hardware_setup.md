@@ -157,6 +157,8 @@ SD_MODE  (pin 21) ──────> GND  (LOW)
 
 ## Example Wiring Diagrams
 
+![TMC5160 wiring](assets/tmc5160-wiring.svg)
+
 ### SPI + Internal Ramp Generator Mode (Recommended)
 
 ```
