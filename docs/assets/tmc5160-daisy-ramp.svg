@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 580" width="880" height="580" role="img" aria-labelledby="t-tmc d-tmc">
+  <title id="t-tmc">TMC5160 SPI daisy-chain topology and 7-phase motion ramp profile</title>
+  <desc id="d-tmc">Top: a single SPI bus controlling N TMC5160 chips in daisy chain - MOSI flows through DIN/DOUT chain, MISO returns the same length, single CS toggles all chips. Bottom: the internal motion controller produces a 6-phase + hold ramp.</desc>
+  <defs>
+    <style type="text/css"><![CDATA[
+      .panel    { fill: #ffffff; }
+      .panelL   { fill: #ffffff; stroke: #1a365d; stroke-width: 2; }
+      .chip     { fill: #fef5e7; stroke: #c05621; stroke-width: 2; }
+      .motor    { fill: #ebf4ff; stroke: #2c5282; stroke-width: 2; }
+      .box      { fill: #f4f6f8; stroke: #1a365d; stroke-width: 2; }
+      .wire-spi { stroke: #2b6cb0; stroke-width: 2.5; fill: none; stroke-linecap: round; }
+      .wire-cs  { stroke: #c05621; stroke-width: 2.5; fill: none; stroke-linecap: round; }
+      .wire-mot { stroke: #4a5568; stroke-width: 2; fill: none; stroke-linecap: round; }
+      .axis     { stroke: #1a365d; stroke-width: 1.5; fill: none; }
+      .grid     { stroke: #cbd5e0; stroke-width: 1; stroke-dasharray: 4 4; }
+      .ramp     { stroke: #c05621; stroke-width: 3; fill: none; stroke-linejoin: round; }
+      .phaseA   { fill: #fef5e7; opacity: 0.55; }
+      .phaseD   { fill: #fef5e7; opacity: 0.4; }
+      .phaseV   { fill: #ebf4ff; opacity: 0.55; }
+      .phaseH   { fill: #f4f6f8; opacity: 0.6; }
+      .head     { font-family: system-ui, sans-serif; font-size: 16px; font-weight: 600; fill: #1a365d; text-anchor: middle; }
+      .title    { font-family: system-ui, sans-serif; font-size: 13px; font-weight: 600; fill: #1a365d; text-anchor: middle; }
+      .titleL   { font-family: system-ui, sans-serif; font-size: 13px; font-weight: 600; fill: #1a365d; text-anchor: start; }
+      .small    { font-family: system-ui, sans-serif; font-size: 11px; fill: #4a5568; text-anchor: middle; }
+      .smallL   { font-family: system-ui, sans-serif; font-size: 11px; fill: #4a5568; text-anchor: start; }
+      .smallR   { font-family: system-ui, sans-serif; font-size: 11px; fill: #4a5568; text-anchor: end; }
+      .pin      { font-family: "DejaVu Sans Mono", Consolas, monospace; font-size: 11px; fill: #1a202c; text-anchor: middle; }
+      .pinL     { font-family: "DejaVu Sans Mono", Consolas, monospace; font-size: 11px; fill: #1a202c; text-anchor: start; }
+      .pinR     { font-family: "DejaVu Sans Mono", Consolas, monospace; font-size: 11px; fill: #1a202c; text-anchor: end; }
+      .legend   { font-family: system-ui, sans-serif; font-size: 11px; fill: #4a5568; }
+      .phaseLbl { font-family: system-ui, sans-serif; font-size: 10.5px; font-weight: 600; fill: #1a365d; text-anchor: middle; }
+    ]]></style>
+    <marker id="ar-tmc" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 z" fill="#2b6cb0"/>
+    </marker>
+  </defs>
+  <rect class="panel" width="880" height="580"/>
+
+  <text class="head" x="440" y="26">TMC5160 - SPI daisy-chain topology + internal ramp profile</text>
+  <text class="small" x="440" y="44">Same diagram applies to TMC5130 (lower V_M, integrated MOSFETs &lt;= 2 A_RMS instead of external gate driver up to 20 A peak).</text>
+
+  <!-- Section 1: Daisy chain (y=64..280) -->
+  <text class="title" x="440" y="68">SPI daisy-chain - N drivers on one bus, single shared CS</text>
+
+  <!-- MCU SPI box (left) -->
+  <rect class="box" x="30" y="100" width="120" height="120" rx="6"/>
+  <text class="title" x="90" y="122">MCU SPI</text>
+  <text class="pin" x="90" y="146">SCK</text>
+  <text class="pin" x="90" y="166">MOSI</text>
+  <text class="pin" x="90" y="186">MISO</text>
+  <text class="pin" x="90" y="206">CS</text>
+
+  <!-- 3 TMC5160 chips daisy chained -->
+  <g>
+    <rect class="chip" x="190" y="100"  width="170" height="120" rx="8"/>
+    <text class="title" x="275" y="124">TMC5160 #0</text>
+    <text class="small" x="275" y="140">chain pos 0  (X axis)</text>
+    <text class="pinL" x="200" y="170">DIN</text>
+    <text class="pinR" x="350" y="170">DOUT</text>
+    <text class="pinL" x="200" y="200">SCK</text>
+    <text class="pinR" x="350" y="200">CS</text>
+
+    <rect class="chip" x="400" y="100" width="170" height="120" rx="8"/>
+    <text class="title" x="485" y="124">TMC5160 #1</text>
+    <text class="small" x="485" y="140">chain pos 1  (Y axis)</text>
+    <text class="pinL" x="410" y="170">DIN</text>
+    <text class="pinR" x="560" y="170">DOUT</text>
+
+    <rect class="chip" x="610" y="100" width="170" height="120" rx="8"/>
+    <text class="title" x="695" y="124">TMC5160 #2</text>
+    <text class="small" x="695" y="140">chain pos 2  (Z axis)</text>
+    <text class="pinL" x="620" y="170">DIN</text>
+    <text class="pinR" x="760" y="170">DOUT</text>
+  </g>
+
+  <!-- MOSI flow: solid blue arrows MCU.MOSI -> #0.DIN -> #1.DIN -> #2.DIN -->
+  <path class="wire-spi" d="M 150 166 L 200 166" marker-end="url(#ar-tmc)"/>
+  <path class="wire-spi" d="M 360 166 L 400 166" marker-end="url(#ar-tmc)"/>
+  <path class="wire-spi" d="M 570 166 L 610 166" marker-end="url(#ar-tmc)"/>
+
+  <!-- MISO loop: dashed blue from #2.DOUT down/back to MCU.MISO -->
+  <path class="wire-spi" d="M 780 166 L 810 166 L 810 250 L 90 250 L 90 220" marker-end="url(#ar-tmc)" stroke-dasharray="6 4"/>
+  <text class="small" x="440" y="266">MISO loop returns the same total length (each chip shifts its own response into the chain)</text>
+
+  <!-- Shared SCK and CS lines (visualized as horizontal bus running below daisy chain) -->
+  <line class="wire-spi" x1="150" y1="290" x2="780" y2="290" stroke-dasharray="2 2"/>
+  <text class="smallR" x="148" y="294">SCK (shared)</text>
+  <line class="wire-cs"  x1="150" y1="306" x2="780" y2="306"/>
+  <text class="smallR" x="148" y="310">CS (one wire toggles all)</text>
+
+  <!-- Each chip drives its own 2-phase stepper motor (illustrated as small label outside the chip) -->
+  <text class="smallR" x="350" y="240" fill="#2c5282">-> 2-phase stepper</text>
+  <text class="smallR" x="560" y="240" fill="#2c5282">-> 2-phase stepper</text>
+  <text class="smallR" x="770" y="240" fill="#2c5282">-> 2-phase stepper</text>
+
+  <!-- Section 2: Ramp profile (y=336..500) -->
+  <rect class="panelL" x="30" y="336" width="820" height="200" rx="6"/>
+  <text class="title" x="440" y="356">Internal ramp generator - six-phase profile (POSITIONING mode)</text>
+
+  <!--
+    Plot area: x = 80..820 (740 px wide), y = 380..480 (100 px tall)
+    Velocity axis:
+      VMAX -> y=380
+      V1   -> y=420
+      V_START -> y=480
+    Phases (px widths):
+      Phase 1 (A1):    100 px  (V_START -> V1, slope A1)
+      Phase 2 (AMAX):  130 px  (V1 -> VMAX, slope AMAX)
+      Phase 3 (cruise):180 px  (VMAX held)
+      Phase 4 (DMAX):  130 px  (VMAX -> V1, slope DMAX)
+      Phase 5 (D1):    100 px  (V1 -> V_STOP, slope D1)
+      Phase 6 (hold):  100 px  (held at V_STOP)
+    Cumulative x: 80, 180, 310, 490, 620, 720, 820
+  -->
+
+  <!-- Phase backgrounds -->
+  <rect class="phaseA" x="80"  y="380" width="100" height="100"/>
+  <rect class="phaseA" x="180" y="380" width="130" height="100"/>
+  <rect class="phaseV" x="310" y="380" width="180" height="100"/>
+  <rect class="phaseD" x="490" y="380" width="130" height="100"/>
+  <rect class="phaseD" x="620" y="380" width="100" height="100"/>
+  <rect class="phaseH" x="720" y="380" width="100" height="100"/>
+
+  <!-- Velocity dashed reference lines -->
+  <line class="grid" x1="80" y1="380" x2="820" y2="380"/>
+  <line class="grid" x1="80" y1="420" x2="820" y2="420"/>
+  <line class="grid" x1="80" y1="480" x2="820" y2="480"/>
+
+  <!-- Axes -->
+  <line class="axis" x1="80" y1="480" x2="820" y2="480"/>
+  <line class="axis" x1="80" y1="380" x2="80"  y2="480"/>
+  <text class="smallR" x="74" y="384">VMAX</text>
+  <text class="smallR" x="74" y="424">V1</text>
+  <text class="smallR" x="74" y="484">V_START</text>
+  <text class="smallR" x="816" y="498">time -&gt;</text>
+
+  <!-- Velocity ramp curve through the phases -->
+  <path class="ramp" d="
+    M 80 480
+    L 180 420
+    L 310 380
+    L 490 380
+    L 620 420
+    L 720 480
+    L 820 480"/>
+
+  <!-- Phase labels under each phase (centered in each band) -->
+  <text class="phaseLbl" x="130" y="500">A1 -&gt; V1</text>
+  <text class="phaseLbl" x="245" y="500">AMAX -&gt; VMAX</text>
+  <text class="phaseLbl" x="400" y="500">cruise (VMAX)</text>
+  <text class="phaseLbl" x="555" y="500">DMAX -&gt; V1</text>
+  <text class="phaseLbl" x="670" y="500">D1 -&gt; V_STOP</text>
+  <text class="phaseLbl" x="770" y="500">hold</text>
+
+  <text class="small" x="440" y="528">Driver method: SetMaxSpeed() / SetAcceleration() / SetDeceleration() / SetTargetPosition() in any Unit (Steps, Mm, Deg, RPM).</text>
+
+  <!-- Bottom legend in its own row -->
+  <g transform="translate(30, 558)">
+    <text class="titleL" x="0" y="0" fill="#1a365d">Legend</text>
+    <line class="wire-spi" x1="80"  y1="-3" x2="104" y2="-3" marker-end="url(#ar-tmc)"/>
+    <text class="legend" x="112" y="0">SPI MOSI / MISO (shifts through chain)</text>
+    <line class="wire-cs"  x1="350" y1="-3" x2="374" y2="-3"/>
+    <text class="legend" x="382" y="0">Shared CS line</text>
+    <line class="ramp" x1="500" y1="-3" x2="524" y2="-3"/>
+    <text class="legend" x="532" y="0">Velocity profile (positioning mode)</text>
+  </g>
+</svg>

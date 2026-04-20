@@ -9,6 +9,8 @@ permalink: /docs/hardware_setup/
 
 # Hardware Setup
 
+![TMC5160 SPI daisy-chain topology and 7-phase motion ramp profile](assets/tmc5160-daisy-ramp.svg)
+
 This guide covers the physical connections and hardware requirements for the TMC51x0 stepper motor (TMC5130 & TMC5160) driver chip.
 
 ## Pin Connections

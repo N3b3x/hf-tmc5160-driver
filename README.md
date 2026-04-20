@@ -39,6 +39,8 @@ intuitive, well-structured subsystems. It supports **multi-chip communication** 
 addressing, **physical unit conversions** (mm, degrees, RPM, belt teeth), **automatic parameter tuning**, **sensorless homing**, 
 and many other advanced features not found in other TMC51x0 drivers. The driver **automatically detects** and supports both TMC5130 and TMC5160 chips.
 
+![TMC5160 SPI daisy-chain topology and 7-phase motion ramp profile](docs/assets/tmc5160-daisy-ramp.svg)
+
 ### Architecture & Design
 
 The driver is built with a **subsystem-based architecture** that organizes functionality into logical groups, making it easy 
