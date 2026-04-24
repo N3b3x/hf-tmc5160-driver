@@ -60,10 +60,11 @@ exclude = [
   '^https?://img\.shields\.io/badge/License-.*',
   
   # GitHub Actions badge URLs (may not exist yet)
-  '^https://github\.com/N3b3x/hf-tmc9660-driver/actions/workflows/.*',
+  '^https://github\.com/N3b3x/hf-tmc5160-driver/actions/workflows/.*',
   
   # Documentation site URLs (may not be published yet)
-  '^https://n3b3x\.github\.io/hf-tmc9660-driver/.*',
-  # Manufacturer / IC vendor documentation URLs (frequently block automated crawlers)
-  '^https?://(www\\.)?analog\\.com/',
+  '^https://n3b3x\.github\.io/hf-tmc5160-driver/.*',
+
+  # Analog Devices / Trinamic — unreliable in CI (HTTP/2 with lychee); links kept for humans
+  '^https?://(www\.)?analog\.com/',
 ]
