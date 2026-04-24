@@ -64,4 +64,6 @@ exclude = [
   
   # Documentation site URLs (may not be published yet)
   '^https://n3b3x\.github\.io/hf-tmc9660-driver/.*',
+  # Manufacturer / IC vendor documentation URLs (frequently block automated crawlers)
+  '^https?://(www\\.)?analog\\.com/',
 ]
